@@ -1,0 +1,6 @@
+namespace KS.GuessAthlete.WebAPI.Areas.HelpPage.ModelDescriptions
+{
+    public class SimpleTypeModelDescription : ModelDescription
+    {
+    }
+}
