@@ -14,20 +14,18 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
         public IEnumerable<Athlete> ScrapeAthleteData()
         {
-            List<Athlete> athletes = new List<Athlete>();
-
             for (char c = 'A'; c <= 'A'; c++)
             {
-                athletes.AddRange(LoadAthletesForLetter(c));
+                IEnumerable<Athlete> athletes = LoadAthletesForLetter(c);
+                foreach (Athlete athlete in athletes)
+                {
+                    yield return athlete;
+                }
             }
-
-            return athletes;
         }
 
         public IEnumerable<Athlete> LoadAthletesForLetter(char letter)
         {
-            List<Athlete> athletes = new List<Athlete>();
-
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = new HtmlDocument();
 
@@ -40,7 +38,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             HtmlNode playersTable = doc.GetElementbyId("players");
             if (playersTable == null)
             {
-                return athletes;
+                yield return null;
             }
 
             HtmlNode tbody = playersTable.Element("tbody");
@@ -50,7 +48,10 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 if (cssClass == "nhl")
                 {
                     IEnumerable<HtmlNode> tds = row.Elements("td");
-                    HtmlNode a = tds.ElementAt(0).Element("a");
+                    HtmlNode a = tds.ElementAt(0)
+                        .Descendants()
+                        .Where(nod => nod.Attributes["href"] != null)
+                        .FirstOrDefault();
                     if (a == null)
                     {
                         continue;
@@ -77,11 +78,10 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     athlete.Height = height;
                     athlete.Weight = weight;
                     athlete.Position = position;
-                    athletes.Add(athlete);
+
+                    yield return athlete;
                 }
             }
-
-            return athletes;
         }
 
         public Athlete LoadAthlete(string url, string position)
@@ -183,7 +183,13 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                         if (jerseyInfo.Length == 2)
                         {
                             JerseyNumber jerseyNumber = new JerseyNumber();
-                            string number = uniSpan.InnerHtml.Trim();
+                            Regex numbers = new Regex("[0-9]+");
+                            string number = "";
+                            foreach (Match match in numbers.Matches(uniSpan.InnerHtml.Trim()))
+                            {
+                                number = match.Value;
+                                break;
+                            }
                             jerseyNumber.Number = int.Parse(number);
                             jerseyNumber.TeamName = jerseyInfo[0].Trim();
                             jerseyNumber.Years = jerseyInfo[1].Trim();
