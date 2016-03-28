@@ -4,6 +4,7 @@ using KS.GuessAthlete.Data.POCO.Hockey;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 {
@@ -55,6 +56,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                         continue;
                     }
                     string href = a.Attributes["href"].Value;
+                    string name = a.InnerHtml;
                     string position = tds.ElementAt(3).InnerHtml;
                     string height = tds.ElementAt(4).InnerHtml;
                     string weight = tds.ElementAt(5).InnerHtml;
@@ -70,7 +72,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                         continue;
                     }
 
-                    athlete.Name = a.InnerHtml;
+                    athlete.Name = name;
                     athlete.BirthDate = birthDate;
                     athlete.Height = height;
                     athlete.Weight = weight;
@@ -95,7 +97,11 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             HtmlNode regularSeasonStatsTable = doc.GetElementbyId("stats_basic_nhl");
             if (regularSeasonStatsTable == null)
             {
-                return null;
+                regularSeasonStatsTable = doc.GetElementbyId("stats_basic_plus_nhl");
+                if (regularSeasonStatsTable == null)
+                {
+                    return null;
+                }
             }
 
             HtmlNode tbody = regularSeasonStatsTable.Element("tbody");
@@ -104,19 +110,121 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 return null;
             }
 
+            Athlete athlete = new Athlete();
+
+            HtmlNode necroBirthSpan = doc.GetElementbyId("necro-birth");
+            if (necroBirthSpan == null)
+            {
+                return null;
+            }
+            HtmlNode p = necroBirthSpan.ParentNode;
+            string innerText = p.InnerText;
+            int inIndex = innerText.IndexOf(" in ");
+            if (inIndex >= 0)
+            {
+                string birthPlace = innerText.Substring(inIndex + 4);
+                int slashIndex = birthPlace.IndexOf("\n");
+                birthPlace = birthPlace.Substring(0, slashIndex).Trim();
+                string[] birthInfos = birthPlace.Split(',');
+                if (birthInfos.Length > 1)
+                {
+                    athlete.BirthCity = birthInfos[0].Trim();
+                    athlete.BirthCountry = birthInfos[1].Trim();
+                }
+            }
+
+            List<Draft> drafts = new List<Draft>();
+            int draftIndex = innerText.IndexOf("Draft: ");
+            if (draftIndex >= 0)
+            {
+                string draftInfo = innerText.Substring(draftIndex + 7);
+                string[] draftInfos = draftInfo
+                    .Split(new string[] { @"&amp;" },
+                    StringSplitOptions.RemoveEmptyEntries);
+                foreach (string draftDetails in draftInfos)
+                {
+                    int slashIndex = draftDetails.IndexOf("\n");
+                    string betterDraftDetails = draftDetails.Trim();
+                    if (slashIndex >= 0)
+                    {
+                        betterDraftDetails = draftDetails.Substring(0, slashIndex).Trim();
+                    }
+                    string[] draftPieces = betterDraftDetails.Split(',');
+
+                    string team = draftPieces[0].Trim();
+                    string year = draftPieces[2].Trim().Substring(0, 4);
+                    string draftPosition = draftPieces[1].Trim();
+                    string draftRound = draftPosition.Substring(0, 1);
+                    int bracketIndex = draftPosition.IndexOf("(");
+                    draftPosition = draftPosition.Substring(bracketIndex + 1);
+                    Regex numbers = new Regex("[0-9]+");
+                    foreach(Match match in numbers.Matches(draftPosition))
+                    {
+                        draftPosition = match.Value;
+                        break;
+                    }
+
+                    int i;                   
+                    Draft draft = new Draft();
+
+                    int.TryParse(draftPosition, out i);
+                    draft.Position = i;
+                    int.TryParse(draftRound, out i);
+                    draft.Round = i;
+                    int.TryParse(year, out i);
+                    draft.Year = i;
+                                        
+                    // TO DO translate team to team id
+                    draft.TeamName = team;
+                    // TO DO translate team to team id
+
+                    drafts.Add(draft);
+                }
+
+            }
+            athlete.Drafts = drafts;
+
+            HtmlNode uniformDiv = doc.DocumentNode.SelectNodes("//div[contains(@class, 'uni_holder')]").
+                FirstOrDefault();
+            if (uniformDiv != null)
+            {
+                List<JerseyNumber> jerseyNumbers = new List<JerseyNumber>();
+                IEnumerable<HtmlNode> uniSpans = uniformDiv.SelectNodes("//span[contains(@class, 'uni_square')]");
+                foreach (HtmlNode uniSpan in uniSpans)
+                {
+                    if (uniSpan.Attributes["tip"] != null)
+                    {
+                        string teamString = uniSpan.Attributes["tip"].Value.Trim();
+                        string[] jerseyInfo = teamString.Split(',');
+                        if (jerseyInfo.Length == 2)
+                        {
+                            JerseyNumber jerseyNumber = new JerseyNumber();
+                            string number = uniSpan.InnerHtml.Trim();                                                        
+                            jerseyNumber.Number = int.Parse(number);
+                            jerseyNumber.TeamName = jerseyInfo[0].Trim();
+                            jerseyNumber.Years = jerseyInfo[1].Trim();
+                            jerseyNumbers.Add(jerseyNumber);
+                        }
+                    }
+                }
+
+                athlete.JerseyNumbers = jerseyNumbers;            
+            }
+
             if (position.ToUpper() == "G")
             {
-                return LoadGoalie(tbody);
+                LoadGoalie(tbody, athlete);
+                return athlete;
             }
             else
             {
-                return LoadSkater(tbody);
+                LoadSkater(tbody, athlete);
+                return athlete;
             }
         }
 
-        public Athlete LoadGoalie(HtmlNode tbody)
+        public Athlete LoadGoalie(HtmlNode tbody, Athlete athlete)
         {
-            Athlete athlete = new Athlete();
             List<StatLine> statsLines = new List<StatLine>();
 
             if (tbody == null)
@@ -143,7 +251,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 }
 
                 // TO DO MAP SEASON STRING TO SEADON ID
-                statLine.SeasonId = 1;
+                statLine.Season = season;
+                statLine.Year = yearString;
                 // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
@@ -156,7 +265,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 string teamName = a.Attributes["title"].Value;
 
                 // TO DO MAP TEAM NAME OR ABBREV TO TEAM
-                statLine.TeamId = 1;
+                statLine.TeamAbbreviation = teamAbbreviation;
+                statLine.TeamName = teamName;
                 // TO DO MAP TEAM NAME OR ABBREV TO TEAM
 
                 int i;
@@ -218,9 +328,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             return athlete;
         }
 
-        public Athlete LoadSkater(HtmlNode tbody)
+        public Athlete LoadSkater(HtmlNode tbody, Athlete athlete)
         {
-            Athlete athlete = new Athlete();
             List<StatLine> statsLines = new List<StatLine>();
 
             if (tbody == null)
@@ -248,7 +357,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 }
 
                 // TO DO MAP SEASON STRING TO SEADON ID
-                statLine.SeasonId = 1;
+                statLine.Season = season;
+                statLine.Year = yearString;
                 // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
@@ -261,7 +371,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 string teamName = a.Attributes["title"].Value;
 
                 // TO DO MAP TEAM NAME OR ABBREV TO TEAM
-                statLine.TeamId = 1;
+                statLine.TeamAbbreviation = teamAbbreviation;
+                statLine.TeamName = teamName;
                 // TO DO MAP TEAM NAME OR ABBREV TO TEAM
 
                 int i;

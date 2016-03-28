@@ -40,8 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="POCO\Draft.cs" />
     <Compile Include="POCO\Hockey\GoalieStatLine.cs" />
     <Compile Include="POCO\Hockey\SkaterStatLine.cs" />
+    <Compile Include="POCO\JerseyNumber.cs" />
     <Compile Include="POCO\StatLine.cs" />
     <Compile Include="POCO\Athlete.cs" />
     <Compile Include="POCO\League.cs" />

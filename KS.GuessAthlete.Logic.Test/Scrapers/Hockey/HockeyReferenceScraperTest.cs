@@ -8,10 +8,25 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
     public class HockeyReferenceScraperTest
     {
         [TestMethod]
-        public void TestScrapeAthleteData()
+        public void TestLoadFrederickAndersen()
         {
             HockeyReferenceScraper scraper = new HockeyReferenceScraper();
-            scraper.ScrapeAthleteData();
+            scraper.LoadAthlete(@"/players/a/anderfr01.html", "G");
         }
+
+        [TestMethod]
+        public void TestLoadAndrewAlberts()
+        {
+            HockeyReferenceScraper scraper = new HockeyReferenceScraper();
+            scraper.LoadAthlete(@"/players/a/alberan01.html", "D");
+        }
+
+        [TestMethod]
+        public void TestLoadWayneGretzky()
+        {
+            HockeyReferenceScraper scraper = new HockeyReferenceScraper();
+            scraper.LoadAthlete(@"/players/g/gretzwa01.html", "C");
+        }
+
     }
 }
