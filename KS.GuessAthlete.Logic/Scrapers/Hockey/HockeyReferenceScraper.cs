@@ -22,8 +22,15 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
         {
             List<Athlete> athletes = new List<Athlete>();
 
+            HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = new HtmlDocument();
-            doc.Load("file.htm");
+
+            web.UserAgent = "User - Agent:Mozilla / 5.0(Windows NT 6.1; WOW64) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 49.0.2623.108 Safari / 537.36";
+            web.UseCookies = true;
+
+            string url = @"http://www.hockey-reference.com/players/" + letter.ToString().ToLower() + @"/";
+            doc = web.Load(url);
+            doc.Save(@"d:\dev\athletelist.txt");
 
             return athletes;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KS.GuessAthlete.Logic.Scrapers.Hockey;
 
 namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
 {
@@ -7,8 +8,10 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
     public class HockeyReferenceScraperTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestScrapeAthleteData()
         {
+            HockeyReferenceScraper scraper = new HockeyReferenceScraper();
+            scraper.ScrapeAthleteData();
         }
     }
 }
