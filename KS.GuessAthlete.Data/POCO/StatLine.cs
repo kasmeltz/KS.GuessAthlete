@@ -9,6 +9,6 @@
         public int TeamId { get; set; }
         public string TeamAbbreviation { get; set; }
         public string TeamName { get; set; }
-        public int JerseyNumber { get; set; }        
+        public int JerseyNumber { get; set; }               
     }
 }

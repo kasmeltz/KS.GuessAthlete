@@ -37,5 +37,7 @@ namespace KS.GuessAthlete.Data.POCO.Hockey
         }
         public int PenaltyMinutes { get; set; }
         public string Awards { get; set; }
+        public string StanleyCup { get; set; }
+        public int IsPlayoffs { get; set; }
     }
 }
