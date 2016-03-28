@@ -126,13 +126,10 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
             foreach (HtmlNode row in tbody.Elements("tr"))
             {
-                /*
-                SkaterStatLine
-                     statLine = new SkaterStatLine();
-
+                GoalieStatLine statLine = new GoalieStatLine();
                 IEnumerable<HtmlNode> tds = row.Elements("td");
                 HtmlNode a = tds.ElementAt(3).Element("a");
-                if (a.InnerHtml != "NHL")
+                if (a.InnerHtml.ToUpper() != "NHL")
                 {
                     continue;
                 }
@@ -167,44 +164,53 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 int.TryParse(tds.ElementAt(4).InnerHtml, out i);
                 statLine.GamesPlayed = i;
                 int.TryParse(tds.ElementAt(5).InnerHtml, out i);
-                statLine.Goals = i;
+                statLine.GamesStarted = i;
                 int.TryParse(tds.ElementAt(6).InnerHtml, out i);
-                statLine.Assists = i;
+                statLine.Wins = i;
+                int.TryParse(tds.ElementAt(7).InnerHtml, out i);
+                statLine.Losses = i;
                 int.TryParse(tds.ElementAt(8).InnerHtml, out i);
-                statLine.PlusMinus = i;
+                statLine.TiesPlusOvertimeShootoutLosses = i;
                 int.TryParse(tds.ElementAt(9).InnerHtml, out i);
-                statLine.PenaltyMinutes = i;
+                statLine.GoalsAgainst = i;
                 int.TryParse(tds.ElementAt(10).InnerHtml, out i);
-                statLine.EvenStrengthGoals = i;
+                statLine.ShotsAgainst = i;
                 int.TryParse(tds.ElementAt(11).InnerHtml, out i);
-                statLine.PowerPlayGoals = i;
-                int.TryParse(tds.ElementAt(12).InnerHtml, out i);
-                statLine.ShortHandedGoals = i;
-                int.TryParse(tds.ElementAt(13).InnerHtml, out i);
-                statLine.GameWinningGoals = i;
+                statLine.Saves = i;
+                decimal.TryParse(tds.ElementAt(12).InnerHtml, out d);
+                statLine.SavePercentage = d;
+                decimal.TryParse(tds.ElementAt(13).InnerHtml, out d);
+                statLine.GoalsAgainstAverage = d;
                 int.TryParse(tds.ElementAt(14).InnerHtml, out i);
-                statLine.EvenStrengthAssists = i;
+                statLine.Shutouts = i;
                 int.TryParse(tds.ElementAt(15).InnerHtml, out i);
-                statLine.PowerPlayAssists = i;
+                statLine.Minutes = i;
                 int.TryParse(tds.ElementAt(16).InnerHtml, out i);
-                statLine.ShortHandedAssists = i;
-                int.TryParse(tds.ElementAt(17).InnerHtml, out i);
-                statLine.Shots = i;
-                decimal.TryParse(tds.ElementAt(18).InnerHtml, out d);
-                statLine.ShotPercentage = i;
-                int.TryParse(tds.ElementAt(19).InnerHtml, out i);
-                statLine.TimeOnIce = i;
+                statLine.QualityStarts = i;
+                decimal.TryParse(tds.ElementAt(17).InnerHtml, out d);
+                statLine.QualityStartPercentage = d;
+                int.TryParse(tds.ElementAt(18).InnerHtml, out i);
+                statLine.ReallyBadStarts = i;
+                decimal.TryParse(tds.ElementAt(19).InnerHtml, out d);
+                statLine.GoalsAgainstPercentage = i;
                 decimal.TryParse(tds.ElementAt(20).InnerHtml, out d);
-                statLine.AverageTimeOnIce = i;
+                statLine.GoalsSavedAboveAverage = i;
+                decimal.TryParse(tds.ElementAt(21).InnerHtml, out d);
+                statLine.GoaliePointShares = i;
+                int.TryParse(tds.ElementAt(22).InnerHtml, out i);
+                statLine.Goals = i;
+                int.TryParse(tds.ElementAt(23).InnerHtml, out i);
+                statLine.Assists = i;
+                int.TryParse(tds.ElementAt(25).InnerHtml, out i);
+                statLine.PenaltyMinutes = i;
 
-                IEnumerable<HtmlNode> awardTags = tds.ElementAt(21).Elements("a");
+                IEnumerable<HtmlNode> awardTags = tds.ElementAt(26).Elements("a");
                 foreach (HtmlNode node in awardTags)
                 {
                     statLine.Awards += "@" + node.InnerHtml + "@";
                 }
 
                 statsLines.Add(statLine);
-                */
             }
 
             athlete.Stats = statsLines;
@@ -228,7 +234,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 IEnumerable<HtmlNode> tds = row.Elements("td");
                 HtmlNode a = tds.ElementAt(3).Element("a");
-                if (a.InnerHtml != "NHL")
+                if (a.InnerHtml.ToUpper() != "NHL")
                 {
                     continue;
                 }
