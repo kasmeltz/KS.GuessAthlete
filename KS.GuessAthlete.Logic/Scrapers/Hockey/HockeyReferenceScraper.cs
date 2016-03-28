@@ -1,5 +1,7 @@
 ﻿using HtmlAgilityPack;
 using KS.GuessAthlete.Data.POCO;
+using KS.GuessAthlete.Data.POCO.Hockey;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -46,36 +48,42 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 string cssClass = row.Attributes["class"].Value;
                 if (cssClass == "nhl")
                 {
-                    HtmlNode td = row.Element("td");
-                    if (td == null)
-                    {
-                        continue;
-                    }
-                    HtmlNode a = td.Element("a");
+                    IEnumerable<HtmlNode> tds = row.Elements("td");
+                    HtmlNode a = tds.ElementAt(0).Element("a");
                     if (a == null)
                     {
                         continue;
                     }
                     string href = a.Attributes["href"].Value;
-                    Athlete athlete = LoadAthlete(href);
-                    if (athlete == null )
+                    string position = tds.ElementAt(3).InnerHtml;
+                    string height = tds.ElementAt(4).InnerHtml;
+                    string weight = tds.ElementAt(5).InnerHtml;
+                    a = tds.ElementAt(6).Element("a");
+                    DateTime birthDate = DateTime.Now;
+                    if (a != null)
+                    {
+                        DateTime.TryParse(a.InnerHtml, out birthDate);
+                    }
+                    Athlete athlete = LoadAthlete(href, position);
+                    if (athlete == null)
                     {
                         continue;
                     }
 
+                    athlete.Name = a.InnerHtml;
+                    athlete.BirthDate = birthDate;
+                    athlete.Height = height;
+                    athlete.Weight = weight;
+                    athlete.Position = position;
                     athletes.Add(athlete);
-                    athlete.Name = a.InnerHtml;                    
                 }
             }
 
             return athletes;
         }
 
-        public Athlete LoadAthlete(string url)
+        public Athlete LoadAthlete(string url, string position)
         {
-            Athlete athlete = new Athlete();
-            List<StatLine> statsLines = new List<StatLine>();
-
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = new HtmlDocument();
 
@@ -96,11 +104,33 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 return null;
             }
 
+            if (position.ToUpper() == "G")
+            {
+                return LoadGoalie(tbody);
+            }
+            else
+            {
+                return LoadSkater(tbody);
+            }
+        }
+
+        public Athlete LoadGoalie(HtmlNode tbody)
+        {
+            Athlete athlete = new Athlete();
+            List<StatLine> statsLines = new List<StatLine>();
+
+            if (tbody == null)
+            {
+                return null;
+            }
+
             foreach (HtmlNode row in tbody.Elements("tr"))
             {
-                StatLine statLine = new StatLine();
+                /*
+                SkaterStatLine
+                     statLine = new SkaterStatLine();
 
-                IEnumerable<HtmlNode> tds = row.Elements("td");                
+                IEnumerable<HtmlNode> tds = row.Elements("td");
                 HtmlNode a = tds.ElementAt(3).Element("a");
                 if (a.InnerHtml != "NHL")
                 {
@@ -117,7 +147,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 // TO DO MAP SEASON STRING TO SEADON ID
                 statLine.SeasonId = 1;
-                //
+                // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
                 if (a == null)
@@ -130,7 +160,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 // TO DO MAP TEAM NAME OR ABBREV TO TEAM
                 statLine.TeamId = 1;
-                //
+                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
 
                 int i;
                 decimal d;
@@ -168,7 +198,103 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 statLine.AverageTimeOnIce = i;
 
                 IEnumerable<HtmlNode> awardTags = tds.ElementAt(21).Elements("a");
-                foreach(HtmlNode node in awardTags)
+                foreach (HtmlNode node in awardTags)
+                {
+                    statLine.Awards += "@" + node.InnerHtml + "@";
+                }
+
+                statsLines.Add(statLine);
+                */
+            }
+
+            athlete.Stats = statsLines;
+
+            return athlete;
+        }
+
+        public Athlete LoadSkater(HtmlNode tbody)
+        {
+            Athlete athlete = new Athlete();
+            List<StatLine> statsLines = new List<StatLine>();
+
+            if (tbody == null)
+            {
+                return null;
+            }
+
+            foreach (HtmlNode row in tbody.Elements("tr"))
+            {
+                SkaterStatLine statLine = new SkaterStatLine();
+
+                IEnumerable<HtmlNode> tds = row.Elements("td");
+                HtmlNode a = tds.ElementAt(3).Element("a");
+                if (a.InnerHtml != "NHL")
+                {
+                    continue;
+                }
+
+                string season = tds.ElementAt(0).InnerHtml;
+                string yearString = season.Trim().Substring(0, 4);
+                int year;
+                if (!int.TryParse(yearString, out year))
+                {
+                    continue;
+                }
+
+                // TO DO MAP SEASON STRING TO SEADON ID
+                statLine.SeasonId = 1;
+                // TO DO MAP SEASON STRING TO SEADON ID
+
+                a = tds.ElementAt(2).Element("a");
+                if (a == null)
+                {
+                    continue;
+                }
+
+                string teamAbbreviation = a.InnerHtml;
+                string teamName = a.Attributes["title"].Value;
+
+                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
+                statLine.TeamId = 1;
+                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
+
+                int i;
+                decimal d;
+                int.TryParse(tds.ElementAt(4).InnerHtml, out i);
+                statLine.GamesPlayed = i;
+                int.TryParse(tds.ElementAt(5).InnerHtml, out i);
+                statLine.Goals = i;
+                int.TryParse(tds.ElementAt(6).InnerHtml, out i);
+                statLine.Assists = i;
+                int.TryParse(tds.ElementAt(8).InnerHtml, out i);
+                statLine.PlusMinus = i;
+                int.TryParse(tds.ElementAt(9).InnerHtml, out i);
+                statLine.PenaltyMinutes = i;
+                int.TryParse(tds.ElementAt(10).InnerHtml, out i);
+                statLine.EvenStrengthGoals = i;
+                int.TryParse(tds.ElementAt(11).InnerHtml, out i);
+                statLine.PowerPlayGoals = i;
+                int.TryParse(tds.ElementAt(12).InnerHtml, out i);
+                statLine.ShortHandedGoals = i;
+                int.TryParse(tds.ElementAt(13).InnerHtml, out i);
+                statLine.GameWinningGoals = i;
+                int.TryParse(tds.ElementAt(14).InnerHtml, out i);
+                statLine.EvenStrengthAssists = i;
+                int.TryParse(tds.ElementAt(15).InnerHtml, out i);
+                statLine.PowerPlayAssists = i;
+                int.TryParse(tds.ElementAt(16).InnerHtml, out i);
+                statLine.ShortHandedAssists = i;
+                int.TryParse(tds.ElementAt(17).InnerHtml, out i);
+                statLine.Shots = i;
+                decimal.TryParse(tds.ElementAt(18).InnerHtml, out d);
+                statLine.ShotPercentage = i;
+                int.TryParse(tds.ElementAt(19).InnerHtml, out i);
+                statLine.TimeOnIce = i;
+                decimal.TryParse(tds.ElementAt(20).InnerHtml, out d);
+                statLine.AverageTimeOnIce = i;
+
+                IEnumerable<HtmlNode> awardTags = tds.ElementAt(21).Elements("a");
+                foreach (HtmlNode node in awardTags)
                 {
                     statLine.Awards += "@" + node.InnerHtml + "@";
                 }
