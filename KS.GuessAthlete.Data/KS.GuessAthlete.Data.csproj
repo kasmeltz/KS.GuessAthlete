@@ -40,9 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="POCO\AggregateStat.cs" />
+    <Compile Include="POCO\StatLine.cs" />
     <Compile Include="POCO\Athlete.cs" />
+    <Compile Include="POCO\League.cs" />
+    <Compile Include="POCO\PocoDataObject.cs" />
+    <Compile Include="POCO\Season.cs" />
     <Compile Include="POCO\Team.cs" />
+    <Compile Include="POCO\TeamIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

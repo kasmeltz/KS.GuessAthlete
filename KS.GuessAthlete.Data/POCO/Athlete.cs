@@ -2,10 +2,10 @@
 
 namespace KS.GuessAthlete.Data.POCO
 {
-    public class Athlete
+    public class Athlete : PocoDataObject
     {
-        public string Name { get; set; }
+        public string Name { get; set; }        
 
-        public IEnumerable<AggregateStat> Stats { get; set; }
+        public IEnumerable<StatLine> Stats { get; set; }
     }
 }
