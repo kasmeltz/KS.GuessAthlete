@@ -5,6 +5,6 @@
     /// </summary>
     public interface IRepositoryCollection
     {
-        IAthleteRepository Cities();
+        IAthleteRepository Athletes();
     }
 }

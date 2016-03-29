@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using KS.GuessAthlete.Component.Caching.Interface;
+using KS.GuessAthlete.Data.DataAccess.Exceptions;
 using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO;
 using System.Collections.Generic;

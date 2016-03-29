@@ -1,4 +1,5 @@
-﻿using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
+﻿using KS.GuessAthlete.Component.Caching.Interface;
+using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO;
 
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
@@ -14,7 +15,6 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         public DapperAthleteRepository(ICacheProvider cacheProvider)
             : base(cacheProvider)
         {
-            BulkColumnMapping = _bulkColumnMapping;
             StagingTableName = "CityImportStaging";
             CacheContainerName = "City";
             TableName = "[mlist].[City]";

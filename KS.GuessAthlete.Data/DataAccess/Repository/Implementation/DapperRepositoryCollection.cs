@@ -1,4 +1,5 @@
-﻿using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
+﻿using KS.GuessAthlete.Component.Caching.Interface;
+using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 {
