@@ -13,7 +13,8 @@
         IJerseyNumberRepository JerseyNumbers();
         ILeagueRepository Leagues();
         ISeasonRepository Seasons();
+        ISkaterStatLineRepository SkaterStatLines();
         ITeamRepository Teams();
-        ITeamIdentityRepository TeamIdentities();
+        ITeamIdentityRepository TeamIdentities();        
     }
 }
