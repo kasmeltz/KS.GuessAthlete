@@ -4,39 +4,29 @@
 	[AthleteId] INT NOT NULL,
 	[TeamIdentityId] INT NOT NULL,
 	[SeasonId] INT NOT NULL,
-	/*        
-	public int GamesPlayed { get; set; }
-        public int GamesStarted { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public int TiesPlusOvertimeShootoutLosses { get; set; }
-        public int GoalsAgainst { get; set; }
-        public int ShotsAgainst { get; set; }
-        public int Saves { get; set; }
-        public decimal SavePercentage { get; set; }
-        public decimal GoalsAgainstAverage { get; set; }
-        public int Shutouts { get; set; }
-        public int Minutes { get; set; }
-        public int QualityStarts { get; set; }
-        public decimal QualityStartPercentage { get; set; }
-        public int ReallyBadStarts { get; set; }
-        public decimal GoalsAgainstPercentage { get; set; }
-        public decimal GoalsSavedAboveAverage { get; set; }
-        public decimal GoaliePointShares { get; set; }
-        public int Goals { get; set; }
-        public int Assists { get; set; }
-        public int Points
-        {
-            get
-            {
-                return Goals + Assists;
-            }
-        }
-        public int PenaltyMinutes { get; set; }
-        public string Awards { get; set; }
-        public string StanleyCup { get; set; }
-        public int IsPlayoffs { get; set; }
-		*/
+	[GamesPlayed] INT NULL,
+	[GamesStarted] INT NULL,
+	[Wins] INT NULL,
+	[Losses] INT NULL,
+	[TiesPlusOvertimeShootoutLosses] INT NULL,
+	[GoalsAgainst] INT NULL,
+	[ShotsAgainst] INT NULL,
+	[Saves] INT NULL,
+	[SavePercentage] DECIMAL(9,5) NULL,
+	[GoalsAgainstAverage] DECIMAL(9,5) NULL,
+	[Shutouts] INT NULL,
+	[Minutes] INT NULL,
+	[QualityStarts] INT NULL,
+	[QualityStartPercentage] DECIMAL(9,5) NULL,
+	[ReallyBadStarts] INT NULL,
+	[GoalsAgainstPercentage] DECIMAL(9,5) NULL,
+	[GoalsSavedAboveAverage] DECIMAL(9,5) NULL,
+	[GoaliePointShares] DECIMAL(9,5) NULL,
+	[Goals] INT NULL,
+	[Assists] INT NULL,
+	[PenaltyMinutes] INT NULL,
+	[StanleyCup] INT NULL,
+	[IsPlayoffs] INT NULL,
 	PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_GoalieStatLine_To_Athlete] FOREIGN KEY ([AthleteId]) REFERENCES [app].[Athlete]([Id]),
 	CONSTRAINT [FK_GoalieStatLine_To_TeamIdentity] FOREIGN KEY ([TeamIdentityId]) REFERENCES [app].[TeamIdentity]([Id]),
