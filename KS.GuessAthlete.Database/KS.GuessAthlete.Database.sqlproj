@@ -73,4 +73,8 @@
     <Build Include="app\Award.sql" />
     <Build Include="app\AthleteAward.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="KS.GuessAthlete.Database_TEST.publish.xml" />
+    <None Include="KS.GuessAthlete.Database_DEV.publish.xml" />
+  </ItemGroup>
 </Project>
