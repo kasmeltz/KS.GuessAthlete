@@ -13,5 +13,7 @@
         IJerseyNumberRepository JerseyNumbers();
         ILeagueRepository Leagues();
         ISeasonRepository Seasons();
+        ITeamRepository Teams();
+        ITeamIdentityRepository TeamIdentities();
     }
 }

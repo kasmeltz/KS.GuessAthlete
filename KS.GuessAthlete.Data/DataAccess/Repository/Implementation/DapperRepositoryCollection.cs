@@ -51,5 +51,15 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         {
             return new DapperSeasonRepository(CacheProvider);
         }
+
+        public ITeamRepository Teams()
+        {
+            return new DapperTeamRepository(CacheProvider);
+        }
+
+        public ITeamIdentityRepository TeamIdentities()
+        {
+            return new DapperTeamIdentityRepository(CacheProvider);
+        }
     }
 }

@@ -50,6 +50,8 @@
     <Compile Include="DataAccess\Exceptions\ItemAlreadyExistsException.cs" />
     <Compile Include="DataAccess\Repository\Implementation\BaseDapperRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperAthleteAwardRepository.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperTeamIdentityRepository.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperTeamRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperSeasonRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperLeagueRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperJerseyNumberRepository.cs" />
@@ -59,6 +61,8 @@
     <Compile Include="DataAccess\Repository\Implementation\DapperAthleteRepository.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperRepositoryCollection.cs" />
     <Compile Include="DataAccess\Repository\Implementation\SqlConnectionManager.cs" />
+    <Compile Include="DataAccess\Repository\Interface\ITeamIdentityRepository.cs" />
+    <Compile Include="DataAccess\Repository\Interface\ITeamRepository.cs" />
     <Compile Include="DataAccess\Repository\Interface\ISeasonRepository.cs" />
     <Compile Include="DataAccess\Repository\Interface\ILeagueRepository.cs" />
     <Compile Include="DataAccess\Repository\Interface\IJerseyNumberRepository.cs" />
