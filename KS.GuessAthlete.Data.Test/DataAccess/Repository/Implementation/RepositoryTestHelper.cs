@@ -104,34 +104,109 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 return existing;
             }
 
-            leagueRepository.Insert(new League
+            List<League> leagues = new List<League>();
+
+            leagues.Add(new League
             {
                 Name = "National Hockey League",
                 Abbreviation = "NHL",
-            }).Wait();
+            });
 
-            leagueRepository.Insert(new League
+            leagues.Add(new League
             {
                 Name = "Major League Baseball",
                 Abbreviation = "MLB",
-            }).Wait();
+            });
 
-            leagueRepository.Insert(new League
+            leagues.Add(new League
             {
                 Name = "National Basketball Association",
                 Abbreviation = "NBA",
-            }).Wait();
+            });
 
-            leagueRepository.Insert(new League
+            leagues.Add(new League
             {
                 Name = "National Football League",
                 Abbreviation = "NFL",
-            }).Wait();
+            });
 
-            return leagueRepository.List().Result;
+            foreach(League league in leagues)
+            {
+                leagueRepository
+                    .Insert(league)
+                    .Wait();
+            }
+
+            return leagues.OrderBy(leg => leg.Name);
         }
 
-       
+        public static IEnumerable<Athlete> InsertAthletes()
+        {
+            IRepositoryCollection collection = Collection();
+            IAthleteRepository athleteRepository = collection.Athletes();
+            IEnumerable<Athlete> existing = athleteRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            List<Athlete> athletes = new List<Athlete>();
+
+            athletes.Add(new Athlete
+            {
+                Name = "Wayne Gretzky",
+                BirthDate = new DateTime(1965, 02, 04),
+                BirthCity = "Brandon",
+                BirthCountry = "Ontario",
+                Position = "C",
+                Height = "6'0",
+                Weight = "185"
+            });
+
+            athletes.Add(new Athlete
+            {
+                Name = "Bobby Orr",
+                BirthDate = new DateTime(1941, 03, 06),
+                BirthCity = "Newmarket",
+                BirthCountry = "Ontario",
+                Position = "D",
+                Height = "6'0",
+                Weight = "190"
+            });
+
+            athletes.Add(new Athlete
+            {
+                Name = "Mario Leimiuex",
+                BirthDate = new DateTime(1967, 06, 02),
+                BirthCity = "Montreal",
+                BirthCountry = "Quebec",
+                Position = "C",
+                Height = "6'4",
+                Weight = "220"
+            });
+
+            athletes.Add(new Athlete
+            {
+                Name = "Mark Messier",
+                BirthDate = new DateTime(1966, 08, 04),
+                BirthCity = "Edmonton",
+                BirthCountry = "Alberta",
+                Position = "C",
+                Height = "6'0",
+                Weight = "210"
+            });            
+
+            foreach (Athlete athlete in athletes)
+            {
+                athleteRepository
+                    .Insert(athlete)
+                    .Wait();
+            }
+
+            return athletes.OrderBy(leg => leg.Name);
+        }
+
+
         /*
         public static IEnumerable<Game> InsertGames()
         {

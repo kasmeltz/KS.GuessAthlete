@@ -58,6 +58,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="app" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\Versions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="app.sql" />
@@ -72,6 +74,8 @@
     <Build Include="app\GoalieStatLine.sql" />
     <Build Include="app\Award.sql" />
     <Build Include="app\AthleteAward.sql" />
+    <None Include="Scripts\Versions\Version1.sql" />
+    <PostDeploy Include="Scripts\PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="KS.GuessAthlete.Database_TEST.publish.xml" />
