@@ -15,15 +15,13 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         public DapperAthleteRepository(ICacheProvider cacheProvider)
             : base(cacheProvider)
         {
-            StagingTableName = "CityImportStaging";
-            CacheContainerName = "City";
-            TableName = "[mlist].[City]";
+            CacheContainerName = "Athlete";
+            TableName = "[app].[Athlete]";
             CacheSeconds = 3600;
         }
 
         protected override void CreateSql()
         {
-            FinalizeBulkImportSQL = _finalizeBulkImportSql;
             GetSql = _getSql;
             ListSql = _listSql;
             SearchSql = _searchSql;
@@ -31,53 +29,34 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             UpdateSql = _updateSql;
         }
 
-        private const string _finalizeBulkImportSql = @"
-            SET NOCOUNT ON;
-            MERGE [mlist].[City] AS T
-            USING [dbo].[CityImportStaging] AS S
-            ON (T.StateId = S.StateId AND T.Name = S.Name)
-            WHEN NOT MATCHED BY TARGET THEN 
-                INSERT
-                    (StateId, Name, Abbreviation)
-                VALUES
-                    (S.StateId, S.Name, S.Abbreviation)
-            WHEN MATCHED THEN 
-                UPDATE 
-                    SET 
-                    T.StateId = S.StateId,
-                    T.Name = S.Name, 
-                    T.Abbreviation = S.Abbreviation;
-
-            DELETE FROM [dbo].[CityImportStaging]";
-
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, StateId, Name, Abbreviation
+                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
             FROM 
-                [mlist].[City]
+                [app].[Athlete]
             WHERE
                 Id = @Id";
 
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, StateId, Name, Abbreviation
+                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
             FROM 
-                [mlist].[City]
+                [app].[Athlete]
             ORDER BY
-                Name, Abbreviation";
+                Name";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, StateId, Name, Abbreviation
+                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
             FROM 
-                [mlist].[City]
+                [app].[Athlete]
             WHERE           
                 Name like @SearchTerms
             ORDER BY
-                Name, Abbreviation";
+                Name";
 
         private const string _insertSql = @"
             SET NOCOUNT ON;
@@ -87,27 +66,27 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[City]
+		        [app].[Athlete]
 	        WHERE	
 		        Name = @Name
             AND
-                StateId = @StateId
+                BirthDate = @BirthDate
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [mlist].[City]
-		        (StateId, Name, Abbreviation)
+		        INSERT INTO [app].[Athlete]
+		        (Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight)
 		        VALUES
-		        (@StateId, @Name, @Abbreviation)
+		        (@Name, @BirthDate, @BirthCountry, @BirthCity, @Position, @Height, @Weight)
 
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [mlist].[City]
+		            [app].[Athlete]
 	            WHERE	
 		            Name = @Name
                 AND
-                    StateId = @StateId            
+                    BirthDate = @BirthDate       
             END
 	        ELSE
 	        BEGIN
@@ -122,20 +101,24 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [mlist].[City]
+		        [app].[Athlete]
 	        WHERE	
 		        Name = @Name
             AND
-                StateId = @StateId
+                BirthDate = @BirthDate
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [mlist].[City]
+                    [app].[Athlete]
                 SET
-                    StateId = @StateId,
                     Name = @Name,
-                    Abbreviation = @Abbreviation
+                    BirthDate = @BirthDate,
+                    BirthCountry = @BirthCountry,
+                    BirthCity = @BirthCity,
+                    Position = @Position,
+                    Height = @Height,
+                    Weight = @Weight
 		        WHERE	
 		            Id = @Id
                     
