@@ -168,8 +168,15 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             }
             athlete.Drafts = drafts;
 
-            HtmlNode uniformDiv = doc.DocumentNode.SelectNodes("//div[contains(@class, 'uni_holder')]").
-                FirstOrDefault();
+            IEnumerable<HtmlNode> uniformDivs = doc.DocumentNode
+                .SelectNodes("//div[contains(@class, 'uni_holder')]");
+
+            HtmlNode uniformDiv = null;
+            if (uniformDivs != null) {
+                uniformDiv = uniformDivs
+                    .FirstOrDefault();
+            }
+
             if (uniformDiv != null)
             {
                 List<JerseyNumber> jerseyNumbers = new List<JerseyNumber>();

@@ -2,5 +2,6 @@
 {
     public class Team : PocoDataObject
     {
+        public int LeagueId { get; set; }
     }
 }

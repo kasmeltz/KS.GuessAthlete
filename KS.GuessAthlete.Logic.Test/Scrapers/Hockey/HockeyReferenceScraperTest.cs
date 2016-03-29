@@ -31,7 +31,7 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
         }
 
         [TestMethod]
-        public void TestLoadAthletesForLetter()
+        public void TestLoadAthletesForLetterG()
         {
             int count = 0;
             HockeyReferenceScraper scraper = new HockeyReferenceScraper();
@@ -51,6 +51,17 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
             Assert.AreEqual("Kurtis Gabriel", athletes[1].Name);
             Assert.AreEqual("Bill Gadsby", athletes[2].Name);
             Assert.AreEqual("Link Gaetz", athletes[3].Name);
+        }
+
+        [TestMethod]
+        public void TestLoadAthletesForLetterC()
+        {
+            HockeyReferenceScraper scraper = new HockeyReferenceScraper();
+            List<Athlete> athletes = new List<Athlete>();
+            foreach (var athlete in scraper.LoadAthletesForLetter('c'))
+            {
+                athletes.Add(athlete);
+            }
         }
     }
 }

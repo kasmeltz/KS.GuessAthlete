@@ -57,5 +57,18 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="app" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="app.sql" />
+    <Build Include="app\Athlete.sql" />
+    <Build Include="app\Draft.sql" />
+    <Build Include="app\JerseyNumber.sql" />
+    <Build Include="app\League.sql" />
+    <Build Include="app\Team.sql" />
+    <Build Include="app\TeamIdentity.sql" />
+    <Build Include="app\Season.sql" />
+    <Build Include="app\SkaterStatLine.sql" />
+    <Build Include="app\GoalieStatLine.sql" />
   </ItemGroup>
 </Project>
