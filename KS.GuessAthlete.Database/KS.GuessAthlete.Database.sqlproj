@@ -70,5 +70,7 @@
     <Build Include="app\Season.sql" />
     <Build Include="app\SkaterStatLine.sql" />
     <Build Include="app\GoalieStatLine.sql" />
+    <Build Include="app\Award.sql" />
+    <Build Include="app\AthleteAward.sql" />
   </ItemGroup>
 </Project>

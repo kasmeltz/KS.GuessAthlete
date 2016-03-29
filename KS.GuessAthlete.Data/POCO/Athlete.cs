@@ -16,5 +16,6 @@ namespace KS.GuessAthlete.Data.POCO
         public IEnumerable<StatLine> Stats { get; set; }
         public IEnumerable<Draft> Drafts { get; set; }
         public IEnumerable<JerseyNumber> JerseyNumbers { get; set; }
+        public IEnumerable<AthleteAward> Awards { get; set; }
     }
 }
