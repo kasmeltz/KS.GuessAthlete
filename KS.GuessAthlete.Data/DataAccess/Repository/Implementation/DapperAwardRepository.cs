@@ -5,18 +5,18 @@ using KS.GuessAthlete.Data.POCO;
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 {
     /// <summary>
-    /// Provides access to Athlete data in the data store using the Dapper framework.
+    /// Provides access to Award data in the data store using the Dapper framework.
     /// 
     /// Dapper documentation at https://github.com/StackExchange/dapper-dot-net
     /// </summary>
-    public class DapperAthleteRepository : BaseDapperRepository<Athlete>,
-        IAthleteRepository
+    public class DapperAwardRepository : BaseDapperRepository<Award>,
+        IAwardRepository
     {        
-        public DapperAthleteRepository(ICacheProvider cacheProvider)
+        public DapperAwardRepository(ICacheProvider cacheProvider)
             : base(cacheProvider)
         {
-            CacheContainerName = "Athlete";
-            TableName = "[app].[Athlete]";
+            CacheContainerName = "Award";
+            TableName = "[app].[Award]";
             CacheSeconds = 3600;
         }
 
@@ -32,27 +32,27 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
+                Id, LeagueId, Name, Abbreviation, StartDate, EndDate
             FROM 
-                [app].[Athlete]
+                [app].[Award]
             WHERE
                 Id = @Id";
 
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
+                Id, LeagueId, Name, Abbreviation, StartDate, EndDate
             FROM 
-                [app].[Athlete]
+                [app].[Award]
             ORDER BY
                 Name";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
+                Id, LeagueId, Name, Abbreviation, StartDate, EndDate
             FROM 
-                [app].[Athlete]
+                [app].[Award]
             WHERE           
                 Name like @SearchTerms
             ORDER BY
@@ -66,27 +66,27 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [app].[Athlete]
+		        [app].[Award]
 	        WHERE	
-		        Name = @Name
+		        LeagueId = @LeagueId
             AND
-                BirthDate = @BirthDate
+                Name = @Name
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [app].[Athlete]
-		        (Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight)
+		        INSERT INTO [app].[Award]
+		        (LeagueId, Name, Abbreviation, StartDate, EndDate)
 		        VALUES
-		        (@Name, @BirthDate, @BirthCountry, @BirthCity, @Position, @Height, @Weight)
+		        (@LeagueId, @Name, @Abbreviation, @StartDate, @EndDate)
 
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [app].[Athlete]
+		            [app].[Award]
 	            WHERE	
-		            Name = @Name
+		            LeagueId = @LeagueId
                 AND
-                    BirthDate = @BirthDate       
+                    Name = @Name       
             END
 	        ELSE
 	        BEGIN
@@ -101,24 +101,22 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [app].[Athlete]
+		        [app].[Award]
 	        WHERE	
-		        Name = @Name
+		        LeagueId = @LeagueId
             AND
-                BirthDate = @BirthDate
+                Name = @Name
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [app].[Athlete]
+                    [app].[Award]
                 SET
+                    LeagueId = @LeagueId,
                     Name = @Name,
-                    BirthDate = @BirthDate,
-                    BirthCountry = @BirthCountry,
-                    BirthCity = @BirthCity,
-                    Position = @Position,
-                    Height = @Height,
-                    Weight = @Weight
+                    Abbreviation = @Abbreviation,
+                    StartDate = @StartDate,
+                    EndDate = @EndDate
 		        WHERE	
 		            Id = @Id
                     

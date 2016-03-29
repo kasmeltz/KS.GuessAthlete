@@ -5,18 +5,18 @@ using KS.GuessAthlete.Data.POCO;
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 {
     /// <summary>
-    /// Provides access to Athlete data in the data store using the Dapper framework.
+    /// Provides access to Athlete Award data in the data store using the Dapper framework.
     /// 
     /// Dapper documentation at https://github.com/StackExchange/dapper-dot-net
     /// </summary>
-    public class DapperAthleteRepository : BaseDapperRepository<Athlete>,
-        IAthleteRepository
+    public class DapperAthleteAwardRepository : BaseDapperRepository<AthleteAward>,
+        IAthleteAwardRepository
     {        
-        public DapperAthleteRepository(ICacheProvider cacheProvider)
+        public DapperAthleteAwardRepository(ICacheProvider cacheProvider)
             : base(cacheProvider)
         {
-            CacheContainerName = "Athlete";
-            TableName = "[app].[Athlete]";
+            CacheContainerName = "AthleteAward";
+            TableName = "[app].[AthleteAward]";
             CacheSeconds = 3600;
         }
 
@@ -32,31 +32,31 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
+                Id, AwardId, AthleteId, TeamIdentityId, SeasonId
             FROM 
-                [app].[Athlete]
+                [app].[AthleteAward]
             WHERE
                 Id = @Id";
 
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
+                Id, AwardId, AthleteId, TeamIdentityId, SeasonId
             FROM 
-                [app].[Athlete]
+                [app].[AthleteAward]
             ORDER BY
-                Name";
+                AthleteId";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight
+                Id, AwardId, AthleteId, TeamIdentityId, SeasonId
             FROM 
-                [app].[Athlete]
+                [app].[AthleteAward]
             WHERE           
-                Name like @SearchTerms
+                AthleteId like @SearchTerms
             ORDER BY
-                Name";
+                AthleteId";
 
         private const string _insertSql = @"
             SET NOCOUNT ON;
@@ -66,27 +66,31 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [app].[Athlete]
+		        [app].[AthleteAward]
 	        WHERE	
-		        Name = @Name
+		        AwardId = @AwardId
             AND
-                BirthDate = @BirthDate
+                AthleteId = @AthleteId
+            AND 
+                SeasonId = @SeasonId
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
-		        INSERT INTO [app].[Athlete]
-		        (Name, BirthDate, BirthCountry, BirthCity, Position, Height, Weight)
+		        INSERT INTO [app].[AthleteAward]
+		        (AwardId, AthleteId, TeamIdentityId, SeasonId)
 		        VALUES
-		        (@Name, @BirthDate, @BirthCountry, @BirthCity, @Position, @Height, @Weight)
+		        (@AwardId, @AthleteId, @TeamIdentityId, @SeasonId)
 
 		        SELECT TOP 1 
 			        Id
 		        FROM	
-		            [app].[Athlete]
+		            [app].[AthleteAward]
 	            WHERE	
-		            Name = @Name
+		            AwardId = @AwardId
                 AND
-                    BirthDate = @BirthDate       
+                    AthleteId = @AthleteId
+                AND 
+                    SeasonId = @SeasonId 
             END
 	        ELSE
 	        BEGIN
@@ -101,24 +105,23 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        SELECT TOP 1
 		        @ExistingId = Id
 	        FROM	
-		        [app].[Athlete]
+		        [app].[AthleteAward]
 	        WHERE	
-		        Name = @Name
+		        AwardId = @AwardId
             AND
-                BirthDate = @BirthDate
+                AthleteId = @AthleteId
+            AND 
+                SeasonId = @SeasonId
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
 		        UPDATE 
-                    [app].[Athlete]
+                    [app].[AthleteAward]
                 SET
-                    Name = @Name,
-                    BirthDate = @BirthDate,
-                    BirthCountry = @BirthCountry,
-                    BirthCity = @BirthCity,
-                    Position = @Position,
-                    Height = @Height,
-                    Weight = @Weight
+                    AwardId = @AwardId,
+                    AthleteId = @AthleteId,
+                    TeamIdentityId = @TeamIdentityId,
+                    SeasonId = @SeasonId
 		        WHERE	
 		            Id = @Id
                     

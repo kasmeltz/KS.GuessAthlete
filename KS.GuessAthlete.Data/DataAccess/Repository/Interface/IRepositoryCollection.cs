@@ -5,6 +5,14 @@
     /// </summary>
     public interface IRepositoryCollection
     {
+        IAthleteAwardRepository AthleteAwards();
+
         IAthleteRepository Athletes();
+
+        IAwardRepository Awards();
+
+        IDraftRepository Drafts();
+
+        IGoalieStatLineRepository GoalieStatLines();
     }
 }

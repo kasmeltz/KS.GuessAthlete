@@ -12,9 +12,29 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             CacheProvider = cacheProvider;
         }
 
+        public IAthleteAwardRepository AthleteAwards()
+        {
+            return new DapperAthleteAwardRepository(CacheProvider);
+        }
+
         public IAthleteRepository Athletes()
         {
             return new DapperAthleteRepository(CacheProvider);
+        }
+
+        public IAwardRepository Awards()
+        {
+            return new DapperAwardRepository(CacheProvider);
+        }
+
+        public IDraftRepository Drafts()
+        {
+            return new DapperDraftRepository(CacheProvider);
+        }
+
+        public IGoalieStatLineRepository GoalieStatLines()
+        {
+            return new DapperGoalieStatLineRepository(CacheProvider);
         }
     }
 }
