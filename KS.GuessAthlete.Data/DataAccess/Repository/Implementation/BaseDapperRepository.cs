@@ -71,7 +71,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             CacheSeconds = 15; 
 
             DbConnectionString = ConfigurationManager
-                .ConnectionStrings["HockeyGMDB"]
+                .ConnectionStrings["GuessAthleteDB"]
                 .ToString();
 
             CacheProvider = cacheProvider;
