@@ -95,14 +95,32 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        WHERE	
 		        AthleteId = @AthleteId
             AND
-                Year = @Year
+                TeamIdentityId = @TeamIdentityId
+            AND
+                SeasonId = @SeasonId
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
 		        INSERT INTO [app].[GoalieStatLine]
-		        (AthleteId, TeamIdentityId, Year, Round, Position)
+		        (AthleteId, TeamIdentityId, SeasonId, 
+                GamesPlayed, GamesStarted, 
+                Wins, Losses, TiesPlusOvertimeShootoutLosses, 
+                GoalsAgainst, ShotsAgainst, Saves, 
+                SavePercentage, GoalsAgainstAverage,
+                Shutouts, Minutes,
+                QualityStarts, QualityStartPercentage, ReallyBadStarts, 
+                GoalsAgainstPercentage, GoalsSavedAboveAverage, GoaliePointShares,
+                Goals, Assists, PenaltyMinutes, StanleyCup, IsPlayoffs)
 		        VALUES
-		        (@AthleteId, @TeamIdentityId, @Year, @Round, @Position)
+		        (@AthleteId, @TeamIdentityId, @SeasonId, 
+                @GamesPlayed, @GamesStarted, 
+                @Wins, @Losses, @TiesPlusOvertimeShootoutLosses, 
+                @GoalsAgainst, @ShotsAgainst, @Saves, 
+                @SavePercentage, @GoalsAgainstAverage,
+                @Shutouts, @Minutes,
+                @QualityStarts, @QualityStartPercentage, @ReallyBadStarts, 
+                @GoalsAgainstPercentage, @GoalsSavedAboveAverage, @GoaliePointShares,
+                @Goals, @Assists, @PenaltyMinutes, @StanleyCup, @IsPlayoffs)
 
 		        SELECT TOP 1 
 			        Id
@@ -111,7 +129,9 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	            WHERE	
 		            AthleteId = @AthleteId
                 AND
-                    Year = @Year 
+                    TeamIdentityId = @TeamIdentityId
+                AND
+                    SeasonId = @SeasonId    
             END
 	        ELSE
 	        BEGIN
@@ -130,7 +150,9 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        WHERE	
 		        AthleteId = @AthleteId
             AND
-                Year = @Year
+                TeamIdentityId = @TeamIdentityId
+            AND
+                SeasonId = @SeasonId
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
@@ -139,9 +161,30 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                 SET
                     AthleteId = @AthleteId,
                     TeamIdentityId = @TeamIdentityId,
-                    Year = @Year,
-                    Round = @Round,
-                    Position = @Position
+                    SeasonId = @SeasonId,
+                    GamesPlayed = @GamesPlayed,
+                    GamesStarted = @GamesStarted
+                    Wins = @Wins,
+                    Losses = @Losses,
+                    TiesPlusOvertimeShootoutLosses = @TiesPlusOvertimeShootoutLosses,
+                    GoalsAgainst = @GoalsAgainst,
+                    ShotsAgainst = @ShotsAgainst,
+                    Saves = @Saves,
+                    SavePercentage = @SavePercentage,
+                    GoalsAgainstAverage = @GoalsAgainstAverage,
+                    Shutouts = @Shutouts,
+                    Minutes = @Minutes,
+                    QualityStarts = @QualityStarts,
+                    QualityStartPercentage = @QualityStartPercentage,
+                    ReallyBadStarts = @ReallyBadStarts,
+                    GoalsAgainstPercentage = @GoalsAgainstPercentage,
+                    GoalsSavedAboveAverage = @GoalsSavedAboveAverage,
+                    GoaliePointShares = @GoaliePointShares,
+                    Goals = @Goals,
+                    Assists = @Assists,
+                    PenaltyMinutes = @PenaltyMinutes,
+                    StanleyCup = @StanleyCup,
+                    IsPlayoffs = @IsPlayoffs
 		        WHERE	
 		            Id = @Id
                     
@@ -150,6 +193,6 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             ELSE
             BEGIN
                 SELECT -1
-            END";    
+            END";
     }
 }

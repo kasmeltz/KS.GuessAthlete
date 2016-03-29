@@ -6,13 +6,12 @@
     public interface IRepositoryCollection
     {
         IAthleteAwardRepository AthleteAwards();
-
         IAthleteRepository Athletes();
-
         IAwardRepository Awards();
-
         IDraftRepository Drafts();
-
         IGoalieStatLineRepository GoalieStatLines();
+        IJerseyNumberRepository JerseyNumbers();
+        ILeagueRepository Leagues();
+        ISeasonRepository Seasons();
     }
 }

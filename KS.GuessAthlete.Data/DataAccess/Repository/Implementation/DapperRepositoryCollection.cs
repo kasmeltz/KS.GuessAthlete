@@ -36,5 +36,20 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         {
             return new DapperGoalieStatLineRepository(CacheProvider);
         }
+
+        public IJerseyNumberRepository JerseyNumbers()
+        {
+            return new DapperJerseyNumberRepository(CacheProvider);
+        }
+
+        public ILeagueRepository Leagues()
+        {
+            return new DapperLeagueRepository(CacheProvider);
+        }
+
+        public ISeasonRepository Seasons()
+        {
+            return new DapperSeasonRepository(CacheProvider);
+        }
     }
 }
