@@ -23,9 +23,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
         public void AthleteRepository()
         {
             IRepositoryCollection collection = RepositoryTestHelper.Collection();
-            IAthleteRepository leagueRepository = collection.Athletes();
+            IAthleteRepository athleteRepository = collection.Athletes();
             IEnumerable<Athlete> insertedAthletes = RepositoryTestHelper.InsertAthletes();
-            IEnumerable<Athlete> listedAthletes = leagueRepository.List().Result;
+            IEnumerable<Athlete> listedAthletes = athleteRepository.List().Result;
 
             for(int i = 0;i < listedAthletes.Count();i++)
             {
@@ -37,15 +37,13 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             bool exceptionThrown = false;
             try
             {
-                // Act
-                leagueRepository.Insert(insertedAthletes.ElementAt(1)).Wait();
+                athleteRepository.Insert(insertedAthletes.ElementAt(1)).Wait();
             }
             catch (AggregateException)
             {
                 exceptionThrown = true;
             }
-
-            // Assert
+        
             Assert.IsTrue(exceptionThrown);
 
             listedAthletes.ElementAt(2).Name = "New Athlete Name";
@@ -55,9 +53,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             listedAthletes.ElementAt(2).Position = "Doggy";
             listedAthletes.ElementAt(2).Height = "4'5";
             listedAthletes.ElementAt(2).Weight = "500";
-            leagueRepository.Update(listedAthletes.ElementAt(2)).Wait();
+            athleteRepository.Update(listedAthletes.ElementAt(2)).Wait();
 
-            Athlete updatedAthlete = leagueRepository.Get(listedAthletes.ElementAt(2).Id).Result;
+            Athlete updatedAthlete = athleteRepository.Get(listedAthletes.ElementAt(2).Id).Result;
             Assert.AreEqual("New Athlete Name", updatedAthlete.Name);
             Assert.AreEqual(new DateTime(1902, 1, 1), updatedAthlete.BirthDate);
             Assert.AreEqual("Somewhere", updatedAthlete.BirthCity);
@@ -71,18 +69,20 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             {
                 listedAthletes.ElementAt(3).Name = "New Athlete Name";
                 listedAthletes.ElementAt(3).BirthDate = new DateTime(1902, 1, 1);
-                leagueRepository.Update(listedAthletes.ElementAt(3)).Wait();
+                athleteRepository.Update(listedAthletes.ElementAt(3)).Wait();
             }
             catch (AggregateException)
             {
                 exceptionThrown = true;
             }
 
-            updatedAthlete = leagueRepository.Get(listedAthletes.ElementAt(3).Id).Result;
-            Assert.AreEqual("Wayne Gretzky", updatedAthlete.Name);            
+            Assert.IsTrue(exceptionThrown);
 
-            leagueRepository.Delete(listedAthletes.ElementAt(0).Id);
-            listedAthletes = leagueRepository.List().Result;
+            updatedAthlete = athleteRepository.Get(listedAthletes.ElementAt(3).Id).Result;
+            Assert.AreEqual("Wayne Gretzky", updatedAthlete.Name);
+
+            athleteRepository.Delete(listedAthletes.ElementAt(0).Id).Wait();
+            listedAthletes = athleteRepository.List().Result;
             Assert.AreEqual(3, listedAthletes.Count());
         }
     }

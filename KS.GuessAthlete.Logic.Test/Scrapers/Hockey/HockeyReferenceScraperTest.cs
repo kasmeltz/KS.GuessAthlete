@@ -53,6 +53,7 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
             Assert.AreEqual("Link Gaetz", athletes[3].Name);
         }
 
+        /*
         [TestMethod]
         public void TestLoadAthletesForLetterC()
         {
@@ -63,5 +64,6 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
                 athletes.Add(athlete);
             }
         }
+        */
     }
 }

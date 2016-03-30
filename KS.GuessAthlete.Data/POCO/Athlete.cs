@@ -6,7 +6,7 @@ namespace KS.GuessAthlete.Data.POCO
     public class Athlete : PocoDataObject
     {
         public string Name { get; set; }        
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public string BirthCountry { get; set; }
         public string BirthCity { get; set; }        
         public string Position { get; set; }

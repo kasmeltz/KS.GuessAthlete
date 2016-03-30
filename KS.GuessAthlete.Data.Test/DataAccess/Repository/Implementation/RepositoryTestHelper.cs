@@ -203,7 +203,64 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                     .Wait();
             }
 
-            return athletes.OrderBy(leg => leg.Name);
+            return athletes.OrderBy(ath => ath.Name);
+        }
+
+        public static IEnumerable<Award> InsertAwards()
+        {            
+            IRepositoryCollection collection = Collection();
+            IAwardRepository awardRepository = collection.Awards();
+            IEnumerable<Award> existing = awardRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<League> leagues = InsertLeagues();
+
+            List<Award> awards = new List<Award>();
+
+            awards.Add(new Award
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "Maurice Award",
+                Abbreviation = "Maurice",
+                StartDate = new DateTime(1990,1,1),
+                EndDate = new DateTime(2015,4,5)
+            });
+
+            awards.Add(new Award
+            {
+                LeagueId = leagues.ElementAt(1).Id,
+                Name = "Good Stuff Award",
+                Abbreviation = "Stuff",
+                StartDate = new DateTime(1930, 1, 1)
+            });
+
+            awards.Add(new Award
+            {
+                LeagueId = leagues.ElementAt(2).Id,
+                Name = "Eat lots award",
+                Abbreviation = "Eat",
+                StartDate = new DateTime(1974, 1, 1)
+            });
+
+            awards.Add(new Award
+            {
+                LeagueId = leagues.ElementAt(3).Id,
+                Name = "Memorial Tribute",
+                Abbreviation = "memorial",
+                StartDate = new DateTime(1945, 1, 1)
+            });
+
+            foreach (Award award in awards)
+            {
+                awardRepository
+                    .Insert(award)
+                    .Wait();
+            }
+
+            return awards.OrderBy(leg => leg.Name);
         }
 
 
@@ -253,7 +310,6 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 AwayTeamId = teams.ElementAt(0).Id,
             };
 
-            // Act
             gameRepository.Insert(game1).Wait();
             gameRepository.Insert(game2).Wait();
             gameRepository.Insert(game3).Wait();

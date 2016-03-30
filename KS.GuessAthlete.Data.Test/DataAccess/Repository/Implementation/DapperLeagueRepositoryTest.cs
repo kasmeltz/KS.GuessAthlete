@@ -37,7 +37,6 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             bool exceptionThrown = false;
             try
             {
-                // Act
                 leagueRepository.Insert(insertedLeagues.ElementAt(1)).Wait();
             }
             catch (AggregateException)
@@ -45,7 +44,6 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 exceptionThrown = true;
             }
 
-            // Assert
             Assert.IsTrue(exceptionThrown);
 
             listedLeagues.ElementAt(2).Name = "New League Name";
@@ -69,11 +67,13 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 exceptionThrown = true;
             }
 
+            Assert.IsTrue(exceptionThrown);
+
             updatedLeague = leagueRepository.Get(listedLeagues.ElementAt(3).Id).Result;
             Assert.AreEqual("National Hockey League", updatedLeague.Name);
             Assert.AreEqual("NHL", updatedLeague.Abbreviation);
 
-            leagueRepository.Delete(listedLeagues.ElementAt(0).Id);
+            leagueRepository.Delete(listedLeagues.ElementAt(0).Id).Wait();
             listedLeagues = leagueRepository.List().Result;
             Assert.AreEqual(3, listedLeagues.Count());
         }

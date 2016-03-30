@@ -8,6 +8,6 @@ namespace KS.GuessAthlete.Data.POCO
         public string Name { get; set; }
         public string Abbreviation { get; set; }
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }
