@@ -3,7 +3,7 @@
     public class JerseyNumber : PocoDataObject
     {
         public int AthleteId { get; set; }
-        public int TeamId { get; set; }
+        public int TeamIdentityId { get; set; }
         public int Number { get; set; }
         public int StartYear { get; set; }
         public int EndYear { get; set; }

@@ -71,6 +71,8 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 		        AthleteId = @AthleteId
             AND
                 TeamIdentityId = @TeamIdentityId
+            AND 
+                StartYear = @StartYear
             AND
                 Number = @Number
 	            
@@ -89,6 +91,8 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 		            AthleteId = @AthleteId
                 AND
                     TeamIdentityId = @TeamIdentityId
+                AND 
+                    StartYear = @StartYear
                 AND
                     Number = @Number
             END
@@ -110,6 +114,8 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 		        AthleteId = @AthleteId
             AND
                 TeamIdentityId = @TeamIdentityId
+            AND 
+                StartYear = @StartYear
             AND
                 Number = @Number
 

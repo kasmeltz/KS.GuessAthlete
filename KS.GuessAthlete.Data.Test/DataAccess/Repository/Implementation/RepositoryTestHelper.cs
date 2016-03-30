@@ -31,7 +31,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
 
             IAthleteAwardRepository AthleteAwards = collection.AthleteAwards();
             IAthleteRepository Athletes = collection.Athletes();
-            IAwardRepository Awards  = collection.Awards();
+            IAwardRepository Awards = collection.Awards();
             IDraftRepository Drafts = collection.Drafts();
             IGoalieStatLineRepository GoalieStatLines = collection.GoalieStatLines();
             IJerseyNumberRepository JerseyNumbers = collection.JerseyNumbers();
@@ -51,7 +51,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             TeamIdentities.PurgeForTest().Wait();
             Teams.PurgeForTest().Wait();
             Seasons.PurgeForTest().Wait();
-            Leagues.PurgeForTest().Wait();     
+            Leagues.PurgeForTest().Wait();
         }
 
 
@@ -88,12 +88,12 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 catch
                 {
                     Assert.Fail(prop.Name);
-                }           
+                }
 
                 Assert.AreEqual(v1, v2, prop.Name);
             }
         }
-    
+
         public static IEnumerable<League> InsertLeagues()
         {
             IRepositoryCollection collection = Collection();
@@ -130,7 +130,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 Abbreviation = "NFL",
             });
 
-            foreach(League league in leagues)
+            foreach (League league in leagues)
             {
                 leagueRepository
                     .Insert(league)
@@ -194,7 +194,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 Position = "C",
                 Height = "6'0",
                 Weight = "210"
-            });            
+            });
 
             foreach (Athlete athlete in athletes)
             {
@@ -207,7 +207,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
         }
 
         public static IEnumerable<Award> InsertAwards()
-        {            
+        {
             IRepositoryCollection collection = Collection();
             IAwardRepository awardRepository = collection.Awards();
             IEnumerable<Award> existing = awardRepository.List().Result;
@@ -225,8 +225,8 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 LeagueId = leagues.ElementAt(0).Id,
                 Name = "Maurice Award",
                 Abbreviation = "Maurice",
-                StartDate = new DateTime(1990,1,1),
-                EndDate = new DateTime(2015,4,5)
+                StartDate = new DateTime(1990, 1, 1),
+                EndDate = new DateTime(2015, 4, 5)
             });
 
             awards.Add(new Award
@@ -372,7 +372,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
         }
 
         public static IEnumerable<Draft> InsertDrafts()
-        {            
+        {
             IRepositoryCollection collection = Collection();
             IDraftRepository draftRepository = collection.Drafts();
             IEnumerable<Draft> existing = draftRepository.List().Result;
@@ -389,7 +389,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             drafts.Add(new Draft
             {
                 AthleteId = athletes.ElementAt(0).Id,
-                TeamIdentityId  = teamIdentities.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(0).Id,
                 Year = 2012,
                 Round = 1,
                 Position = 1
@@ -412,7 +412,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 Year = 2015,
                 Round = 7,
                 Position = 202
-            });        
+            });
 
             drafts.Add(new Draft
             {
@@ -433,60 +433,65 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return drafts.OrderBy(leg => leg.AthleteId);
         }
 
-
-        /*
-        public static IEnumerable<Game> InsertGames()
+        public static IEnumerable<JerseyNumber> InsertJerseyNumbers()
         {
             IRepositoryCollection collection = Collection();
-            ITeamRepository teamRepository = collection.Teams();
-            IEnumerable<Team> teams = teamRepository.List().Result;
-            if (teams.Count() == 0)
+            IJerseyNumberRepository jerseyNumberRepository = collection.JerseyNumbers();
+            IEnumerable<JerseyNumber> existing = jerseyNumberRepository.List().Result;
+            if (existing.Count() > 0)
             {
-                teams = InsertTeams();
+                return existing;
             }
 
-            IGameRepository gameRepository = collection.Games();
-            Game game1 = null;
-            Game game2 = null;
-            Game game3 = null;
-            Game game4 = null;
+            IEnumerable<Athlete> athletes = InsertAthletes();
+            IEnumerable<TeamIdentity> teamIdentities = InsertTeamIdentities();
 
-            game1 = new Game
+            List<JerseyNumber> jerseyNumbers = new List<JerseyNumber>();
+
+            jerseyNumbers.Add(new JerseyNumber
             {
-                StartDate = new DateTime(2015, 01, 01),
-                HomeTeamId = teams.ElementAt(0).Id,
-                AwayTeamId = teams.ElementAt(1).Id,
-            };
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(0).Id,
+                Number = 99,
+                StartYear = 1979,
+                EndYear = 1999
+            });
 
-            game2 = new Game
+            jerseyNumbers.Add(new JerseyNumber
             {
-                StartDate = new DateTime(2015, 02, 14),
-                HomeTeamId = teams.ElementAt(1).Id,
-                AwayTeamId = teams.ElementAt(2).Id,
-            };
+                AthleteId = athletes.ElementAt(1).Id,
+                TeamIdentityId = teamIdentities.ElementAt(1).Id,
+                Number = 19,
+                StartYear = 1926,
+                EndYear = 1936
+            });
 
-            game3 = new Game
+            jerseyNumbers.Add(new JerseyNumber
             {
-                StartDate = new DateTime(2016, 02, 14),
-                HomeTeamId = teams.ElementAt(1).Id,
-                AwayTeamId = teams.ElementAt(2).Id,
-            };
+                AthleteId = athletes.ElementAt(2).Id,
+                TeamIdentityId = teamIdentities.ElementAt(2).Id,
+                Number = 34,
+                StartYear = 2014,
+                EndYear = 2016
+            });
 
-
-            game4 = new Game
+            jerseyNumbers.Add(new JerseyNumber
             {
-                StartDate = new DateTime(2016, 08, 12),
-                HomeTeamId = teams.ElementAt(2).Id,
-                AwayTeamId = teams.ElementAt(0).Id,
-            };
+                AthleteId = athletes.ElementAt(3).Id,
+                TeamIdentityId = teamIdentities.ElementAt(3).Id,
+                Number = 66,
+                StartYear = 1984,
+                EndYear = 2006
+            });
 
-            gameRepository.Insert(game1).Wait();
-            gameRepository.Insert(game2).Wait();
-            gameRepository.Insert(game3).Wait();
-            gameRepository.Insert(game4).Wait();
+            foreach (JerseyNumber jerseyNumber in jerseyNumbers)
+            {
+                jerseyNumberRepository
+                    .Insert(jerseyNumber)
+                    .Wait();
+            }
 
-            return gameRepository.List().Result;
-        }
-        */
+            return jerseyNumbers.OrderBy(leg => leg.AthleteId);
         }
     }
+}
