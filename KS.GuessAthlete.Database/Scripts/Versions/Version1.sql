@@ -35,12 +35,7 @@ BEGIN
 			CONVERT(varchar(4), @cnt) + '-' + CONVERT(varchar(4), (@cnt + 1)) + ' NHL Regular Season', 
 			CONVERT(varchar(4), @cnt) + '-09-01', 
 			CONVERT(varchar(4), (@cnt + 1)) + '-04-10', 
-			0)
-
-		INSERT INTO 
-		[app].[Season]
-		(LeagueId, Name, StartDate, EndDate, IsPlayoffs)
-		VALUES
+			0),
 		(@NHLLeagueId, 
 		CONVERT(varchar(4), @cnt) + '-' + CONVERT(varchar(4), (@cnt + 1)) + ' NHL Playoffs', 
 		CONVERT(varchar(4), (@cnt + 1)) + '-04-14', 
@@ -289,13 +284,7 @@ BEGIN
 		[app].[TeamIdentity]
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
-		(@TeamId, 'Americans', 'NYA', 'New York', '1925-09-01', '1941-07-01');
-
-		
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
+		(@TeamId, 'Americans', 'NYA', 'New York', '1925-09-01', '1941-07-01'),
 		(@TeamId, 'Americans', 'BRO', 'Brooklyn', '1941-09-01', '1942-07-01');
 END;
 
@@ -347,12 +336,7 @@ BEGIN
 		[app].[TeamIdentity]
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
-		(@TeamId, 'Atheltic Club', 'QBC', 'Quebec', '1919-09-01', '1920-07-01');
-
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
+		(@TeamId, 'Atheltic Club', 'QBC', 'Quebec', '1919-09-01', '1920-07-01'),
 		(@TeamId, 'Tigers', 'HAM', 'Hamilton', '1920-09-01', '1925-07-01');
 END;
 
@@ -370,18 +354,8 @@ BEGIN
 		[app].[TeamIdentity]
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
-		(@TeamId, 'Seals', 'OAK', 'Oakland', '1967-09-01', '1970-07-01');
-
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
-		(@TeamId, 'Golden Seals', 'CGS', 'California', '1970-09-01', '1976-07-01');
-
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
+		(@TeamId, 'Seals', 'OAK', 'Oakland', '1967-09-01', '1970-07-01'),
+		(@TeamId, 'Golden Seals', 'CGS', 'California', '1970-09-01', '1976-07-01'),
 		(@TeamId, 'Barons', 'CLE', 'Cleveland', '1976-09-01', '1978-07-01');
 END;
 
@@ -399,12 +373,7 @@ BEGIN
 		[app].[TeamIdentity]
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
-		(@TeamId, 'Thrashers', 'ATL', 'Atlanta', '1999-09-01', '2011-07-01');
-
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
+		(@TeamId, 'Thrashers', 'ATL', 'Atlanta', '1999-09-01', '2011-07-01'),
 		(@TeamId, 'Jets', 'WPG', 'Winnipeg', '2011-09-01', NULL);
 END;
 
@@ -456,18 +425,8 @@ BEGIN
 		[app].[TeamIdentity]
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
-		(@TeamId, 'Arenas', 'TRA', 'Toronto', '1917-09-01', '1919-07-01');
-
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
-		(@TeamId, 'St. Patricks', 'TRS', 'Toronto', '1919-09-01', '1926-07-01');
-
-	INSERT INTO 
-		[app].[TeamIdentity]
-		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
-	VALUES
+		(@TeamId, 'Arenas', 'TRA', 'Toronto', '1917-09-01', '1919-07-01'),
+		(@TeamId, 'St. Patricks', 'TRS', 'Toronto', '1919-09-01', '1926-07-01'),
 		(@TeamId, 'Maple Leafs', 'TOR', 'Toronto', '1926-09-01', NULL);
 END;
 
@@ -486,6 +445,443 @@ BEGIN
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
 		(@TeamId, 'Lightning', 'TBL', 'Tampa Bay', '1992-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'St. Louis Blues')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'St. Louis Blues');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Blues', 'STL', 'St. Louis', '1967-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'San Jose Sharks')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'San Jose Sharks');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Sharks', 'SJS', 'San Jose', '1991-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Pittsburgh Penguins')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Pittsburgh Penguins');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Penguins', 'PIT', 'Pittsburgh', '1967-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Philadelphia Flyers')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Philadelphia Flyers');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Flyers', 'PHI', 'Philadelphia', '1967-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Ottawa Senators')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Ottawa Senators');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Senators', 'OTT', 'Ottawa', '1992-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'New York Rangers')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'New York Rangers');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Rangers', 'NYR', 'New York', '1926-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'New York Islanders')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'New York Islanders');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Islanders', 'NYI', 'New York', '1972-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Kansas City Scouts')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Kansas City Scouts');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Scouts', 'KCS', 'Kansas City', '1974-09-01', '1976-07-01'),
+		(@TeamId, 'Rockies', 'CLR', 'Colorado', '1976-09-01', '1982-07-01'),
+		(@TeamId, 'Devils', 'NJD', 'New Jersey', '1976-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Nashville Predators')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Nashville Predators');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Predators', 'NSH', 'Nashville', '1998-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Montreal Canadians')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Montreal Canadians');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Canadians', 'MTL', 'Montreal', '1917-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Minnesota Wild')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Minnesota Wild');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Wild', 'MIN', 'Minnesota', '2000-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Los Angeles Kings')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Los Angeles Kings');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Kings', 'LAK', 'Los Angeles', '1967-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Florida Panthers')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Florida Panthers');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Panthers', 'FLA', 'Florida', '1993-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Edmonton Oilers')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Edmonton Oilers');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Oilers', 'EDM', 'Edmonton', '1979-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Detroit Cougars')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Detroit Cougars');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Cougars', 'DTC', 'Detroit', '1926-09-01', '1930-07-01'),
+		(@TeamId, 'Falcons', 'DTC', 'Detroit', '1930-09-01', '1932-07-01'),
+		(@TeamId, 'Red Wings', 'DET', 'Detroit', '1932-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Minnesota North Stars')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Minnesota North Stars');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'North Stars', 'MNS', 'Minnesota', '1967-09-01', '1993-07-01'),
+		(@TeamId, 'Stars', 'DAL', 'Dallas', '1993-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Columbus Blue Jackets')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Columbus Blue Jackets');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Blue Jackets', 'CBJ', 'Columbus', '2000-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Quebec Nordiques')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Quebec Nordiques');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Nordiques', 'QUE', 'Quebec', '1979-09-01', '1995-07-01'),
+		(@TeamId, 'Avalanche', 'COL', 'Colorado', '1995-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Chicago Black Hawks')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Chicago Black Hawks');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Black Hawks', 'CBH', 'Chicago', '1926-09-01', '1986-07-01'),
+		(@TeamId, 'Blackhawks', 'CHI', 'Chicago', '1986-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Hartford Whalers')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Hartford Whalers');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Whalers', 'HAR', 'Hartford', '1979-09-01', '1997-07-01'),
+		(@TeamId, 'Hurricanes', 'CAR', 'Carolina', '1997-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Atlanta Flames')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Atlanta Flames');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Flames', 'ATF', 'Atlanta', '1972-09-01', '1980-07-01'),
+		(@TeamId, 'Flames', 'CGY', 'Calgary', '1980-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Buffalo Sabres')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Buffalo Sabres');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Sabres', 'BUF', 'Buffalo', '1970-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Boston Bruins')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Boston Bruins');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Bruins', 'BOS', 'Boston', '1924-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Winnipeg Jets')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Winnipeg Jets');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Jets', 'WIN', 'Winnipeg', '1979-09-01', '1996-07-01'),
+		(@TeamId, 'Coyotes', 'PHX', 'Phoenix', '1996-09-01', '2014-07-01'),
+		(@TeamId, 'Coyotes', 'ARI', 'Arizona', '2014-09-01', NULL);
+END;
+
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Mighty Ducks of Anaheim')
+BEGIN
+	INSERT INTO 
+		[app].[Team]
+		(LeagueId, Name)
+	VALUES
+		(@NHLLeagueId, 'Mighty Ducks of Anaheim');
+
+	SELECT @TeamId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[TeamIdentity]
+		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
+	VALUES
+		(@TeamId, 'Mighty Ducks of', 'MDA', 'Anaheim', '1993-09-01', '2006-07-01'),
+		(@TeamId, 'Ducks', 'ANA', 'Anaheim', '2006-09-01', NULL);
 END;
 
 /* Initial Users */
