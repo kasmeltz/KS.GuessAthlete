@@ -263,6 +263,176 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return awards.OrderBy(leg => leg.Name);
         }
 
+        public static IEnumerable<Team> InsertTeams()
+        {
+            IRepositoryCollection collection = Collection();
+            ITeamRepository teamRepository = collection.Teams();
+            IEnumerable<Team> existing = teamRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<League> leagues = InsertLeagues();
+
+            List<Team> teams = new List<Team>();
+
+            teams.Add(new Team
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "Calgary Flames"
+            });
+
+            teams.Add(new Team
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "Edmonton Oilers"
+            });
+
+            teams.Add(new Team
+            {
+                LeagueId = leagues.ElementAt(1).Id,
+                Name = "Pittsburgh Steelers"
+            });
+
+            teams.Add(new Team
+            {
+                LeagueId = leagues.ElementAt(2).Id,
+                Name = "Toronto Blue Jays"
+            });
+
+            foreach (Team team in teams)
+            {
+                teamRepository
+                    .Insert(team)
+                    .Wait();
+            }
+
+            return teams.OrderBy(leg => leg.Name);
+        }
+
+        public static IEnumerable<TeamIdentity> InsertTeamIdentities()
+        {
+            IRepositoryCollection collection = Collection();
+            ITeamIdentityRepository teamIdentityRepository = collection.TeamIdentities();
+            IEnumerable<TeamIdentity> existing = teamIdentityRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Team> teams = InsertTeams();
+
+            List<TeamIdentity> teamIdentities = new List<TeamIdentity>();
+
+            teamIdentities.Add(new TeamIdentity
+            {
+                TeamId = teams.ElementAt(0).Id,
+                Name = "Poops",
+                Abbreviation = "CGY",
+                City = "Calgary",
+                StartDate = new DateTime(1970, 1, 1),
+                EndDate = new DateTime(2000, 5, 6)
+            });
+
+            teamIdentities.Add(new TeamIdentity
+            {
+                TeamId = teams.ElementAt(0).Id,
+                Name = "Wankers",
+                Abbreviation = "Ari",
+                City = "Arizona",
+                StartDate = new DateTime(2000, 5, 6)
+            });
+
+            teamIdentities.Add(new TeamIdentity
+            {
+                TeamId = teams.ElementAt(1).Id,
+                Name = "Farts",
+                Abbreviation = "BMG",
+                City = "Birmingham",
+                StartDate = new DateTime(1980, 3, 1)
+            });
+
+            teamIdentities.Add(new TeamIdentity
+            {
+                TeamId = teams.ElementAt(2).Id,
+                Name = "Twisters",
+                Abbreviation = "PLO",
+                City = "Kansas",
+                StartDate = new DateTime(1934, 9, 10)
+            });
+            foreach (TeamIdentity teamIdentity in teamIdentities)
+            {
+                teamIdentityRepository
+                    .Insert(teamIdentity)
+                    .Wait();
+            }
+
+            return teamIdentities.OrderBy(leg => leg.Name);
+        }
+
+        public static IEnumerable<Draft> InsertDrafts()
+        {            
+            IRepositoryCollection collection = Collection();
+            IDraftRepository draftRepository = collection.Drafts();
+            IEnumerable<Draft> existing = draftRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Athlete> athletes = InsertAthletes();
+            IEnumerable<TeamIdentity> teamIdentities = InsertTeamIdentities();
+
+            List<Draft> drafts = new List<Draft>();
+
+            drafts.Add(new Draft
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId  = teamIdentities.ElementAt(0).Id,
+                Year = 2012,
+                Round = 1,
+                Position = 1
+            });
+
+            drafts.Add(new Draft
+            {
+                AthleteId = athletes.ElementAt(1).Id,
+                TeamIdentityId = teamIdentities.ElementAt(1).Id,
+                Year = 2012,
+                Round = 1,
+                Position = 2
+            });
+
+
+            drafts.Add(new Draft
+            {
+                AthleteId = athletes.ElementAt(2).Id,
+                TeamIdentityId = teamIdentities.ElementAt(2).Id,
+                Year = 2015,
+                Round = 7,
+                Position = 202
+            });        
+
+            drafts.Add(new Draft
+            {
+                AthleteId = athletes.ElementAt(3).Id,
+                TeamIdentityId = teamIdentities.ElementAt(3).Id,
+                Year = 1937,
+                Round = 5,
+                Position = 32
+            });
+
+            foreach (Draft draft in drafts)
+            {
+                draftRepository
+                    .Insert(draft)
+                    .Wait();
+            }
+
+            return drafts.OrderBy(leg => leg.AthleteId);
+        }
+
 
         /*
         public static IEnumerable<Game> InsertGames()
@@ -318,5 +488,5 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return gameRepository.List().Result;
         }
         */
+        }
     }
-}
