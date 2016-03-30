@@ -71,7 +71,7 @@ BEGIN
 		[app].[Award]
 		(LeagueId, Name, Abbreviation, StartDate, EndDate)
 	VALUES
-		(@NHLLeagueId, 'Lady Byng Memorial Trophy', 'Byng', '1924-0-01', null);
+		(@NHLLeagueId, 'Lady Byng Memorial Trophy', 'Byng', '1924-09-01', null);
 END;
 
 IF NOT EXISTS (SELECT Id FROM [app].[Award] WHERE Name = 'Vezina Trophy')
