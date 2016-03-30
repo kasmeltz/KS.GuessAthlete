@@ -27,10 +27,10 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             IEnumerable<Athlete> insertedAthletes = RepositoryTestHelper.InsertAthletes();
             IEnumerable<Athlete> listedAthletes = athleteRepository.List().Result;
 
-            for(int i = 0;i < listedAthletes.Count();i++)
+            for (int i = 0; i < listedAthletes.Count(); i++)
             {
                 RepositoryTestHelper
-                    .AssertProperties(insertedAthletes.ElementAt(i), 
+                    .AssertProperties(insertedAthletes.ElementAt(i),
                         listedAthletes.ElementAt(i));
             }
 
@@ -43,7 +43,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             {
                 exceptionThrown = true;
             }
-        
+
             Assert.IsTrue(exceptionThrown);
 
             listedAthletes.ElementAt(2).Name = "New Athlete Name";

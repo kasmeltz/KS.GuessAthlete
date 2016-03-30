@@ -263,6 +263,66 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return awards.OrderBy(leg => leg.Name);
         }
 
+        public static IEnumerable<Season> InsertSeasons()
+        {
+            IRepositoryCollection collection = Collection();
+            ISeasonRepository seasonRepository = collection.Seasons();
+            IEnumerable<Season> existing = seasonRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<League> leagues = InsertLeagues();
+
+            List<Season> seasons = new List<Season>();
+
+            seasons.Add(new Season
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "2004-2005 NHL Regular Season",
+                StartDate = new DateTime(2004, 09, 01),
+                EndDate = new DateTime(2005, 04, 10),
+                IsPlayoffs = 0
+            });
+
+            seasons.Add(new Season
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "2004-2005 NHL Playoffs",
+                StartDate = new DateTime(2004, 04, 13),
+                EndDate = new DateTime(2005, 06, 02),
+                IsPlayoffs = 1
+            });
+
+            seasons.Add(new Season
+            {
+                LeagueId = leagues.ElementAt(1).Id,
+                Name = "2014-2015 NFL Regular Season",
+                StartDate = new DateTime(2014, 09, 10),
+                EndDate = new DateTime(2015, 04, 13),
+                IsPlayoffs = 0
+            });
+
+            seasons.Add(new Season
+            {
+                LeagueId = leagues.ElementAt(2).Id,
+                Name = "2009-2010 NBA Regular Season",
+                StartDate = new DateTime(2009, 09, 02),
+                EndDate = new DateTime(2010, 04, 12),
+                IsPlayoffs = 0
+            });
+
+            foreach (Season season in seasons)
+            {
+                seasonRepository
+                    .Insert(season)
+                    .Wait();
+            }
+
+            return seasons.OrderBy(leg => leg.Name);
+        }
+
         public static IEnumerable<Team> InsertTeams()
         {
             IRepositoryCollection collection = Collection();

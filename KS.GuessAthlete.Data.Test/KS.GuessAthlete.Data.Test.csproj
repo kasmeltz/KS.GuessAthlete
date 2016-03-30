@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="DataAccess\Repository\Implementation\DapperJerseyNumbertRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperTeamIdentityRepositoryTest.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperSeasonRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperTeamRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperDraftRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperAthleteRepositoryTest.cs" />
