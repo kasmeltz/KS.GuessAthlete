@@ -32,15 +32,21 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             IAthleteAwardRepository AthleteAwards = collection.AthleteAwards();
             IAthleteRepository Athletes = collection.Athletes();
             IAwardRepository Awards = collection.Awards();
-            IDraftRepository Drafts = collection.Drafts();
+            IConferenceRepository Conferences = collection.Conferences();
+            IDivisionRepository Divisions = collection.Divisions();
+            IDraftRepository Drafts = collection.Drafts();            
             IGoalieStatLineRepository GoalieStatLines = collection.GoalieStatLines();
             IJerseyNumberRepository JerseyNumbers = collection.JerseyNumbers();
             ILeagueRepository Leagues = collection.Leagues();
             ISeasonRepository Seasons = collection.Seasons();
             ISkaterStatLineRepository SkaterStatLines = collection.SkaterStatLines();
-            ITeamRepository Teams = collection.Teams();
+            ITeamIdentityDivisionRepository TeamIdentityDivisions = collection.TeamIdentityDivisions();
             ITeamIdentityRepository TeamIdentities = collection.TeamIdentities();
+            ITeamRepository Teams = collection.Teams();
 
+            TeamIdentityDivisions.PurgeForTest().Wait();
+            Divisions.PurgeForTest().Wait();
+            Conferences.PurgeForTest().Wait();
             GoalieStatLines.PurgeForTest().Wait();
             SkaterStatLines.PurgeForTest().Wait();
             AthleteAwards.PurgeForTest().Wait();

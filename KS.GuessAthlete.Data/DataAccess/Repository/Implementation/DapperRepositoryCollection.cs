@@ -1,4 +1,5 @@
-﻿using KS.GuessAthlete.Component.Caching.Interface;
+﻿using System;
+using KS.GuessAthlete.Component.Caching.Interface;
 using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
@@ -25,6 +26,16 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         public IAwardRepository Awards()
         {
             return new DapperAwardRepository(CacheProvider);
+        }
+
+        public IConferenceRepository Conferences()
+        {
+            return new DapperConferenceRepository(CacheProvider);
+        }
+
+        public IDivisionRepository Divisions()
+        {
+            return new DapperDivisionRepository(CacheProvider);
         }
 
         public IDraftRepository Drafts()
@@ -57,14 +68,19 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             return new DapperSkaterStatLineRepository(CacheProvider);
         }
 
-        public ITeamRepository Teams()
+        public ITeamIdentityDivisionRepository TeamIdentityDivisions()
         {
-            return new DapperTeamRepository(CacheProvider);
+            return new DapperTeamIdentityDivisionRepository(CacheProvider);
         }
 
         public ITeamIdentityRepository TeamIdentities()
         {
             return new DapperTeamIdentityRepository(CacheProvider);
         }
+
+        public ITeamRepository Teams()
+        {
+            return new DapperTeamRepository(CacheProvider);
+        }        
     }
 }

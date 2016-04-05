@@ -8,13 +8,16 @@
         IAthleteAwardRepository AthleteAwards();
         IAthleteRepository Athletes();
         IAwardRepository Awards();
+        IConferenceRepository Conferences();
+        IDivisionRepository Divisions();
         IDraftRepository Drafts();
         IGoalieStatLineRepository GoalieStatLines();
         IJerseyNumberRepository JerseyNumbers();
         ILeagueRepository Leagues();
         ISeasonRepository Seasons();
         ISkaterStatLineRepository SkaterStatLines();
-        ITeamRepository Teams();
-        ITeamIdentityRepository TeamIdentities();        
+        ITeamIdentityDivisionRepository TeamIdentityDivisions();
+        ITeamIdentityRepository TeamIdentities();
+        ITeamRepository Teams();        
     }
 }
