@@ -50,6 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DataAccess\Repository\Implementation\DapperAthleteAwardRepositoryTest.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperDivisionRepositoryTest.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperConferenceRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperJerseyNumbertRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperTeamIdentityRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperSeasonRepositoryTest.cs" />

@@ -34,7 +34,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             IAwardRepository Awards = collection.Awards();
             IConferenceRepository Conferences = collection.Conferences();
             IDivisionRepository Divisions = collection.Divisions();
-            IDraftRepository Drafts = collection.Drafts();            
+            IDraftRepository Drafts = collection.Drafts();
             IGoalieStatLineRepository GoalieStatLines = collection.GoalieStatLines();
             IJerseyNumberRepository JerseyNumbers = collection.JerseyNumbers();
             ILeagueRepository Leagues = collection.Leagues();
@@ -437,6 +437,116 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             return teamIdentities.OrderBy(leg => leg.Name);
         }
 
+        public static IEnumerable<Conference> InsertConferences()
+        {
+            IRepositoryCollection collection = Collection();
+            IConferenceRepository conferenceRepository = collection.Conferences();
+            IEnumerable<Conference> existing = conferenceRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<League> leagues = InsertLeagues();
+            List<Conference> conferences = new List<Conference>();
+
+            conferences.Add(new Conference
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "West",
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            conferences.Add(new Conference
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "East",
+                StartYear = 2009,
+                EndYear = 2012
+            });
+
+            conferences.Add(new Conference
+            {
+                LeagueId = leagues.ElementAt(0).Id,
+                Name = "North",
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            conferences.Add(new Conference
+            {
+                LeagueId = leagues.ElementAt(1).Id,
+                Name = "South",
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            foreach (Conference conference in conferences)
+            {
+                conferenceRepository
+                    .Insert(conference)
+                    .Wait();
+            }
+
+            return conferences.OrderBy(leg => leg.StartYear).ThenBy(leg => leg.Name);
+        }
+
+        public static IEnumerable<Division> InsertDivisions()
+        {
+            IRepositoryCollection collection = Collection();
+            IDivisionRepository divisionRepository = collection.Divisions();
+            IEnumerable<Division> existing = divisionRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Conference> conferences = InsertConferences();
+            List<Division> divisions = new List<Division>();
+
+            divisions.Add(new Division
+            {
+                ConferenceId = conferences.ElementAt(0).Id,
+                Name = "West",
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            divisions.Add(new Division
+            {
+                ConferenceId = conferences.ElementAt(0).Id,
+                Name = "East",
+                StartYear = 2009,
+                EndYear = 2012
+            });
+
+            divisions.Add(new Division
+            {
+                ConferenceId = conferences.ElementAt(0).Id,
+                Name = "North",
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            divisions.Add(new Division
+            {
+                ConferenceId = conferences.ElementAt(1).Id,
+                Name = "South",
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            foreach (Division division in divisions)
+            {
+                divisionRepository
+                    .Insert(division)
+                    .Wait();
+            }
+
+            return divisions.OrderBy(leg => leg.StartYear).ThenBy(leg => leg.Name);
+        }
+
         public static IEnumerable<Draft> InsertDrafts()
         {
             IRepositoryCollection collection = Collection();
@@ -558,6 +668,60 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             }
 
             return jerseyNumbers.OrderBy(leg => leg.AthleteId);
+        }
+
+        public static IEnumerable<AthleteAward> InsertAthleteAwards()
+        {
+            IRepositoryCollection collection = Collection();
+            IAthleteAwardRepository athleteAwardRepository = collection.AthleteAwards();
+            IEnumerable<AthleteAward> existing = athleteAwardRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Athlete> athletes = InsertAthletes();
+            IEnumerable<Award> awards = InsertAwards();
+            IEnumerable<Season> seasons = InsertSeasons();
+
+            List<AthleteAward> athleteAwards = new List<AthleteAward>();
+
+            athleteAwards.Add(new AthleteAward
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                AwardId = awards.ElementAt(0).Id,
+                SeasonId = seasons.ElementAt(0).Id
+            });
+
+            athleteAwards.Add(new AthleteAward
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                AwardId = awards.ElementAt(1).Id,
+                SeasonId = seasons.ElementAt(1).Id
+            });
+
+            athleteAwards.Add(new AthleteAward
+            {
+                AthleteId = athletes.ElementAt(1).Id,
+                AwardId = awards.ElementAt(2).Id,
+                SeasonId = seasons.ElementAt(3).Id
+            });
+
+            athleteAwards.Add(new AthleteAward
+            {
+                AthleteId = athletes.ElementAt(2).Id,
+                AwardId = awards.ElementAt(0).Id,
+                SeasonId = seasons.ElementAt(2).Id
+            });
+
+            foreach (AthleteAward athleteAward in athleteAwards)
+            {
+                athleteAwardRepository
+                    .Insert(athleteAward)
+                    .Wait();
+            }
+
+            return athleteAwards.OrderBy(leg => leg.AwardId).ThenBy(leg => leg.AthleteId);
         }
     }
 }

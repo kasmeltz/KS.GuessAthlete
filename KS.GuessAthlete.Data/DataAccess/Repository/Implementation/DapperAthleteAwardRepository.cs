@@ -32,7 +32,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         private const string _getSql = @"
             SET NOCOUNT ON;
             SELECT TOP 1
-                Id, AwardId, AthleteId, TeamIdentityId, SeasonId
+                Id, AwardId, AthleteId, SeasonId
             FROM 
                 [app].[AthleteAward]
             WHERE
@@ -41,16 +41,16 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
         private const string _listSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, AwardId, AthleteId, TeamIdentityId, SeasonId
+                Id, AwardId, AthleteId, SeasonId
             FROM 
                 [app].[AthleteAward]
             ORDER BY
-                AthleteId";
+                AwardId, AthleteId";
 
         private const string _searchSql = @"
             SET NOCOUNT ON;
             SELECT  
-                Id, AwardId, AthleteId, TeamIdentityId, SeasonId
+                Id, AwardId, AthleteId, SeasonId
             FROM 
                 [app].[AthleteAward]
             WHERE           
@@ -77,9 +77,9 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        IF(@ExistingId IS NULL)
 	        BEGIN
 		        INSERT INTO [app].[AthleteAward]
-		        (AwardId, AthleteId, TeamIdentityId, SeasonId)
+		        (AwardId, AthleteId, SeasonId)
 		        VALUES
-		        (@AwardId, @AthleteId, @TeamIdentityId, @SeasonId)
+		        (@AwardId, @AthleteId, @SeasonId)
 
 		        SELECT TOP 1 
 			        Id
@@ -119,8 +119,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                     [app].[AthleteAward]
                 SET
                     AwardId = @AwardId,
-                    AthleteId = @AthleteId,
-                    TeamIdentityId = @TeamIdentityId,
+                    AthleteId = @AthleteId,                    
                     SeasonId = @SeasonId
 		        WHERE	
 		            Id = @Id
