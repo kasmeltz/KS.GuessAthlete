@@ -1217,7 +1217,7 @@ BEGIN
 	FROM
 		[app].[TeamIdentity] 
 	WHERE
-		Abbreviation IN ('WPG')
+		Abbreviation IN ('WIN')
 
 	INSERT INTO
 		[app].[TeamIdentityDivision]
@@ -1227,7 +1227,7 @@ BEGIN
 	FROM
 		[app].[TeamIdentity] 
 	WHERE
-		Abbreviation IN ('WPG')
+		Abbreviation IN ('WIN')
 
 	INSERT INTO
 		[app].[TeamIdentityDivision]
@@ -1319,7 +1319,7 @@ BEGIN
 		[app].[TeamIdentityDivision]
 		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
 	SELECT
-		Id, @DivisionId, 1980, 1981
+		Id, @DivisionId, 1981, 1982
 	FROM
 		[app].[TeamIdentity] 
 	WHERE
@@ -1870,6 +1870,15 @@ BEGIN
 	WHERE
 		Abbreviation IN ('ATL')
 
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2011, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WPG')
 END;
 
 /* Initial Users */
