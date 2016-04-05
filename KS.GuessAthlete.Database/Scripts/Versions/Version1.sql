@@ -253,13 +253,13 @@ BEGIN
 		(@TeamId, 'Quakers', 'PHQ', 'Philadelphia', '1930-09-01', '1931-07-01');
 END;
 
-IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Ottawa Senators 1')
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Ottawa Senators')
 BEGIN
 	INSERT INTO 
 		[app].[Team]
 		(LeagueId, Name)
 	VALUES
-		(@NHLLeagueId, 'Ottawa Senators 1');
+		(@NHLLeagueId, 'Ottawa Senators');
 
 	SELECT @TeamId = SCOPE_IDENTITY();
 
@@ -702,7 +702,7 @@ BEGIN
 		(TeamId, Name, Abbreviation, City, StartDate, EndDate)
 	VALUES
 		(@TeamId, 'Cougars', 'DTC', 'Detroit', '1926-09-01', '1930-07-01'),
-		(@TeamId, 'Falcons', 'DTC', 'Detroit', '1930-09-01', '1932-07-01'),
+		(@TeamId, 'Falcons', 'DTF', 'Detroit', '1930-09-01', '1932-07-01'),
 		(@TeamId, 'Red Wings', 'DET', 'Detroit', '1932-09-01', NULL);
 END;
 
@@ -882,6 +882,994 @@ BEGIN
 	VALUES
 		(@TeamId, 'Mighty Ducks of', 'MDA', 'Anaheim', '1993-09-01', '2006-07-01'),
 		(@TeamId, 'Ducks', 'ANA', 'Anaheim', '2006-09-01', NULL);
+END;
+
+/* Conferences / Divisions */
+DECLARE @ConferenceId INT
+DECLARE @DivisionId INT
+IF NOT EXISTS (SELECT Id FROM [app].[Conference] WHERE Name = 'Canadian')
+BEGIN
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'Canadian', 1926, 1938);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Canadian', 1926, 1938);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1926, 1938 
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('MTL','MTW','NYA','TOR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1926, 1931
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('OTS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1932, 1934
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('OTS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1934, 1935
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('STE')
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'American', 1926, 1938);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'American', 1926, 1938);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1926, 1938 
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('NYR','CHI','BOS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1926, 1930 
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PTP','DTC')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1930, 1931
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHQ')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1930, 1932
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('DTF')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1932, 1938
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('DET')	
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'East', 1967, 1974);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'East', 1967, 1974);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1967, 1974
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('MTL', 'NYR', 'BOS', 'TOR', 'DET')	
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1967, 1970
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CHI')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1970, 1974
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('BUF', 'VAN')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1972, 1974
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('NYI')
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'West', 1967, 1974);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'West', 1967, 1974);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1967, 1974
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHI', 'LAK', 'STL', 'MNS', 'PIT')	
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1967, 1970
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('OAK')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1970, 1974
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CHI', 'CGS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1972, 1974
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('ATF')
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'Clarence Campbell', 1974, 1993);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Smythe', 1974, 1993);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('VAN')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('STL')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1980
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CHI')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1978
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('MNS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1976
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('KCS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1976, 1982
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CLR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1979, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('EDM')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1979, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WPG')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1982, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WPG')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1981, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('LAK', 'CGY')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1991, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('SJS')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Patrick', 1974, 1981);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHI', 'NYR', 'NYI')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1980
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('ATF')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1979, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WSH')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1980, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CGY')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Norris', 1981, 1993);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1981, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('TOR', 'MIN', 'DET', 'STL', 'CHI')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1980, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WIN')
+	
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1992, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('TBL')
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'Prince of Wales', 1974, 1993);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Adams', 1974, 1993);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('BUF', 'BOS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1976
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CGS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('TOR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1976, 1978
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CLE')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1978, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('MNS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1979, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('QUE')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1981, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('HAR', 'MTL')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1992, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('OTT')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Norris', 1974, 1981);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('MTL', 'LAK', 'PIT', 'DET')	
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1974, 1979
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WSH')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1979, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('HAR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1980, 1981
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CHI')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Patrick', 1981, 1993);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1981, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHI', 'NYR', 'NYI', 'PIT', 'WSH')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1982, 1993
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('NJD')
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'Western Conference', 1993, null);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Central', 1993, null);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('STL', 'CHI')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('TOR', 'DAL')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('DET')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1996
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WIN')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1996, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHX')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('NSH')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2000, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CBJ')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2013, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('COL', 'MIN', 'WPG', 'DAL')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Pacific', 1993, null);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('ANA', 'LAK', 'SJS')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('VAN', 'EDM', 'CGY')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1995, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('COL')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('DAL')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHX')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2013, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('VAN', 'EDM', 'CGY')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Northwest', 1998, 2013);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('VAN', 'EDM', 'CGY', 'COL')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2000, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('MIN')
+
+	INSERT INTO 
+		[app].[Conference]
+		(LeagueId, Name, StartYear, EndYear)
+	VALUES
+		(@NHLLeagueId, 'Eastern Conference', 1993, null);
+
+	SELECT @ConferenceId = SCOPE_IDENTITY();
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Atlantic', 1993, null);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PHI', 'NYR', 'NYI', 'NJD')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WSH', 'TBL', 'FLA')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PIT')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2013, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('BUF', 'BOS', 'MTL', 'OTT', 'TOR', 'TBL', 'FLA', 'DET')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Northeast', 1993, 2013);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('BUF', 'BOS', 'MTL', 'OTT')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('PIT')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1997
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('HAR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1993, 1995
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('QUE')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1997, 1998
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('CAR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('TOR')
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Metropolitan', 2013, null);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 2013, null
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WSH', 'CAR', 'PHI', 'NYR', 'NYI', 'PIT', 'NJD', 'CBJ')
+
+
+	INSERT INTO 
+		[app].[Division]
+		(ConferenceId, Name, StartYear, EndYear)
+	VALUES
+		(@ConferenceId, 'Southeast', 1998, 2013);
+
+	SELECT @DivisionId = SCOPE_IDENTITY();
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1998, 2013
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('WSH', 'TBL', 'FLA', 'CAR')
+
+	INSERT INTO
+		[app].[TeamIdentityDivision]
+		([TeamIdentityId], [DivisionId], [StartYear], [EndYear])
+	SELECT
+		Id, @DivisionId, 1999, 2011
+	FROM
+		[app].[TeamIdentity] 
+	WHERE
+		Abbreviation IN ('ATL')
+
 END;
 
 /* Initial Users */
