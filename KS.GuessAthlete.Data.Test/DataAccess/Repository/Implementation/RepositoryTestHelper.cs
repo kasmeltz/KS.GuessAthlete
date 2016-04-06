@@ -723,5 +723,61 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
 
             return athleteAwards.OrderBy(leg => leg.AwardId).ThenBy(leg => leg.AthleteId);
         }
+
+        public static IEnumerable<TeamIdentityDivision> InsertTeamIdentityDivisions()
+        {
+            IRepositoryCollection collection = Collection();
+            ITeamIdentityDivisionRepository teamIdentityDivisionRepository = collection.TeamIdentityDivisions();
+            IEnumerable<TeamIdentityDivision> existing = teamIdentityDivisionRepository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Division> divisions = InsertDivisions();
+            IEnumerable<TeamIdentity> teamIdentities = InsertTeamIdentities();
+            List<TeamIdentityDivision> teamIdentityDivisions = new List<TeamIdentityDivision>();
+
+            teamIdentityDivisions.Add(new TeamIdentityDivision
+            {
+                TeamIdentityId = teamIdentities.ElementAt(0).Id,
+                DivisionId = divisions.ElementAt(0).Id,
+                StartYear = 2012,
+                EndYear = null
+            });
+
+            teamIdentityDivisions.Add(new TeamIdentityDivision
+            {
+                TeamIdentityId = teamIdentities.ElementAt(1).Id,
+                DivisionId = divisions.ElementAt(1).Id,
+                StartYear = 1977,
+                EndYear = 1993
+            });
+
+            teamIdentityDivisions.Add(new TeamIdentityDivision
+            {
+                TeamIdentityId = teamIdentities.ElementAt(2).Id,
+                DivisionId = divisions.ElementAt(2).Id,
+                StartYear = 2011,
+                EndYear = 2012
+            });
+
+            teamIdentityDivisions.Add(new TeamIdentityDivision
+            {
+                TeamIdentityId = teamIdentities.ElementAt(3).Id,
+                DivisionId = divisions.ElementAt(3).Id,
+                StartYear = 2000,
+                EndYear = 2009
+            });
+
+            foreach (TeamIdentityDivision division in teamIdentityDivisions)
+            {
+                teamIdentityDivisionRepository
+                    .Insert(division)
+                    .Wait();
+            }
+
+            return teamIdentityDivisions.OrderBy(leg => leg.StartYear);
+        }
     }
 }
