@@ -163,7 +163,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                     TeamIdentityId = @TeamIdentityId,
                     SeasonId = @SeasonId,
                     GamesPlayed = @GamesPlayed,
-                    GamesStarted = @GamesStarted
+                    GamesStarted = @GamesStarted,
                     Wins = @Wins,
                     Losses = @Losses,
                     TiesPlusOvertimeShootoutLosses = @TiesPlusOvertimeShootoutLosses,

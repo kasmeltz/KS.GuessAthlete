@@ -3,6 +3,7 @@ using KS.GuessAthlete.Component.Caching.Interface;
 using KS.GuessAthlete.Data.DataAccess.Repository.Implementation;
 using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO;
+using KS.GuessAthlete.Data.POCO.Hockey;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -778,6 +779,151 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             }
 
             return teamIdentityDivisions.OrderBy(leg => leg.StartYear);
+        }
+
+        public static IEnumerable<GoalieStatLine> InsertGoalieStatLines()
+        {
+            IRepositoryCollection collection = Collection();
+            IGoalieStatLineRepository repository = collection.GoalieStatLines();
+            IEnumerable<GoalieStatLine> existing = repository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Athlete> athletes = InsertAthletes();
+            IEnumerable<Season> seasons = InsertSeasons();
+            IEnumerable<TeamIdentity> teamIdentities = InsertTeamIdentities();
+            List<GoalieStatLine> goalieStatLines = new List<GoalieStatLine>();
+
+            goalieStatLines.Add(new GoalieStatLine
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(0).Id,
+                SeasonId = seasons.ElementAt(0).Id,
+                GamesPlayed = 67,
+                GamesStarted = 64,
+                Wins = 20,
+                Losses = 40,
+                TiesPlusOvertimeShootoutLosses = 4,
+                GoalsAgainst = 180,
+                ShotsAgainst = 1998,
+                Saves = 1100,
+                SavePercentage = 0.912M,
+                GoalsAgainstAverage = 2.87M,
+                Shutouts = 5,
+                Minutes = 3600,
+                QualityStarts = 20,
+                QualityStartPercentage = 0.34M,
+                ReallyBadStarts = 20,
+                GoalsAgainstPercentage = 0.51M,
+                GoalsSavedAboveAverage = 0.23M,
+                GoaliePointShares = 0.75M,
+                Goals = 2,
+                Assists = 4,
+                PenaltyMinutes = 123,
+                StanleyCup = 0,
+                IsPlayoffs = 0
+            });
+
+            goalieStatLines.Add(new GoalieStatLine
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(1).Id,
+                SeasonId = seasons.ElementAt(2).Id,
+                GamesPlayed = 43,
+                GamesStarted = 23,
+                Wins = 10,
+                Losses = 20,
+                TiesPlusOvertimeShootoutLosses = 8,
+                GoalsAgainst = 100,
+                ShotsAgainst = 800,
+                Saves = 700,
+                SavePercentage = 0.822M,
+                GoalsAgainstAverage = 3.25M,
+                Shutouts = 0,
+                Minutes = 2200,
+                QualityStarts = 5,
+                QualityStartPercentage = 0.10M,
+                ReallyBadStarts = 34,
+                GoalsAgainstPercentage = 0.19M,
+                GoalsSavedAboveAverage = 0.09M,
+                GoaliePointShares = 0.05M,
+                Goals = 10,
+                Assists = 20,
+                PenaltyMinutes = 562,
+                StanleyCup = 1,
+                IsPlayoffs = 1
+            });
+
+            goalieStatLines.Add(new GoalieStatLine
+            {
+                AthleteId = athletes.ElementAt(3).Id,
+                TeamIdentityId = teamIdentities.ElementAt(2).Id,
+                SeasonId = seasons.ElementAt(1).Id,
+                GamesPlayed = 43,
+                GamesStarted = 23,
+                Wins = 10,
+                Losses = 20,
+                TiesPlusOvertimeShootoutLosses = 8,
+                GoalsAgainst = 100,
+                ShotsAgainst = 800,
+                Saves = 700,
+                SavePercentage = 0.822M,
+                GoalsAgainstAverage = 3.25M,
+                Shutouts = 0,
+                Minutes = 2200,
+                QualityStarts = 5,
+                QualityStartPercentage = 0.10M,
+                ReallyBadStarts = 34,
+                GoalsAgainstPercentage = 0.19M,
+                GoalsSavedAboveAverage = 0.09M,
+                GoaliePointShares = 0.05M,
+                Goals = 10,
+                Assists = 20,
+                PenaltyMinutes = 562,
+                StanleyCup = 1,
+                IsPlayoffs = 1
+            });
+
+            goalieStatLines.Add(new GoalieStatLine
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(3).Id,
+                SeasonId = seasons.ElementAt(1).Id,
+                GamesPlayed = 43,
+                GamesStarted = 23,
+                Wins = 10,
+                Losses = 20,
+                TiesPlusOvertimeShootoutLosses = 8,
+                GoalsAgainst = 100,
+                ShotsAgainst = 800,
+                Saves = 700,
+                SavePercentage = 0.822M,
+                GoalsAgainstAverage = 3.25M,
+                Shutouts = 0,
+                Minutes = 2200,
+                QualityStarts = 5,
+                QualityStartPercentage = 0.10M,
+                ReallyBadStarts = 34,
+                GoalsAgainstPercentage = 0.19M,
+                GoalsSavedAboveAverage = 0.09M,
+                GoaliePointShares = 0.05M,
+                Goals = 10,
+                Assists = 20,
+                PenaltyMinutes = 562,
+                StanleyCup = 1,
+                IsPlayoffs = 1
+            });
+
+            foreach (GoalieStatLine goalieStatLine in goalieStatLines)
+            {
+                repository
+                    .Insert(goalieStatLine)
+                    .Wait();
+            }
+
+            return goalieStatLines.OrderBy(leg => leg.AthleteId);
         }
     }
 }
