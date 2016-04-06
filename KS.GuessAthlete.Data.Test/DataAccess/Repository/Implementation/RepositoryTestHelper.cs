@@ -925,5 +925,131 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
 
             return goalieStatLines.OrderBy(leg => leg.AthleteId);
         }
+
+        public static IEnumerable<SkaterStatLine> InsertSkaterStatLines()
+        {
+            IRepositoryCollection collection = Collection();
+            ISkaterStatLineRepository repository = collection.SkaterStatLines();
+            IEnumerable<SkaterStatLine> existing = repository.List().Result;
+            if (existing.Count() > 0)
+            {
+                return existing;
+            }
+
+            IEnumerable<Athlete> athletes = InsertAthletes();
+            IEnumerable<Season> seasons = InsertSeasons();
+            IEnumerable<TeamIdentity> teamIdentities = InsertTeamIdentities();
+            List<SkaterStatLine> statLines = new List<SkaterStatLine>();
+
+            statLines.Add(new SkaterStatLine
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(0).Id,
+                SeasonId = seasons.ElementAt(0).Id,
+                GamesPlayed = 67,                
+                Goals = 2,
+                Assists = 4,
+                PlusMinus = 12,
+                PenaltyMinutes = 123,
+                EvenStrengthGoals = 1,
+                PowerPlayGoals = 1,
+                ShortHandedGoals = 2,
+                GameWinningGoals = 10,
+                EvenStrengthAssists = 3,
+                PowerPlayAssists = 57,
+                ShortHandedAssists = 20,
+                Shots = 10362,
+                ShotPercentage = 0.001M,
+                TimeOnIce = 10,
+                AverageTimeOnIce = 1.5M,
+                StanleyCup = 0,
+                IsPlayoffs = 0
+            });
+
+            statLines.Add(new SkaterStatLine
+            {
+                AthleteId = athletes.ElementAt(0).Id,
+                TeamIdentityId = teamIdentities.ElementAt(1).Id,
+                SeasonId = seasons.ElementAt(2).Id,
+                GamesPlayed = 82,
+                Goals = 91,
+                Assists = 112,
+                PlusMinus = 99,
+                PenaltyMinutes = 44,
+                EvenStrengthGoals = 50,
+                PowerPlayGoals = 30,
+                ShortHandedGoals = 11,
+                GameWinningGoals = 5,
+                EvenStrengthAssists = 70,
+                PowerPlayAssists = 40,
+                ShortHandedAssists = 12,
+                Shots = 900,
+                ShotPercentage = 0.12M,
+                TimeOnIce = 1600,
+                AverageTimeOnIce = 19.5M,
+                StanleyCup = 0,
+                IsPlayoffs = 0
+            });
+
+            statLines.Add(new SkaterStatLine
+            {
+                AthleteId = athletes.ElementAt(2).Id,
+                TeamIdentityId = teamIdentities.ElementAt(1).Id,
+                SeasonId = seasons.ElementAt(0).Id,
+                GamesPlayed = 82,
+                Goals = 91,
+                Assists = 112,
+                PlusMinus = 99,
+                PenaltyMinutes = 44,
+                EvenStrengthGoals = 50,
+                PowerPlayGoals = 30,
+                ShortHandedGoals = 11,
+                GameWinningGoals = 5,
+                EvenStrengthAssists = 70,
+                PowerPlayAssists = 40,
+                ShortHandedAssists = 12,
+                Shots = 900,
+                ShotPercentage = 0.12M,
+                TimeOnIce = 1600,
+                AverageTimeOnIce = 19.5M,
+                StanleyCup = 0,
+                IsPlayoffs = 0
+            });
+
+            statLines.Add(new SkaterStatLine
+            {
+                AthleteId = athletes.ElementAt(3).Id,
+                TeamIdentityId = teamIdentities.ElementAt(0).Id,
+                SeasonId = seasons.ElementAt(1).Id,
+                GamesPlayed = 82,
+                Goals = 91,
+                Assists = 112,
+                PlusMinus = 99,
+                PenaltyMinutes = 44,
+                EvenStrengthGoals = 50,
+                PowerPlayGoals = 30,
+                ShortHandedGoals = 11,
+                GameWinningGoals = 5,
+                EvenStrengthAssists = 70,
+                PowerPlayAssists = 40,
+                ShortHandedAssists = 12,
+                Shots = 900,
+                ShotPercentage = 0.12M,
+                TimeOnIce = 1600,
+                AverageTimeOnIce = 19.5M,
+                StanleyCup = 0,
+                IsPlayoffs = 0
+            });
+
+
+            foreach (SkaterStatLine statLine in statLines)
+            {
+                repository
+                    .Insert(statLine)
+                    .Wait();
+            }
+
+            return statLines.OrderBy(leg => leg.AthleteId);
+        }
     }
 }

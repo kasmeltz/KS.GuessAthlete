@@ -172,7 +172,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 .SelectNodes("//div[contains(@class, 'uni_holder')]");
 
             HtmlNode uniformDiv = null;
-            if (uniformDivs != null) {
+            if (uniformDivs != null)
+            {
                 uniformDiv = uniformDivs
                     .FirstOrDefault();
             }
@@ -229,7 +230,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             }
 
             if (position.ToUpper() == "G")
-            {                
+            {
                 LoadGoalieStats(athlete, isPlayoffs, tbody);
 
             }
@@ -290,8 +291,15 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 int currentTD = 4;
 
                 if (isPlayoffs == 1)
-                { 
-                    statLine.StanleyCup = tds.ElementAt(currentTD++).InnerHtml;
+                {
+                    if (string.IsNullOrEmpty(tds.ElementAt(currentTD++).InnerHtml))
+                    {
+                        statLine.StanleyCup = 0;
+                    }
+                    else
+                    {
+                        statLine.StanleyCup = 1;
+                    }
                 }
 
                 int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
@@ -409,7 +417,14 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 if (isPlayoffs == 1)
                 {
-                    statLine.StanleyCup = tds.ElementAt(currentTD++).InnerHtml;
+                    if (string.IsNullOrEmpty(tds.ElementAt(currentTD++).InnerHtml))
+                    {
+                        statLine.StanleyCup = 0;
+                    }
+                    else
+                    {
+                        statLine.StanleyCup = 1;
+                    }
                 }
 
                 int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);

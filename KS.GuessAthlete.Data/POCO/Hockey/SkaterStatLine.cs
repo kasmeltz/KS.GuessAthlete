@@ -27,7 +27,7 @@
         public int TimeOnIce { get; set; }
         public decimal AverageTimeOnIce { get; set; }
         public string Awards { get; set; }
-        public string StanleyCup { get; set; }
+        public int StanleyCup { get; set; }
         public int IsPlayoffs { get; set; }
     }
 }

@@ -51,6 +51,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DataAccess\Repository\Implementation\DapperAthleteAwardRepositoryTest.cs" />
+    <Compile Include="DataAccess\Repository\Implementation\DapperSkaterStatLineRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperGoalieStatLineRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperTeamIdentityDivisionRepositoryTest.cs" />
     <Compile Include="DataAccess\Repository\Implementation\DapperDivisionRepositoryTest.cs" />
