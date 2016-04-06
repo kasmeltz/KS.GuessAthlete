@@ -171,6 +171,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\api\AccountController.cs" />
     <Compile Include="Controllers\api\BaseApiController.cs" />
+    <Compile Include="Controllers\api\AthletesController.cs" />
     <Compile Include="Controllers\api\LeaguesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
