@@ -1,0 +1,26 @@
+﻿<Page x:Class="KS.GuessAthlete.WPF.Pages.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:KS.GuessAthlete.WPF.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="768" d:DesignWidth="1024"
+      Title="{DynamicResource titLogin}">
+    <StackPanel>
+        <TextBlock FontWeight="Bold" FontFamily="Arial" FontSize="32" Margin="20, 20, 0, 0" Foreground="Green"><Run Text="{DynamicResource titLogin}" /></TextBlock>
+        <StackPanel Margin="20, 120, 0, 0" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="130" TextAlignment="Right" FontSize="24"><Run Text="{DynamicResource lblUsername}"></Run></TextBlock>
+                <TextBox Margin="10, 0 ,0, 0" Width="300" FontSize="24" Name="txtUsername"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0, 20, 0, 0">
+                <TextBlock Width="130" TextAlignment="Right" FontSize="24"><Run Text="{DynamicResource lblPassword}"></Run></TextBlock>
+                <PasswordBox Margin="10, 0 ,0, 0" Width="300" FontSize="24" Name="txtPassword"></PasswordBox>
+            </StackPanel>
+            <StackPanel Margin="0, 20, 0, 0" HorizontalAlignment="Center">
+                <Button Name="btnLogin" IsDefault="True" Width="220" HorizontalAlignment="Center" FontSize="24" Content="{DynamicResource btnLogin}" Click="btnLogin_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Page>

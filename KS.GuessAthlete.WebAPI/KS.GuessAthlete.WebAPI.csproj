@@ -169,7 +169,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\api\AccountController.cs" />
+    <Compile Include="Controllers\api\BaseApiController.cs" />
+    <Compile Include="Controllers\api\LeaguesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -197,6 +199,20 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KS.GuessAthlete.Component\KS.GuessAthlete.Component.csproj">
+      <Project>{822733c9-a3f3-413c-a683-913d95a92c57}</Project>
+      <Name>KS.GuessAthlete.Component</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KS.GuessAthlete.Data\KS.GuessAthlete.Data.csproj">
+      <Project>{0a97b5b2-eb0c-4554-90a6-617d67366cf6}</Project>
+      <Name>KS.GuessAthlete.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KS.GuessAthlete.Logic\KS.GuessAthlete.Logic.csproj">
+      <Project>{0c47a5af-f3a0-400b-8e00-bd630e467dcd}</Project>
+      <Name>KS.GuessAthlete.Logic</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

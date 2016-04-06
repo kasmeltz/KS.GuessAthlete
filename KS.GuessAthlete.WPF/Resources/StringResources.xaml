@@ -1,0 +1,228 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!-- UI GENERAL -->
+    <system:String x:Key="titAPP">Daily Sports Fantasy</system:String>
+    <system:String x:Key="txtNoFileSelected">No file has been selected...</system:String>
+    <system:String x:Key="txtPleaseSelectFile">Please select a file:</system:String>
+    <system:String x:Key="btnSelectFile">Select file</system:String>
+    <system:String x:Key="txtFileUpload">Upload file</system:String>
+    <system:String x:Key="btnUpload">Upload</system:String>
+    <system:String x:Key="clmError">Errors</system:String>
+    <system:String x:Key="btnImportFastest">Import From Fastest</system:String>
+    <!-- UI GENERAL -->
+    
+    <!-- SOCCER STATS -->
+    <system:String x:Key="GOALS">GOL</system:String>
+    <system:String x:Key="PENALTYGOALS">WASPENALTY</system:String>
+    <system:String x:Key="MINUTES">MIN</system:String>
+    <system:String x:Key="YELLOWCARD">YCARD</system:String>
+    <system:String x:Key="REDCARD">RCARD</system:String>
+    <system:String x:Key="OWNGOAL">OWNG</system:String>
+    <system:String x:Key="CLEANSHEET">CLEANS</system:String>
+    <system:String x:Key="GOALSCONCEEDED">CONCEED</system:String>
+    <!-- SOCCER STATS -->
+
+    <!-- LOGIN -->
+    <system:String x:Key="titLogin">Login</system:String>
+    <system:String x:Key="lblUsername">Username:</system:String>
+    <system:String x:Key="lblPassword">Password:</system:String>
+    <system:String x:Key="btnLogin">Login</system:String>
+    <system:String x:Key="titLoginError">Login Error</system:String>
+    <system:String x:Key="msgLoginError">Your login attempt was unsuccessful. Please try again.</system:String>
+    <!-- LOGIN -->
+
+    <!-- DASHBOARD -->
+    <system:String x:Key="titMainDashboard">Welcome</system:String>
+    <system:String x:Key="titHomeTooltip">Dashboard</system:String>
+    <system:String x:Key="msgHomeTooltip">Brings you to the Dashboard page.</system:String>
+    <!-- DASHBOARD -->
+
+    <!-- LOCATIONS -->
+    <system:String x:Key="titLocations">Locations</system:String>
+    <system:String x:Key="titLocationsTooltip">Locations</system:String>
+    <system:String x:Key="msgLocationsTooltip">Brings you to page where you can manage Locations.</system:String>
+    <system:String x:Key="tabCountry">Countries</system:String>
+    <system:String x:Key="tabState">States</system:String>
+    <system:String x:Key="tabCity">Cities</system:String>
+    <system:String x:Key="txtCountryPageExplanation">Upload countries from the UN country file. Countries should be uplaoded before states and cities.</system:String>
+    <system:String x:Key="clmCountryName">Name</system:String>
+    <system:String x:Key="clmCountryAbbreviation">Abbrv.</system:String>
+    <system:String x:Key="titCountryImportError">Country Import Error</system:String>
+    <system:String x:Key="msgCountryImportError">There was an error importing the countries. Please correct the import file and try again.</system:String>
+    <system:String x:Key="titCountryListError">Country List Error</system:String>
+    <system:String x:Key="titCountryImportSuccess">Country Import Successful</system:String>
+    <system:String x:Key="msgCountryImportSuccess">The countries have been imported successfully.</system:String>
+    <system:String x:Key="txtStatePageExplanation">Upload states from the UN state file. States should be uplaoded after countries and before cities.</system:String>
+    <system:String x:Key="clmStateName">Name</system:String>
+    <system:String x:Key="clmStateAbbreviation">Abbrv.</system:String>
+    <system:String x:Key="titStateImportError">State Import Error</system:String>
+    <system:String x:Key="msgStateImportError">There was an error importing the states. Please correct the import file and try again.</system:String>
+    <system:String x:Key="titStateListError">State List Error</system:String>
+    <system:String x:Key="titStateImportSuccess">State Import Successful</system:String>
+    <system:String x:Key="msgStateImportSuccess">The states have been imported successfully.</system:String>
+    <system:String x:Key="txtCityPageExplanation">Upload cities from the UN city file. Cities should be uplaoded after countries and states.</system:String>
+    <system:String x:Key="clmCityName">Name</system:String>
+    <system:String x:Key="clmCityAbbreviation">Abbrv.</system:String>
+    <system:String x:Key="titCityImportError">City Import Error</system:String>
+    <system:String x:Key="msgCityImportError">There was an error importing the cities. Please correct the import file and try again.</system:String>
+    <system:String x:Key="titCityListError">City List Error</system:String>
+    <system:String x:Key="titCityImportSuccess">City Import Successful</system:String>
+    <system:String x:Key="msgCityImportSuccess">The cities have been imported successfully.</system:String>
+    <!-- LOCATIONS -->            
+    
+    <!-- SPORTS STATS -->
+    <system:String x:Key="titSportsStats">Sports Stats</system:String>
+    <system:String x:Key="titSportsStatsTooltip">Sport Stats</system:String>
+    <system:String x:Key="msgSportsStatsTooltip">Brings you to page where you can manage Sports Stats.</system:String>
+    <system:String x:Key="tabPointSystem">Point Systems</system:String>
+    <system:String x:Key="tabStatType">Stats Types</system:String>
+    <system:String x:Key="txtStatTypePageExplanation">Define the stats types that can be uploaded into the application.</system:String>
+    <system:String x:Key="clmStatTypeName">Name</system:String>
+    <system:String x:Key="clmStatTypePosition">Pos</system:String>
+    <system:String x:Key="clmStatTypeStatRetriever">Retriver</system:String>
+    <system:String x:Key="clmStatTypeStat1">Stat 1</system:String>
+    <system:String x:Key="clmStatTypeStat2">Stat 2</system:String>
+    <system:String x:Key="clmStatTypeStat3">Stat 3</system:String>
+    <system:String x:Key="clmStatTypeStat4">Stat 4</system:String>
+    <system:String x:Key="clmStatTypeStat5">Stat 5</system:String>
+    <system:String x:Key="clmStatTypeStat6">Stat 6</system:String>
+    <system:String x:Key="clmStatTypeStat7">Stat 7</system:String>
+    <system:String x:Key="clmStatTypeStat8">Stat 8</system:String>
+    <system:String x:Key="clmStatTypeStat9">Stat 9</system:String>
+    <system:String x:Key="titStatTypeAddTooltip">Add Stat Type</system:String>
+    <system:String x:Key="msgStatTypeAddTooltip">Adds a new Stat Type to the application.</system:String>
+    <system:String x:Key="titStatTypeDeleteTooltip">Delete Stat Type</system:String>
+    <system:String x:Key="msgStatTypeDeleteTooltip">Deletes the currently selected Stat Type.</system:String>
+    <system:String x:Key="titStatTypeListError">Stat Type List Error</system:String>
+    <system:String x:Key="titStatTypeAddError">Stat Type Add Error</system:String>
+    <system:String x:Key="titStatTypeDeleteError">Stat Type Delete Error</system:String>
+    <system:String x:Key="titStatTypeEditError">Stat Type Edit Error</system:String>
+    <system:String x:Key="txtPointSystemPageExplanation">Define the points systems that will be used for contests.</system:String>
+    <system:String x:Key="clmPointSystemName">Name</system:String>
+    <system:String x:Key="clmPointSystemPosition">Pos</system:String>
+    <system:String x:Key="clmPointSystemValue1">Value 1</system:String>
+    <system:String x:Key="clmPointSystemValue2">Value 2</system:String>
+    <system:String x:Key="clmPointSystemValue3">Value 3</system:String>
+    <system:String x:Key="clmPointSystemValue4">Value 4</system:String>
+    <system:String x:Key="clmPointSystemValue5">Value 5</system:String>
+    <system:String x:Key="clmPointSystemValue6">Value 6</system:String>
+    <system:String x:Key="clmPointSystemValue7">Value 7</system:String>
+    <system:String x:Key="clmPointSystemValue8">Value 8</system:String>
+    <system:String x:Key="clmPointSystemValue9">Value 9</system:String>
+    <system:String x:Key="titPointSystemAddTooltip">Add Point System</system:String>
+    <system:String x:Key="msgPointSystemAddTooltip">Adds a new Point System to the application.</system:String>
+    <system:String x:Key="titPointSystemDeleteTooltip">Delete Point System</system:String>
+    <system:String x:Key="msgPointSystemDeleteTooltip">Deletes the currently selected Point System.</system:String>
+    <system:String x:Key="titPointSystemListError">Point System List Error</system:String>
+    <system:String x:Key="titPointSystemAddError">Point System Add Error</system:String>
+    <system:String x:Key="titPointSystemDeleteError">Point System Delete Error</system:String>
+    <system:String x:Key="titPointSystemEditError">Point System Edit Error</system:String>
+    <!-- SPORTS STATS -->
+    
+    <!-- LEAGUES -->
+    <system:String x:Key="titLeagues">Leagues / Teams / Athletes</system:String>
+    <system:String x:Key="titLeaguesTooltip">Leagues</system:String>
+    <system:String x:Key="msgLeaguesTooltip">Brings you to page where you can manage Leagues, Teams, and Athletes.</system:String>
+    <system:String x:Key="tabLeagues">Leagues</system:String>
+    <system:String x:Key="tabTeams">Teams</system:String>
+    <system:String x:Key="tabGames">Games</system:String>
+    <system:String x:Key="tabAthletes">Athletes</system:String>
+    <system:String x:Key="txtLeaguePageExplanation">Define the leagues in the application.</system:String>
+    <system:String x:Key="clmLeagueName">Name</system:String>
+    <system:String x:Key="clmLeagueAbbreviation">Abbrv.</system:String>
+    <system:String x:Key="clmLeagueFastestCode">Fastest Code</system:String>
+    <system:String x:Key="titLeagueAddTooltip">Add League</system:String>
+    <system:String x:Key="msgLeagueAddTooltip">Adds a new League to the application.</system:String>
+    <system:String x:Key="titLeagueDeleteTooltip">Delete League</system:String>
+    <system:String x:Key="msgLeagueDeleteTooltip">Deletes the currently selected League.</system:String>
+    <system:String x:Key="titLeagueListError">League List Error</system:String>
+    <system:String x:Key="titLeagueAddError">League Add Error</system:String>
+    <system:String x:Key="titLeagueDeleteError">League Delete Error</system:String>
+    <system:String x:Key="titLeagueEditError">League Edit Error</system:String>
+    <system:String x:Key="txtTeamPageExplanation">Define the teams in the application.</system:String>
+    <system:String x:Key="clmTeamName">Name</system:String>
+    <system:String x:Key="clmTeamAbbreviation">Abbrv.</system:String>
+    <system:String x:Key="clmTeamFastestCode">Fastest Code</system:String>
+    <system:String x:Key="titTeamAddTooltip">Add Team</system:String>
+    <system:String x:Key="msgTeamAddTooltip">Adds a new Team to the application.</system:String>
+    <system:String x:Key="titTeamDeleteTooltip">Delete Team</system:String>
+    <system:String x:Key="msgTeamDeleteTooltip">Deletes the currently selected Team.</system:String>
+    <system:String x:Key="titTeamListError">Team List Error</system:String>
+    <system:String x:Key="titTeamAddError">Team Add Error</system:String>
+    <system:String x:Key="titTeamDeleteError">Team Delete Error</system:String>
+    <system:String x:Key="titTeamEditError">Team Edit Error</system:String>
+    <system:String x:Key="titTeamImportError">Team Import Error</system:String>
+    <system:String x:Key="titTeamImportSucceeded">Team Import Succeeded</system:String>
+    <system:String x:Key="msgTeamImportSucceeded">The teams were imported successfully.</system:String>
+    <system:String x:Key="txtAthletePageExplanation">Define the athletes in the application.</system:String>
+    <system:String x:Key="clmAthleteFirstName">First Name</system:String>
+    <system:String x:Key="clmAthleteMiddleName">Middle Name</system:String>
+    <system:String x:Key="clmAthleteLastName">Last Name</system:String>
+    <system:String x:Key="clmAthleteCost">Cost</system:String>
+    <system:String x:Key="clmAthletePosition">Position</system:String>
+    <system:String x:Key="clmAthleteFastestCode">Fastest Code</system:String>
+    <system:String x:Key="titAthleteAddTooltip">Add Athlete</system:String>
+    <system:String x:Key="msgAthleteAddTooltip">Adds a new Athlete to the application.</system:String>
+    <system:String x:Key="titAthleteDeleteTooltip">Delete Athlete</system:String>
+    <system:String x:Key="msgAthleteDeleteTooltip">Deletes the currently selected Athlete.</system:String>
+    <system:String x:Key="titAthleteListError">Athlete List Error</system:String>
+    <system:String x:Key="titAthleteAddError">Athlete Add Error</system:String>
+    <system:String x:Key="titAthleteDeleteError">Athlete Delete Error</system:String>
+    <system:String x:Key="titAthleteEditError">Athlete Edit Error</system:String>
+    <system:String x:Key="txtGamePageExplanation">Define the games in the application.</system:String>
+    <system:String x:Key="clmGameHome">Home Team</system:String>
+    <system:String x:Key="clmGameAway">Away Team</system:String>
+    <system:String x:Key="clmGameStartDate">Start Date</system:String>
+    <system:String x:Key="clmGameEndDate">End Date</system:String>
+    <system:String x:Key="clmGameFastestCode">Fastest Code</system:String>
+    <system:String x:Key="titGameAddTooltip">Add Game</system:String>
+    <system:String x:Key="msgGameAddTooltip">Adds a new Game to the application.</system:String>
+    <system:String x:Key="titGameDeleteTooltip">Delete Game</system:String>
+    <system:String x:Key="msgGameDeleteTooltip">Deletes the currently selected Game.</system:String>
+    <system:String x:Key="titGameListError">Game List Error</system:String>
+    <system:String x:Key="titGameAddError">Game Add Error</system:String>
+    <system:String x:Key="titGameDeleteError">Game Delete Error</system:String>
+    <system:String x:Key="titGameEditError">Game Edit Error</system:String>
+    <system:String x:Key="titGameImportError">Game Import Error</system:String>
+    <system:String x:Key="titGameImportSucceeded">Game Import Succeeded</system:String>
+    <system:String x:Key="msgGameImportSucceeded">The games were imported successfully.</system:String>
+    <!-- LEAGUES -->
+
+    <!-- CONTESTS -->
+    <system:String x:Key="titLiveStats">Live Stats</system:String>
+    <system:String x:Key="titLiveStatsTooltip">Contests</system:String>
+    <system:String x:Key="msgLiveStatsTooltip">Brings you to page where you can manage Contests.</system:String>
+    <system:String x:Key="txtLiveStatsPageExplanation">Define the contests in the application.</system:String>
+    <system:String x:Key="tabContests">Contests</system:String>
+    <system:String x:Key="tabGameStats">Game Stats</system:String>
+    <system:String x:Key="txtContestListPageExplanation">View details of the Contests that are upcoming or in progress</system:String>
+    <system:String x:Key="clmContestName">Name</system:String>
+    <system:String x:Key="clmContestStartDate">Start</system:String>
+    <system:String x:Key="clmContestEndDate">End</system:String>
+    <system:String x:Key="clmContestBuyIn">Buy In</system:String>
+    <system:String x:Key="clmContestEntries">Entries</system:String>
+    <system:String x:Key="clmContestMaxEntries">Max Entries</system:String>
+    <system:String x:Key="clmContestGuaranteedPrizePool">GPP</system:String>
+    <system:String x:Key="clmContestPrizeType">Prize Type</system:String>
+    <system:String x:Key="clmContestMultipleEntries">MutiEntry</system:String>
+    <system:String x:Key="clmContestSalaryCap">Salary Cap</system:String>
+    <system:String x:Key="clmContestMaxPlayersPerTeam">PPT</system:String>
+    <system:String x:Key="txtGameStatsPageExplanation">Enter stats for games in progress</system:String>
+    <system:String x:Key="clmPlayerName">Name</system:String>
+    <system:String x:Key="clmPlayerPosition">Pos</system:String>
+    <system:String x:Key="clmPlayerNumber">No.</system:String>
+    <system:String x:Key="clmPlayerValue1">V.1</system:String>
+    <system:String x:Key="clmPlayerValue2">V.2</system:String>
+    <system:String x:Key="clmPlayerValue3">V.3</system:String>
+    <system:String x:Key="clmPlayerValue4">V.4</system:String>
+    <system:String x:Key="clmPlayerValue5">V.5</system:String>
+    <system:String x:Key="clmPlayerValue6">V.6</system:String>
+    <system:String x:Key="clmPlayerValue7">V.7</system:String>
+    <system:String x:Key="clmPlayerValue8">V.8</system:String>
+    <system:String x:Key="clmPlayerValue9">V.9</system:String>
+    <system:String x:Key="titPlayerStatLineEditError">Error editing stat line</system:String>
+    
+    <!-- CONTESTS -->    
+</ResourceDictionary>
