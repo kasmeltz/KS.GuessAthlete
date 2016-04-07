@@ -51,11 +51,12 @@ namespace KS.GuessAthlete.WPF.Pages
             {
                 try
                 {
+                    /*
                     MainWindow
                        .Client
                        .Authenticate(account)
                        .Wait();
-
+                       */
                     LoginSucceeded();
                 }
                 catch (Exception ex)
@@ -71,6 +72,7 @@ namespace KS.GuessAthlete.WPF.Pages
 
         private bool ValidateUI()
         {
+            /*
             if (string.IsNullOrEmpty(txtUsername.Text))
             {
                 return false;
@@ -80,7 +82,7 @@ namespace KS.GuessAthlete.WPF.Pages
             {
                 return false;
             }
-
+            */
             return true;
         }
 

@@ -12,11 +12,11 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
     {
         public const string BASE_URL = "http://www.hockey-reference.com";
 
-        public IEnumerable<Athlete> ScrapeAthleteData()
+        public IEnumerable<Athlete> ScrapeAthleteData(IEnumerable<Athlete> existingAthletes = null)
         {
             for (char c = 'A'; c <= 'A'; c++)
             {
-                IEnumerable<Athlete> athletes = LoadAthletesForLetter(c);
+                IEnumerable<Athlete> athletes = LoadAthletesForLetter(c, existingAthletes);
                 foreach (Athlete athlete in athletes)
                 {
                     yield return athlete;
@@ -24,7 +24,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             }
         }
 
-        public IEnumerable<Athlete> LoadAthletesForLetter(char letter)
+        public IEnumerable<Athlete> LoadAthletesForLetter(char letter, IEnumerable<Athlete> existingAthletes = null, bool skipExisting = tr)
         {
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = new HtmlDocument();
@@ -58,6 +58,12 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     }
                     string href = a.Attributes["href"].Value;
                     string name = a.InnerHtml;
+                    Athlete existingAthlete = existingAthletes
+                        .Where(ath => ath.Name == name).FirstOrDefault();
+                    if (existingAthlete != null && skipExisting)
+                    {
+                        continue;
+                    }
                     string position = tds.ElementAt(3).InnerHtml;
                     string height = tds.ElementAt(4).InnerHtml;
                     string weight = tds.ElementAt(5).InnerHtml;

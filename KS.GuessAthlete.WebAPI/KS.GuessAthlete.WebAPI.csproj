@@ -172,6 +172,9 @@
     <Compile Include="Controllers\api\AccountController.cs" />
     <Compile Include="Controllers\api\BaseApiController.cs" />
     <Compile Include="Controllers\api\AthletesController.cs" />
+    <Compile Include="Controllers\api\AwardsController.cs" />
+    <Compile Include="Controllers\api\TeamIdentitiesController.cs" />
+    <Compile Include="Controllers\api\SeasonsController.cs" />
     <Compile Include="Controllers\api\LeaguesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
