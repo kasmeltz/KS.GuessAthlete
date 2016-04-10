@@ -24,7 +24,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             }
         }
 
-        public IEnumerable<Athlete> LoadAthletesForLetter(char letter, IEnumerable<Athlete> existingAthletes = null, bool skipExisting = tr)
+        public IEnumerable<Athlete> LoadAthletesForLetter(char letter, IEnumerable<Athlete> existingAthletes = null, bool skipExisting = true)
         {
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = new HtmlDocument();
@@ -58,12 +58,18 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     }
                     string href = a.Attributes["href"].Value;
                     string name = a.InnerHtml;
-                    Athlete existingAthlete = existingAthletes
-                        .Where(ath => ath.Name == name).FirstOrDefault();
-                    if (existingAthlete != null && skipExisting)
+                                    
+                    if (existingAthletes != null && skipExisting)
                     {
-                        continue;
+                        Athlete existingAthlete = existingAthletes
+                            .Where(ath => ath.Name == name).FirstOrDefault();
+
+                        if (existingAthlete != null)
+                        {
+                            continue;
+                        }
                     }
+
                     string position = tds.ElementAt(3).InnerHtml;
                     string height = tds.ElementAt(4).InnerHtml;
                     string weight = tds.ElementAt(5).InnerHtml;

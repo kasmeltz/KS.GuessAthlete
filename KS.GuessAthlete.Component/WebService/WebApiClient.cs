@@ -132,8 +132,17 @@ namespace KS.GuessAthlete.Component.WebService
             List<T> allItems = new List<T>();
             while (1 == 1)
             {
+                if (serviceAddress.Contains("?"))
+                {
+                    serviceAddress += "&skip=" + allItems.Count + "&take=" + batchSize;
+                }
+                else
+                {
+                    serviceAddress += "?skip=" + allItems.Count + "&take=" + batchSize;
+                }
+
                 IEnumerable<T> items =
-                    await Get<IEnumerable<T>>(serviceAddress + "&skip=" + allItems.Count + "&take="+ batchSize, isAuthenticated);
+                    await Get<IEnumerable<T>>(serviceAddress, isAuthenticated);
 
                 if (items.Count() > 0)
                 {

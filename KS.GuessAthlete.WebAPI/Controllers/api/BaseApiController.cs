@@ -16,7 +16,6 @@ namespace KS.GuessAthlete.WebAPI.Controllers.api
     /// <summary>
     /// Contains the logic used across all of the api controllers
     /// </summary>
-    [Authorize]
     public class BaseApiController : ApiController
     {
         protected ICacheProvider CacheProvider { get; set; }
