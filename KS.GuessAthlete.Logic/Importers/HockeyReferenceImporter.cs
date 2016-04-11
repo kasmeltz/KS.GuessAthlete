@@ -69,13 +69,13 @@ namespace KS.GuessAthlete.Logic.Importers
 
             HockeyReferenceScraper scraper = new HockeyReferenceScraper();
 
-            //IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData();
+            //List<Athlete> scrapedAthlete = new List<Athlete>();
+            //Athlete loadedAthlete = scraper.LoadAthlete(@"/players/g/gretzwa01.html", "C");
+            //Athlete loadedAthlete = scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
+            //loadedAthlete.Name = "Wayne Gretzky";
+            //scrapedAthlete.Add(loadedAthlete);
 
-            List<Athlete> scrapedAthlete = new List<Athlete>();
-            Athlete loadedAthlete = scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
-            loadedAthlete.Name = "Patrick Roy";
-            scrapedAthlete.Add(loadedAthlete);
-
+            IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData();
             foreach (Athlete athleteToAdd in scrapedAthlete)
             {
                 Athlete athlete = null;

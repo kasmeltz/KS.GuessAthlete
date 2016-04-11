@@ -170,9 +170,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     int.TryParse(year, out i);
                     draft.Year = i;
 
-                    // TO DO translate team to team id
                     draft.TeamName = team;
-                    // TO DO translate team to team id
 
                     drafts.Add(draft);
                 }
@@ -262,6 +260,30 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             }
         }
 
+        public string InnerHtmlToString(HtmlNode node)
+        {
+            string text = node.InnerHtml;
+            text = text.Replace("<b>", "").Replace("</b>", "");
+            text = text.Replace("<strong>", "").Replace("</strong>", "");
+            return text;
+        }
+
+        public int InnerHtmlToInt(HtmlNode node)
+        {
+            int i;
+            string text = InnerHtmlToString(node);
+            int.TryParse(text, out i);
+            return i;
+        }
+
+        public decimal InnerHtmlToDecimal(HtmlNode node)
+        {
+            decimal d;
+            string text = InnerHtmlToString(node);
+            decimal.TryParse(text, out d);
+            return d;
+        }
+
         public void LoadGoalieStats(Athlete athlete, int isPlayoffs, HtmlNode tbody)
         {
             List<StatLine> statsLines = new List<StatLine>();
@@ -290,10 +312,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     continue;
                 }
 
-                // TO DO MAP SEASON STRING TO SEADON ID
                 statLine.Season = season;
                 statLine.Year = year;
-                // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
                 if (a == null)
@@ -304,13 +324,9 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 string teamAbbreviation = a.InnerHtml;
                 string teamName = a.Attributes["title"].Value;
 
-                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
                 statLine.TeamAbbreviation = teamAbbreviation;
                 statLine.TeamName = teamName;
-                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
 
-                int i;
-                decimal d;
                 int currentTD = 4;
 
                 if (isPlayoffs == 1)
@@ -325,64 +341,43 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     }
                 }
 
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.GamesPlayed = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.GamesStarted = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Wins = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Losses = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.TiesPlusOvertimeShootoutLosses = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.GoalsAgainst = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.ShotsAgainst = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Saves = i;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.SavePercentage = d;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.GoalsAgainstAverage = d;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Shutouts = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Minutes = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.QualityStarts = i;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.QualityStartPercentage = d;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.ReallyBadStarts = i;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.GoalsAgainstPercentage = i;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.GoalsSavedAboveAverage = i;
+                statLine.GamesPlayed = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.GamesStarted = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Wins = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Losses = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.TiesPlusOvertimeShootoutLosses = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.GoalsAgainst = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.ShotsAgainst = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Saves = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.SavePercentage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
+                statLine.GoalsAgainstAverage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
+                statLine.Shutouts = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Minutes = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.QualityStarts = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.QualityStartPercentage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
+                statLine.ReallyBadStarts = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.GoalsAgainstPercentage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
+                statLine.GoalsSavedAboveAverage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
 
                 if (isPlayoffs == 0)
                 {
-                    decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                    statLine.GoaliePointShares = d;
+                    statLine.GoaliePointShares = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
                 }
 
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Goals = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Assists = i;
+                statLine.Goals = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Assists = InnerHtmlToInt(tds.ElementAt(currentTD++));
 
                 // skip points column
                 currentTD++;
 
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.PenaltyMinutes = i;
+                statLine.PenaltyMinutes = InnerHtmlToInt(tds.ElementAt(currentTD++));
 
                 if (isPlayoffs == 0)
                 {
                     IEnumerable<HtmlNode> awardTags = tds.ElementAt(currentTD++).Elements("a");
                     foreach (HtmlNode node in awardTags)
                     {
-                        statLine.Awards += "@" + node.InnerHtml + "@";
+                        statLine.Awards += "@" + InnerHtmlToString(node) + "@";
                     }
                 }
 
@@ -426,10 +421,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     continue;
                 }
 
-                // TO DO MAP SEASON STRING TO SEADON ID
                 statLine.Season = season;
                 statLine.Year = year;
-                // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
                 if (a == null)
@@ -440,10 +433,8 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 string teamAbbreviation = a.InnerHtml;
                 string teamName = a.Attributes["title"].Value;
 
-                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
                 statLine.TeamAbbreviation = teamAbbreviation;
                 statLine.TeamName = teamName;
-                // TO DO MAP TEAM NAME OR ABBREV TO TEAM
 
                 int i;
                 decimal d;
@@ -461,54 +452,38 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     }
                 }
 
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.GamesPlayed = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Goals = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Assists = i;
+                statLine.GamesPlayed = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Goals = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.Assists = InnerHtmlToInt(tds.ElementAt(currentTD++));
 
                 // skip points column
                 currentTD++;
 
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.PlusMinus = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.PenaltyMinutes = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.EvenStrengthGoals = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.PowerPlayGoals = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.ShortHandedGoals = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.GameWinningGoals = i;
+                statLine.PlusMinus = InnerHtmlToInt(tds.ElementAt(currentTD++)); 
+                statLine.PenaltyMinutes = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.EvenStrengthGoals = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.PowerPlayGoals = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.ShortHandedGoals = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.GameWinningGoals = InnerHtmlToInt(tds.ElementAt(currentTD++));
 
                 if (isPlayoffs == 0)
                 {
-                    int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                    statLine.EvenStrengthAssists = i;
-                    int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                    statLine.PowerPlayAssists = i;
-                    int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                    statLine.ShortHandedAssists = i;
+                    statLine.EvenStrengthAssists = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                    statLine.PowerPlayAssists = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                    statLine.ShortHandedAssists = InnerHtmlToInt(tds.ElementAt(currentTD++));
                 }
 
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.Shots = i;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.ShotPercentage = i;
-                int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
-                statLine.TimeOnIce = i;
-                decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
-                statLine.AverageTimeOnIce = i;
+                statLine.Shots = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.ShotPercentage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
+                statLine.TimeOnIce = InnerHtmlToInt(tds.ElementAt(currentTD++));
+                statLine.AverageTimeOnIce = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
 
                 if (isPlayoffs == 0)
                 {
                     IEnumerable<HtmlNode> awardTags = tds.ElementAt(currentTD++).Elements("a");
                     foreach (HtmlNode node in awardTags)
                     {
-                        statLine.Awards += "@" + node.InnerHtml + "@";
+                        statLine.Awards += "@" + InnerHtmlToString(node) + "@";
                     }
                 }
 
