@@ -1,6 +1,7 @@
 ﻿using KS.GuessAthlete.Component.WebService;
 using KS.GuessAthlete.Data.DataAccess.Exceptions;
 using KS.GuessAthlete.Data.POCO;
+using KS.GuessAthlete.Data.POCO.Hockey;
 using KS.GuessAthlete.Logic.Scrapers.Hockey;
 using System;
 using System.Collections.Generic;
@@ -67,13 +68,13 @@ namespace KS.GuessAthlete.Logic.Importers
                .Get<IEnumerable<TeamIdentity>>("api/teamidentities");
 
             HockeyReferenceScraper scraper = new HockeyReferenceScraper();
+            Athlete athleteToAdd = scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
+
             //IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData();
-            //IEnumerable<Athlete> scrapedAthlete = 
+
             //foreach (Athlete athleteToAdd in scrapedAthlete)
             //{
 
-            Athlete athleteToAdd = scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
-            //Athlete athleteToAdd = scraper.LoadAthlete(@"/players/g/gretzwa01.html", "C");
             Athlete athlete = null;
 
             try
@@ -99,7 +100,7 @@ namespace KS.GuessAthlete.Logic.Importers
                     draft.TeamIdentityId = teamIdentity.Id;
                     try
                     {
-                        //await draftRepository.Insert(draft);
+                        await APIClient.Post("api/drafts", draft);
                     }
                     catch (ItemAlreadyExistsException)
                     {
@@ -123,7 +124,7 @@ namespace KS.GuessAthlete.Logic.Importers
                     jerseyNumber.TeamIdentityId = teamIdentity.Id;
                     try
                     {
-                        //await jerseyNumberRepository.Insert(jerseyNumber);
+                        await APIClient.Post("api/jerseyNumbers", jerseyNumber);
                     }
                     catch (ItemAlreadyExistsException)
                     {
@@ -155,7 +156,16 @@ namespace KS.GuessAthlete.Logic.Importers
                         statLine.SeasonId = season.Id;
                         try
                         {
-                            //await seasonRepository.Insert(season);
+                            GoalieStatLine gsl = statLine as GoalieStatLine;
+                            if (gsl != null)
+                            {
+                                await APIClient.Post("api/goaliestatlines", gsl);
+                            }
+                            SkaterStatLine ssl = statLine as SkaterStatLine;
+                            if (gsl != null)
+                            {
+                                await APIClient.Post("api/skaterstatlines", ssl);
+                            }
                         }
                         catch (ItemAlreadyExistsException)
                         {
@@ -163,9 +173,9 @@ namespace KS.GuessAthlete.Logic.Importers
 
                         if (!string.IsNullOrEmpty(statLine.Awards))
                         {
-                            string[] awardNames = statLine.Awards.Split(new string[] { "@" },  
+                            string[] awardNames = statLine.Awards.Split(new string[] { "@" },
                                 StringSplitOptions.RemoveEmptyEntries);
-                            foreach(string awardName in awardNames)
+                            foreach (string awardName in awardNames)
                             {
                                 string strippedAwardName = awardName.ToLower().Replace("<b>", "").Replace("</b>", "");
                                 string[] awardParts = strippedAwardName.Split('-');
@@ -184,7 +194,14 @@ namespace KS.GuessAthlete.Logic.Importers
                                         athleteAward.AwardId = award.Id;
                                         athleteAward.Position = int.Parse(awardParts[1]);
 
-                                        //await athleteAwardRepository.Insert(athleteAward);
+                                        try
+                                        {
+                                            await APIClient.Post("api/athleteawards", athleteAward);
+                                        }
+                                        catch
+                                        {
+
+                                        }
                                     }
                                 }
                             }
