@@ -53,7 +53,7 @@ namespace KS.GuessAthlete.Logic.Importers
             return null;
         }
 
-        public async Task ImportAthletes()
+        public async Task ImportAthletes(Action<Athlete> callback)
         {
             IEnumerable<Athlete> athletes = await APIClient
                 .Get<IEnumerable<Athlete>>("api/athletes");
@@ -79,6 +79,16 @@ namespace KS.GuessAthlete.Logic.Importers
             IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData(athletes);
             foreach (Athlete athleteToAdd in scrapedAthlete)
             {
+                if (string.IsNullOrEmpty(athleteToAdd.Name))
+                {
+                    continue;
+                }
+
+                if (callback != null)
+                {
+                    callback(athleteToAdd);
+                }
+
                 Athlete athlete = null;
 
                 try
