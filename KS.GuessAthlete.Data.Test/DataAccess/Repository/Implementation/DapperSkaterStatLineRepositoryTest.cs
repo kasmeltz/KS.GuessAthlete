@@ -86,6 +86,7 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
                 listedSkaterStatLines.ElementAt(3).AthleteId = athletes.ElementAt(3).Id;
                 listedSkaterStatLines.ElementAt(3).TeamIdentityId = teamIdentities.ElementAt(3).Id;
                 listedSkaterStatLines.ElementAt(3).SeasonId = seasons.ElementAt(3).Id;
+                listedSkaterStatLines.ElementAt(3).IsPlayoffs = 0;
                 skaterStatLineRepository.Update(listedSkaterStatLines.ElementAt(3)).Wait();
             }
             catch (AggregateException)

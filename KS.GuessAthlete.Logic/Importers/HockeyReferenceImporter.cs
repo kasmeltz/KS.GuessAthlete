@@ -69,13 +69,15 @@ namespace KS.GuessAthlete.Logic.Importers
 
             HockeyReferenceScraper scraper = new HockeyReferenceScraper();
 
-            //Athlete athleteToAdd = scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
-            //athleteToAdd.Name = "Patrick Roy";
+            //IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData();
 
-            IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData();
+            List<Athlete> scrapedAthlete = new List<Athlete>();
+            Athlete loadedAthlete = scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
+            loadedAthlete.Name = "Patrick Roy";
+            scrapedAthlete.Add(loadedAthlete);
+
             foreach (Athlete athleteToAdd in scrapedAthlete)
             {
-
                 Athlete athlete = null;
 
                 try
@@ -168,7 +170,7 @@ namespace KS.GuessAthlete.Logic.Importers
                                     await APIClient.Post("api/skaterstatlines", ssl);
                                 }
                             }
-                            catch (ItemAlreadyExistsException)
+                            catch (Exception)
                             {
                             }
 

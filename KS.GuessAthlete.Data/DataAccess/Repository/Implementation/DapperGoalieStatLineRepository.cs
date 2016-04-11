@@ -98,6 +98,8 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                 TeamIdentityId = @TeamIdentityId
             AND
                 SeasonId = @SeasonId
+            AND
+                IsPlayoffs = @IsPlayoffs
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
@@ -132,6 +134,8 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                     TeamIdentityId = @TeamIdentityId
                 AND
                     SeasonId = @SeasonId    
+                AND
+                    IsPlayoffs = @IsPlayoffs
             END
 	        ELSE
 	        BEGIN
@@ -153,6 +157,8 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                 TeamIdentityId = @TeamIdentityId
             AND
                 SeasonId = @SeasonId
+            AND
+                IsPlayoffs = @IsPlayoffs
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
