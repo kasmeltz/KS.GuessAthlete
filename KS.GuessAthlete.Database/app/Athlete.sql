@@ -1,10 +1,10 @@
 ﻿CREATE TABLE [app].[Athlete]
 (
 	[Id] INT IDENTITY (1, 1) NOT NULL,	
-	[Name] VARCHAR(255) NULL,
+	[Name] NVARCHAR(255) NULL,
 	[BirthDate] DATETIME NULL,
-	[BirthCountry] VARCHAR(255) NULL,
-	[BirthCity] VARCHAR(255) NULL,
+	[BirthCountry] NVARCHAR(255) NULL,
+	[BirthCity] NVARCHAR(255) NULL,
 	[Position] VARCHAR(255) NULL,
 	[Height] VARCHAR(255) NULL,
 	[Weight] VARCHAR(255) NULL,
