@@ -58,7 +58,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     }
                     string href = a.Attributes["href"].Value;
                     string name = a.InnerHtml;
-                                    
+
                     if (existingAthletes != null && skipExisting)
                     {
                         Athlete existingAthlete = existingAthletes
@@ -190,7 +190,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
             List<JerseyNumber> jerseyNumbers = new List<JerseyNumber>();
             if (uniformDiv != null)
-            {                
+            {
                 IEnumerable<HtmlNode> uniSpans = uniformDiv.SelectNodes("//span[contains(@class, 'uni_square')]");
                 foreach (HtmlNode uniSpan in uniSpans)
                 {
@@ -208,21 +208,26 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                                 number = match.Value;
                                 break;
                             }
-                            jerseyNumber.Number = int.Parse(number);
-                            jerseyNumber.TeamName = jerseyInfo[0].Trim();
-                            jerseyNumber.Years = jerseyInfo[1].Trim();
 
-                            string[] years = jerseyNumber.Years.Split('-');
-                            if (years.Length > 0)
+                            int i;
+                            if (int.TryParse(number, out i))
                             {
-                                jerseyNumber.StartYear = int.Parse(years[0]);
-                            }
-                            if (years.Length > 1)
-                            {
-                                jerseyNumber.EndYear = int.Parse(years[1]);
-                            }
+                                jerseyNumber.Number = i;
+                                jerseyNumber.TeamName = jerseyInfo[0].Trim();
+                                jerseyNumber.Years = jerseyInfo[1].Trim();
 
-                            jerseyNumbers.Add(jerseyNumber);
+                                string[] years = jerseyNumber.Years.Split('-');
+                                if (years.Length > 0)
+                                {
+                                    jerseyNumber.StartYear = int.Parse(years[0]);
+                                }
+                                if (years.Length > 1)
+                                {
+                                    jerseyNumber.EndYear = int.Parse(years[1]);
+                                }
+
+                                jerseyNumbers.Add(jerseyNumber);
+                            }
                         }
                     }
                 }
@@ -230,14 +235,14 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             athlete.JerseyNumbers = jerseyNumbers;
 
 
-            LoadStats(athlete, position, doc, "stats_basic_nhl", 0);
-            LoadStats(athlete, position, doc, "stats_basic_plus_nhl", 0);
-            LoadStats(athlete, position, doc, "stats_playoffs_nhl", 1);
+            LoadStats(athlete, position, doc, "stats_basic_nhl", 0, 0);
+            LoadStats(athlete, position, doc, "stats_basic_plus_nhl", 0, 1);
+            LoadStats(athlete, position, doc, "stats_playoffs_nhl", 1, 0);
 
             return athlete;
         }
 
-        public void LoadStats(Athlete athlete, string position, HtmlDocument doc, string divId, int isPlayoffs)
+        public void LoadStats(Athlete athlete, string position, HtmlDocument doc, string divId, int isPlayoffs, int isPlus)
         {
             HtmlNode regularSeasonStatsTable = doc.GetElementbyId(divId);
             if (regularSeasonStatsTable == null)
@@ -252,11 +257,11 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
             if (position.ToUpper() == "G")
             {
-                LoadGoalieStats(athlete, isPlayoffs, tbody);
+                LoadGoalieStats(athlete, isPlayoffs, isPlus, tbody);
             }
             else
             {
-                LoadSkaterStats(athlete, isPlayoffs, tbody);
+                LoadSkaterStats(athlete, isPlayoffs, isPlus, tbody);
             }
         }
 
@@ -284,7 +289,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             return d;
         }
 
-        public void LoadGoalieStats(Athlete athlete, int isPlayoffs, HtmlNode tbody)
+        public void LoadGoalieStats(Athlete athlete, int isPlayoffs, int isPlus, HtmlNode tbody)
         {
             List<StatLine> statsLines = new List<StatLine>();
 
@@ -374,7 +379,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 if (isPlayoffs == 0)
                 {
-                    IEnumerable<HtmlNode> awardTags = tds.ElementAt(currentTD++).Elements("a");
+                    IEnumerable<HtmlNode> awardTags = tds.ElementAt(tds.Count() - 1).Elements("a");
                     foreach (HtmlNode node in awardTags)
                     {
                         statLine.Awards += "@" + InnerHtmlToString(node) + "@";
@@ -392,7 +397,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             athlete.Stats = statsLines;
         }
 
-        public void LoadSkaterStats(Athlete athlete, int isPlayoffs, HtmlNode tbody)
+        public void LoadSkaterStats(Athlete athlete, int isPlayoffs, int isPlus, HtmlNode tbody)
         {
             List<StatLine> statsLines = new List<StatLine>();
 
@@ -459,7 +464,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 // skip points column
                 currentTD++;
 
-                statLine.PlusMinus = InnerHtmlToInt(tds.ElementAt(currentTD++)); 
+                statLine.PlusMinus = InnerHtmlToInt(tds.ElementAt(currentTD++));
                 statLine.PenaltyMinutes = InnerHtmlToInt(tds.ElementAt(currentTD++));
                 statLine.EvenStrengthGoals = InnerHtmlToInt(tds.ElementAt(currentTD++));
                 statLine.PowerPlayGoals = InnerHtmlToInt(tds.ElementAt(currentTD++));
@@ -475,12 +480,20 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 statLine.Shots = InnerHtmlToInt(tds.ElementAt(currentTD++));
                 statLine.ShotPercentage = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
+
+                if (isPlus == 1)
+                {
+                    // skip TSA column
+                    currentTD++;
+
+                }
+
                 statLine.TimeOnIce = InnerHtmlToInt(tds.ElementAt(currentTD++));
                 statLine.AverageTimeOnIce = InnerHtmlToDecimal(tds.ElementAt(currentTD++));
 
                 if (isPlayoffs == 0)
                 {
-                    IEnumerable<HtmlNode> awardTags = tds.ElementAt(currentTD++).Elements("a");
+                    IEnumerable<HtmlNode> awardTags = tds.ElementAt(tds.Count() - 1).Elements("a");
                     foreach (HtmlNode node in awardTags)
                     {
                         statLine.Awards += "@" + InnerHtmlToString(node) + "@";
