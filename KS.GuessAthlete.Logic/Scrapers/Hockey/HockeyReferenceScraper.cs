@@ -190,9 +190,9 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                     .FirstOrDefault();
             }
 
+            List<JerseyNumber> jerseyNumbers = new List<JerseyNumber>();
             if (uniformDiv != null)
-            {
-                List<JerseyNumber> jerseyNumbers = new List<JerseyNumber>();
+            {                
                 IEnumerable<HtmlNode> uniSpans = uniformDiv.SelectNodes("//span[contains(@class, 'uni_square')]");
                 foreach (HtmlNode uniSpan in uniSpans)
                 {
@@ -213,13 +213,24 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                             jerseyNumber.Number = int.Parse(number);
                             jerseyNumber.TeamName = jerseyInfo[0].Trim();
                             jerseyNumber.Years = jerseyInfo[1].Trim();
+
+                            string[] years = jerseyNumber.Years.Split('-');
+                            if (years.Length > 0)
+                            {
+                                jerseyNumber.StartYear = int.Parse(years[0]);
+                            }
+                            if (years.Length > 1)
+                            {
+                                jerseyNumber.EndYear = int.Parse(years[1]);
+                            }
+
                             jerseyNumbers.Add(jerseyNumber);
                         }
                     }
                 }
-
-                athlete.JerseyNumbers = jerseyNumbers;
             }
+            athlete.JerseyNumbers = jerseyNumbers;
+
 
             LoadStats(athlete, position, doc, "stats_basic_nhl", 0);
             LoadStats(athlete, position, doc, "stats_basic_plus_nhl", 0);
@@ -244,7 +255,6 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             if (position.ToUpper() == "G")
             {
                 LoadGoalieStats(athlete, isPlayoffs, tbody);
-
             }
             else
             {
@@ -258,6 +268,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
             if (tbody == null)
             {
+                athlete.Stats = statsLines;
                 return;
             }
 
@@ -281,7 +292,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 // TO DO MAP SEASON STRING TO SEADON ID
                 statLine.Season = season;
-                statLine.Year = yearString;
+                statLine.Year = year;
                 // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
@@ -348,6 +359,13 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 statLine.GoalsAgainstPercentage = i;
                 decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
                 statLine.GoalsSavedAboveAverage = i;
+
+                if (isPlayoffs == 0)
+                {
+                    decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
+                    statLine.GoaliePointShares = d;
+                }
+
                 int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
                 statLine.Goals = i;
                 int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
@@ -363,7 +381,6 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 {
                     IEnumerable<HtmlNode> awardTags = tds.ElementAt(currentTD++).Elements("a");
                     foreach (HtmlNode node in awardTags)
-
                     {
                         statLine.Awards += "@" + node.InnerHtml + "@";
                     }
@@ -373,6 +390,10 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 statsLines.Add(statLine);
             }
 
+            if (athlete.Stats != null)
+            {
+                statsLines.AddRange(athlete.Stats);
+            }
             athlete.Stats = statsLines;
         }
 
@@ -382,6 +403,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
             if (tbody == null)
             {
+                athlete.Stats = statsLines;
                 return;
             }
 
@@ -406,7 +428,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
                 // TO DO MAP SEASON STRING TO SEADON ID
                 statLine.Season = season;
-                statLine.Year = yearString;
+                statLine.Year = year;
                 // TO DO MAP SEASON STRING TO SEADON ID
 
                 a = tds.ElementAt(2).Element("a");
@@ -461,6 +483,17 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 statLine.ShortHandedGoals = i;
                 int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
                 statLine.GameWinningGoals = i;
+
+                if (isPlayoffs == 0)
+                {
+                    int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
+                    statLine.EvenStrengthAssists = i;
+                    int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
+                    statLine.PowerPlayAssists = i;
+                    int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
+                    statLine.ShortHandedAssists = i;
+                }
+
                 int.TryParse(tds.ElementAt(currentTD++).InnerHtml, out i);
                 statLine.Shots = i;
                 decimal.TryParse(tds.ElementAt(currentTD++).InnerHtml, out d);
@@ -483,6 +516,10 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
                 statsLines.Add(statLine);
             }
 
+            if (athlete.Stats != null)
+            {
+                statsLines.AddRange(athlete.Stats);
+            }
             athlete.Stats = statsLines;
         }
     }

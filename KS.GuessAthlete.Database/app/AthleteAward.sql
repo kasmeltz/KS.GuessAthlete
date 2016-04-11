@@ -4,6 +4,7 @@
 	[AwardId] INT NOT NULL,
 	[AthleteId] INT NOT NULL,
 	[SeasonId] INT NOT NULL,
+	[Position] INT NOT NULL,
 	PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_AthleteAward_To_Award] FOREIGN KEY ([AwardId]) REFERENCES [app].[Award]([Id]),
 	CONSTRAINT [FK_AthleteAward_To_Athlete] FOREIGN KEY ([AthleteId]) REFERENCES [app].[Athlete]([Id]),

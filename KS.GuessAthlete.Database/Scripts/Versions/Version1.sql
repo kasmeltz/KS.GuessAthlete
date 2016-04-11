@@ -253,13 +253,13 @@ BEGIN
 		(@TeamId, 'Quakers', 'PHQ', 'Philadelphia', '1930-09-01', '1931-07-01');
 END;
 
-IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Ottawa Senators')
+IF NOT EXISTS (SELECT Id FROM [app].[Team] WHERE Name = 'Ottawa Senators Original')
 BEGIN
 	INSERT INTO 
 		[app].[Team]
 		(LeagueId, Name)
 	VALUES
-		(@NHLLeagueId, 'Ottawa Senators');
+		(@NHLLeagueId, 'Ottawa Senators Original');
 
 	SELECT @TeamId = SCOPE_IDENTITY();
 

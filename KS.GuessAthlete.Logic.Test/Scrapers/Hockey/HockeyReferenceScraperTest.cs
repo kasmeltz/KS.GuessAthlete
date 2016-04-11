@@ -31,6 +31,13 @@ namespace KS.GuessAthlete.Logic.Test.Scrapers.Hockey
         }
 
         [TestMethod]
+        public void TestPatrickRoy()
+        {
+            HockeyReferenceScraper scraper = new HockeyReferenceScraper();
+            scraper.LoadAthlete(@"/players/r/roypa01.html", "G");
+        }
+
+        [TestMethod]
         public void TestLoadAthletesForLetterG()
         {
             int count = 0;
