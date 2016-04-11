@@ -1,6 +1,8 @@
 ﻿using KS.GuessAthlete.Component.Caching.Interface;
 using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 {
@@ -137,6 +139,23 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             ELSE
             BEGIN
                 SELECT -1
-            END";    
+            END";
+
+        private const string _forAthleteSql = @"
+            SET NOCOUNT ON;
+            SELECT  
+                Id, AthleteId, TeamIdentityId, Number, StartYear, EndYear
+            FROM 
+                [app].[JerseyNumber]
+            WHERE
+                AthleteId = @Id";
+
+        public async Task<IEnumerable<JerseyNumber>> ForAthlete(int id)
+        {
+            return await List(_forAthleteSql, new
+            {
+                Id = id
+            }, "JerseyNumbersForAthlete" + id);
+        }
     }
 }

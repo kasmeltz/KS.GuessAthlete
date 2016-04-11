@@ -1,6 +1,8 @@
 ﻿using KS.GuessAthlete.Component.Caching.Interface;
 using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO.Hockey;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 {
@@ -200,5 +202,30 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             BEGIN
                 SELECT -1
             END";
+
+        private const string _forAthleteSql = @"
+            SET NOCOUNT ON;
+            SELECT  
+                Id, AthleteId, TeamIdentityId, SeasonId, 
+                GamesPlayed, GamesStarted, 
+                Wins, Losses, TiesPlusOvertimeShootoutLosses, 
+                GoalsAgainst, ShotsAgainst, Saves, 
+                SavePercentage, GoalsAgainstAverage,
+                Shutouts, Minutes,
+                QualityStarts, QualityStartPercentage, ReallyBadStarts, 
+                GoalsAgainstPercentage, GoalsSavedAboveAverage, GoaliePointShares,
+                Goals, Assists, PenaltyMinutes, StanleyCup, IsPlayoffs
+            FROM 
+                [app].[GoalieStatLine]
+            WHERE
+                AthleteId = @Id";
+
+        public async Task<IEnumerable<GoalieStatLine>> ForAthlete(int id)
+        {
+            return await List(_forAthleteSql, new
+            {
+                Id = id
+            }, "GoalieStatLinesForAthlete" + id);
+        }
     }
 }
