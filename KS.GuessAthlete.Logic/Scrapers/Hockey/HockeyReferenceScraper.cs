@@ -38,7 +38,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
             HtmlNode playersTable = doc.GetElementbyId("players");
             if (playersTable == null)
             {
-                yield return null;
+                yield break;
             }
 
             HtmlNode tbody = playersTable.Element("tbody");

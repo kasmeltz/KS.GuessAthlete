@@ -9,6 +9,8 @@
       Title="{DynamicResource titMainDashboard}">
     <StackPanel>
         <TextBlock FontWeight="Bold" FontFamily="Arial" FontSize="32" Margin="20, 20, 0, 0" Foreground="Green"><Run Text="{DynamicResource titMainDashboard}" /></TextBlock>
+        <TextBlock FontSize="20">Currently importing athlete: </TextBlock>
+        <TextBlock Name="txtAthleteName" FontSize="24" ></TextBlock>
         <Button Content="Load Athletes" Click="Button_Click"></Button>
     </StackPanel>
 </Page>
