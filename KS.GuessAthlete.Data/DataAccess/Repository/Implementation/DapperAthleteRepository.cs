@@ -70,7 +70,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        WHERE	
 		        Name = @Name
             AND
-                BirthDate = @BirthDate
+                (@BirthDate IS NULL OR BirthDate = @BirthDate)
 	            
 	        IF(@ExistingId IS NULL)
 	        BEGIN
@@ -86,7 +86,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	            WHERE	
 		            Name = @Name
                 AND
-                    BirthDate = @BirthDate       
+                    (@BirthDate IS NULL OR BirthDate = @BirthDate)
             END
 	        ELSE
 	        BEGIN
@@ -105,7 +105,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	        WHERE	
 		        Name = @Name
             AND
-                BirthDate = @BirthDate
+                (@BirthDate IS NULL OR BirthDate = @BirthDate)
 
             IF(@ExistingId IS NULL OR @ExistingId = @Id)
 	        BEGIN
