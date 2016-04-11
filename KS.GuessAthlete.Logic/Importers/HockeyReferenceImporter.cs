@@ -75,7 +75,7 @@ namespace KS.GuessAthlete.Logic.Importers
             //loadedAthlete.Name = "Wayne Gretzky";
             //scrapedAthlete.Add(loadedAthlete);
 
-            IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData();
+            IEnumerable<Athlete> scrapedAthlete = scraper.ScrapeAthleteData(athletes);
             foreach (Athlete athleteToAdd in scrapedAthlete)
             {
                 Athlete athlete = null;

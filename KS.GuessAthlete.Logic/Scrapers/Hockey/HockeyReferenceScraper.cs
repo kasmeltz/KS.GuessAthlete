@@ -14,7 +14,7 @@ namespace KS.GuessAthlete.Logic.Scrapers.Hockey
 
         public IEnumerable<Athlete> ScrapeAthleteData(IEnumerable<Athlete> existingAthletes = null)
         {
-            for (char c = 'A'; c <= 'A'; c++)
+            for (char c = 'A'; c <= 'Z'; c++)
             {
                 IEnumerable<Athlete> athletes = LoadAthletesForLetter(c, existingAthletes);
                 foreach (Athlete athlete in athletes)
