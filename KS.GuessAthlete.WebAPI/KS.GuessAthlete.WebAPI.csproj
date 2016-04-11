@@ -174,6 +174,8 @@
     <Compile Include="Controllers\api\AthletesController.cs" />
     <Compile Include="Controllers\api\AwardsController.cs" />
     <Compile Include="Controllers\api\AthleteAwardsController.cs" />
+    <Compile Include="Controllers\api\ConferencesController.cs" />
+    <Compile Include="Controllers\api\DivisionsController.cs" />
     <Compile Include="Controllers\api\SkaterStatLinesController.cs" />
     <Compile Include="Controllers\api\GoalieStatLinesController.cs" />
     <Compile Include="Controllers\api\JerseyNumbersController.cs" />
