@@ -1,4 +1,7 @@
-﻿using KS.GuessAthlete.Component.Caching.Interface;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using KS.GuessAthlete.Component.Caching.Interface;
 using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO;
 
@@ -27,6 +30,45 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             SearchSql = _searchSql;
             InsertSql = _insertSql;
             UpdateSql = _updateSql;
+        }
+
+        private const string _skatersForCriteriaSql = @"
+            SET NOCOUNT ON;
+            SELECT
+	            ath.Id
+            FROM
+	            [app].[Athlete] ath
+            INNER JOIN
+	            [app].[SkaterStatLine] skt
+            ON
+	            skt.AthleteId = ath.Id
+            INNER JOIN
+	            [app].[Season] sea
+            ON
+	            skt.SeasonId = sea.Id
+            GROUP BY
+	            ath.Name, ath.Id
+            HAVING
+	            SUM(skt.GamesPlayed) >= @GamesPlayed
+            AND
+	            SUM(skt.Goals) + SUM(skt.Assists) >= @Points
+            AND
+	            CAST(SUM(skt.Goals) + SUM(skt.Assists) as decimal) /
+	            CAST(SUM(skt.GamesPlayed) as decimal) >= @PPG
+            AND
+	            MIN(sea.StartDate) >= @StartYear";
+
+        public Task<IEnumerable<int>> SkatersForCriteria(int gamesPlayed, int points, decimal ppg, int startYear)
+        {
+            return List<int>(_skatersForCriteriaSql,
+                new
+                {
+                    GamesPlayed = gamesPlayed,
+                    Points = points,
+                    PPG = ppg,
+                    StartYear = startYear
+                }, 
+                string.Format("SkaterForCriteriagp{0}p{1}ppg{2}sy{3]", gamesPlayed, points, ppg, startYear));
         }
 
         private const string _getSql = @"
@@ -130,28 +172,6 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             END";
 
         /*
-        SELECT
-	ath.Name,
-	SUM(gst.GamesPlayed) as GamesPlayed,
-	SUM(gst.Wins) as Wins,
-	MIN(sea.StartDate) as FirstSeason
-FROM
-	[app].[Athlete] ath
-INNER JOIN
-	[app].[GoalieStatLine] gst
-ON
-	gst.AthleteId = ath.Id
-INNER JOIN
-	[app].[Season] sea
-ON
-	gst.SeasonId = sea.Id
-GROUP BY
-	ath.Name 
-HAVING
-	SUM(gst.GamesPlayed) > 200
-ORDER BY
-	Wins desc
-
 SELECT
 	ath.Id,
 	ath.Name,
