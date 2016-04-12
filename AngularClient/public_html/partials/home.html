@@ -1,16 +1,26 @@
 <div ng-controller="homeController" >
 	<h1>Guess The Hockey Player</h1>
-	<div ng-repeat="question in questionsAsked">
-		Does their
-		<select ng-model="question.selectedName" ng-options="name for name in names" ></select>
-		name start with
-		<select ng-model="question.selectedLetter" ng-options="letter for letter in letters" ></select>
+	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
+		<h1>Question {{$index + 1}}</h1>
+		<div ng-switch-when="0">
+			Does their
+			<select ng-model="$parent.question.selectedName" ng-options="name for name in names" ></select>
+			name start with
+			<select ng-model="$parent.question.selectedLetter" ng-options="letter for letter in letters" ></select>
+		</div>
+		<div ng-switch-when="1">
+			Did they plan between
+			<select ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
+			and
+			<select ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
+		</div>
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
 		<span ng-if="question.answered">{{question.answered}}</span>
-	</div>		
-	<div>
-		<select ng-model="selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>
-		<button ng-disabled="!canAddQuestion" ng-click="addQuestion();" >Add Question</button>
 	</div>
-	<!--<h2>{{athlete.Name}}</h2>-->
+	<div ng-if="canAddQuestion">
+		<select ng-model="$parent.selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>
+		<button ng-click="addQuestion();">Add Question</button>
+	</div>
+	<h2>{{athlete.Name}}</h2>
+	<question-partial />
 </div>
