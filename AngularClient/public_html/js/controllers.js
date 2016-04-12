@@ -73,9 +73,20 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			$scope.divisionsMap = {};
 			for (var idx in data) {
 				var division = data[idx];
+				var startYear = division.StartYear;
+				var endYear = 'now'
+				if (division.EndYear) {
+					endYear = division.EndYear;
+				}				
+				division.FullName = division.Name +
+					' (' + startYear + '-' + endYear + ')';	
 				$scope.divisions.push(division);
 				$scope.divisionsMap[division.Id] = division;
 			}			
+			
+			$scope.divisions.sort(function(a,b) {
+				return a.StartYear < b.StartYear ? -1 : 1;
+			});
 			
 			$scope.getTeamIdentities();
         });	
@@ -310,6 +321,22 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				}
 				return 'no';
 			});		
+			
+		// played in division
+		$scope.addQuestionType('Played in division', 
+			function() {
+				return { selectedDivision:$scope.divisions[0] };
+			},
+			function(question) {	
+				for (var idx in $scope.athlete.Stats) {
+					var stat = $scope.athlete.Stats[idx];					
+					var division = $scope.getDivisionForTeamAndSeason(stat.TeamIdentityId, stat.SeasonId);
+					if (division && division.Id == question.selectedDivision.Id) {
+						return 'yes';
+					}
+				}
+				return 'no';
+			});					
 	};
 
 	$scope.getSeasons();

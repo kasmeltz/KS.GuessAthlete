@@ -42,6 +42,12 @@
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedConference" ng-options="conference.FullName for conference in conferences" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedConference.FullName}}</span>
 			conference
+		</div>		
+		<div ng-switch-when="6">
+			Did they play in the 
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedDivision" ng-options="division.FullName for division in divisions" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedDivision.FullName}}</span>
+			division
 		</div>			
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
 		<span style="font-size: x-large; color: #00ff00;" ng-if="question.answered == 'yes'"><img width="50" src="img/check.png" /></span>
