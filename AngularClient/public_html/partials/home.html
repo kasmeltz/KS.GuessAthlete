@@ -3,12 +3,12 @@
 	<button ng-if="teamIdentities" ng-click="getRandomAthlete()";>Start Round</button>
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
 		<h3>Question {{$index + 1}}</h3>
-		<div ng-switch-when="0">
+		<div ng-switch-when="pos">
 			Were they primarily considered to be a 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedPosition" ng-options="position for position in positions" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedPosition}}</span>
 		</div>
-		<div ng-switch-when="1">
+		<div ng-switch-when="let">
 			Does their
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedName" ng-options="name for name in names" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedName}}</span>
@@ -16,7 +16,7 @@
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedLetter" ng-options="letter for letter in letters" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedLetter}}</span>
 		</div>
-		<div ng-switch-when="2">
+		<div ng-switch-when="oneyear">
 			Did they play at least one year between
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedStart}}</span>
@@ -24,7 +24,7 @@
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
 		</div>
-		<div ng-switch-when="3">
+		<div ng-switch-when="allyears">
 			Did they play every year between
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedStart}}</span>
@@ -32,18 +32,18 @@
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
 		</div>		
-		<div ng-switch-when="4">
+		<div ng-switch-when="forteam">
 			Did they play for 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedTeam" ng-options="teamIdentity.FullName for teamIdentity in teamIdentities" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedTeam.FullName}}</span>
 		</div>	
-		<div ng-switch-when="5">
+		<div ng-switch-when="forconference">
 			Did they play in the 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedConference" ng-options="conference.FullName for conference in conferences" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedConference.FullName}}</span>
 			conference
 		</div>		
-		<div ng-switch-when="6">
+		<div ng-switch-when="fordivision">
 			Did they play in the 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedDivision" ng-options="division.FullName for division in divisions" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedDivision.FullName}}</span>

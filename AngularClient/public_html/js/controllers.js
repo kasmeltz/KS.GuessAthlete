@@ -78,8 +78,9 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				if (division.EndYear) {
 					endYear = division.EndYear;
 				}				
+				var conference = $scope.conferencesMap[division.ConferenceId];				
 				division.FullName = division.Name +
-					' (' + startYear + '-' + endYear + ')';	
+					' (' + conference.Name + '-' + startYear + '-' + endYear + ')';	
 				$scope.divisions.push(division);
 				$scope.divisionsMap[division.Id] = division;
 			}			
@@ -182,20 +183,19 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		$scope.canAddQuestion = true;		
 	};	
 	
-	$scope.addQuestions = [];
-	$scope.questionResponses = [];
 	$scope.questionTypes = [];
+	$scope.addQuestions = {};
+	$scope.questionResponses = {};
 	
-	$scope.addQuestionType = function(displayText, questionProto, responder) {
-		var currentType = $scope.questionTypes.length;
-		$scope.questionTypes.push({ display:displayText, type:currentType });
-		$scope.addQuestions.push(questionProto);
-		$scope.questionResponses.push(responder);
+	$scope.addQuestionType = function(displayText, type, questionProto, responder) {
+		$scope.questionTypes.push({ display:displayText, type:type });
+		$scope.addQuestions[type] = questionProto;
+		$scope.questionResponses[type] = responder;
 	}
 	
 	$scope.loadQuestions = function() {
 		// positions
-		$scope.addQuestionType('Primary position', 
+		$scope.addQuestionType('Primary position', 'pos',
 			function() {
 				return { selectedPosition:'C' };
 			},
@@ -204,7 +204,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			});		
 		
 		// first letter of name	
-		$scope.addQuestionType('First letter of name', 
+		$scope.addQuestionType('First letter of name', 'let',
 			function() {
 				return { selectedLetter:'A', selectedName:'first' };
 			},
@@ -225,7 +225,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			});		
 		
 		// played at least one year between years
-		$scope.addQuestionType('Played at least one year between', 
+		$scope.addQuestionType('Played at least one year between', 'oneyear',
 			function() {
 				return { selectedStart:1917, selectedEnd:thisYear };
 			},
@@ -245,7 +245,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			});
 			
 		// played every year year between years
-		$scope.addQuestionType('Played every year between', 
+		$scope.addQuestionType('Played every year between', 'allyears',
 			function() {
 				return { selectedStart:1917, selectedEnd:thisYear };
 			},
@@ -280,7 +280,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			});
 			
 		// played for team
-		$scope.addQuestionType('Played for team', 
+		$scope.addQuestionType('Played for team', 'forteam',
 			function() {
 				return { selectedTeam:$scope.teamIdentities[0] };
 			},
@@ -307,7 +307,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		};
 		
 		// played in conference
-		$scope.addQuestionType('Played in conference', 
+		$scope.addQuestionType('Played in conference', 'forconference',
 			function() {
 				return { selectedConference:$scope.conferences[0] };
 			},
@@ -323,7 +323,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			});		
 			
 		// played in division
-		$scope.addQuestionType('Played in division', 
+		$scope.addQuestionType('Played in division', 'fordivision',
 			function() {
 				return { selectedDivision:$scope.divisions[0] };
 			},
