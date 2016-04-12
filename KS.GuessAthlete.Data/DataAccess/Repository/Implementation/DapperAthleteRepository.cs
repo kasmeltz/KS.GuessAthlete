@@ -127,6 +127,57 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             ELSE
             BEGIN
                 SELECT -1
-            END";    
+            END";
+
+        /*
+        SELECT
+	ath.Name,
+	SUM(gst.GamesPlayed) as GamesPlayed,
+	SUM(gst.Wins) as Wins,
+	MIN(sea.StartDate) as FirstSeason
+FROM
+	[app].[Athlete] ath
+INNER JOIN
+	[app].[GoalieStatLine] gst
+ON
+	gst.AthleteId = ath.Id
+INNER JOIN
+	[app].[Season] sea
+ON
+	gst.SeasonId = sea.Id
+GROUP BY
+	ath.Name 
+HAVING
+	SUM(gst.GamesPlayed) > 200
+ORDER BY
+	Wins desc
+
+SELECT
+	ath.Id,
+	ath.Name,
+	SUM(skt.GamesPlayed) as GamesPlayed,
+	(SUM(skt.Goals) + SUM(skt.Assists)) as Points,
+	CAST(SUM(skt.Goals) + SUM(skt.Assists) as decimal) /
+	CAST(SUM(skt.GamesPlayed) as decimal) as PPG,
+	MIN(sea.StartDate) as FirstSeason
+FROM
+	[app].[Athlete] ath
+INNER JOIN
+	[app].[SkaterStatLine] skt
+ON
+	skt.AthleteId = ath.Id
+INNER JOIN
+	[app].[Season] sea
+ON
+	skt.SeasonId = sea.Id
+GROUP BY
+	ath.Name, ath.Id
+HAVING
+	SUM(skt.GamesPlayed) > 200
+AND
+	SUM(skt.Goals) + SUM(skt.Assists) > 1000
+ORDER BY
+	PPG desc
+    */
     }
 }
