@@ -9,7 +9,7 @@ app.service('$con', function ($http) {
 
 app.service('$pickAthleteDataService', function ($con, $http) {
     return {
-        pickAthlete: function (options) {	
+        pickAthlete: function (options, callback) {	
 			var url = 'api/pickAthlete';
             url += '?skaterGamesPlayed=' + options.skaterGamesPlayed;
 			url += '&skaterPoints=' + options.skaterPoints;
