@@ -121,7 +121,6 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			return { selectedStart:1917, selectedEnd:thisYear };
 		},
 		function(question) {
-			var seasons = [];
 			var years = {};
 			var yearTotal = 0;
 						
@@ -130,8 +129,6 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				var season = $scope.seasons[stat.SeasonId];
 				var startYear = new Date(season.StartDate).getFullYear();
 				var endYear = new Date(season.EndDate).getFullYear();
-				
-				seasons.push(startYear + '-' + endYear);
 				
 				if (startYear >= question.selectedStart && endYear <= question.selectedEnd) {
 					if (!years[startYear]) {
@@ -145,7 +142,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					}
 				}
 			}	
-			
+				
 			if (yearTotal >= (question.selectedEnd - question.selectedStart) + 1) {
 				return 'yes';
 			}
