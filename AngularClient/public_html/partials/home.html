@@ -1,15 +1,19 @@
 <div ng-controller="homeController" >
 	<h1>Guess The Hockey Player</h1>
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
-		<h1>Question {{$index + 1}}</h1>
+		<h3>Question {{$index + 1}}</h3>
 		<div ng-switch-when="0">
+			Were they primarily considered to be a 
+			<select ng-model="$parent.question.selectedPosition" ng-options="position for position in positions" ></select>
+		</div>
+		<div ng-switch-when="1">
 			Does their
 			<select ng-model="$parent.question.selectedName" ng-options="name for name in names" ></select>
 			name start with
 			<select ng-model="$parent.question.selectedLetter" ng-options="letter for letter in letters" ></select>
 		</div>
-		<div ng-switch-when="1">
-			Did they plan between
+		<div ng-switch-when="2">
+			Did they play at least one year between
 			<select ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
 			and
 			<select ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>

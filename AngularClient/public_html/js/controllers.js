@@ -1,17 +1,15 @@
 ﻿var app = angular.module('app');
 var thisYear = new Date().getFullYear();
-var FIRST_LETTER_QUESTION = 0;
-var PLAY_DURING_YEARS_QUESTION = 1;
 
 app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService', function ($scope, $route, $pickAthleteDataService) {
     $scope.$route = $route;
 
     $scope.getRandomAthlete = function () {
 		var options = {
-			skaterGamesPlayed: 1500,
-			skaterPoints: 1400,
+			skaterGamesPlayed: 1600,
+			skaterPoints: 1300,
 			skaterPPG: 0,
-			goalieGamesPlayed: 1200,
+			goalieGamesPlayed: 1000,
 			goalieWins: 600,
 			startYear: 1965
 		};		
@@ -37,25 +35,31 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		$scope.canAddQuestion = true;		
 	};	
 	
-	// $question add functions
 	$scope.addQuestions = [];
-	// first letter of name
-	$scope.addQuestions.push(
+	$scope.questionResponses = [];
+	$scope.questionTypes = [];
+	
+	$scope.addQuestionType = function(displayText, questionProto, responder) {
+		var currentType = $scope.questionTypes.length;
+		$scope.questionTypes.push({ display:displayText, type:currentType });
+		$scope.addQuestions.push(questionProto);
+		$scope.questionResponses.push(responder);
+	}
+	
+	// positions
+	$scope.addQuestionType('Primary position', 
+		function() {
+			return { selectedPosition:'C' };
+		},
+		function(question) {
+			return $scope.athlete.Position.indexOf(question.selectedPosition) >= 0 ? 'yes' : 'no';
+		});		
+	
+	// first letter of name	
+	$scope.addQuestionType('First letter of name', 
 		function() {
 			return { selectedLetter:'A', selectedName:'first' };
-		}
-	);
-	// played between years
-	$scope.addQuestions.push(
-		function() {
-			return { selectedStart:1917, selectedEnd:thisYear };
-		}
-	);
-	
-	// question response functions
-	$scope.questionResponses = [];
-	// first letter of name
-	$scope.questionResponses.push(
+		},
 		function(question) {
 			var names = $scope.athlete.Name.split(' ');		
 			if (question.selectedName == 'first') {
@@ -70,29 +74,28 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				} 
 			}			
 			return 'no';
-		}
-	);
-	// played between years
-	$scope.questionResponses.push(
+		});		
+	
+	// played at least one year between years
+	$scope.addQuestionType('Played at least one year between', 
+		function() {
+			return { selectedStart:1917, selectedEnd:thisYear };
+		},
 		function(question) {
 			alert(question.selectedStart);
 			alert(question.selectedEnd);
-		}
-	);	
+		});
 
-	$scope.canAddQuestion = true;	
-	$scope.questionsAsked = [];
-
+	// misc data
 	$scope.letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];	
 	$scope.names = ['first', 'last'];	
 	$scope.years = [];
 	for (var year = 1917;year <= thisYear;year++) {
 		$scope.years.push(year);
 	}
-	
-	$scope.questionTypes = [];
-	$scope.questionTypes.push({ display:'First letter of name', type:FIRST_LETTER_QUESTION });
-	$scope.questionTypes.push({ display:'Play during years', type:PLAY_DURING_YEARS_QUESTION });
-	
+	$scope.positions = ['C', 'LW', 'RW', 'D', 'G']
+
+	$scope.canAddQuestion = true;	
+	$scope.questionsAsked = [];
 	$scope.getRandomAthlete();
 }]);

@@ -56,7 +56,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
 	            CAST(SUM(skt.Goals) + SUM(skt.Assists) as decimal) /
 	            CAST(SUM(skt.GamesPlayed) as decimal) >= @PPG
             AND
-	            MIN(sea.StartDate) >= @StartYear";
+	            YEAR(MIN(sea.StartDate)) >= @StartYear";
 
         public Task<IEnumerable<int>> SkatersForCriteria(int gamesPlayed, int points, decimal ppg, int startYear)
         {
@@ -92,7 +92,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             AND
                 SUM(gst.Wins) >= @Wins
             AND
-	            MIN(sea.StartDate) >= @StartYear";
+	            YEAR(MIN(sea.StartDate)) >= @StartYear";
 
         public Task<IEnumerable<int>> GoaliesForCriteria(int gamesPlayed, int wins, int startYear)
         {
