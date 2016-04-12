@@ -23,61 +23,76 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 	
 	$scope.addQuestion = function() {		
 		if ($scope.selectedQuestionType) {
-			if ($scope.selectedQuestionType.value == FIRST_LETTER_QUESTION) {
-				$scope.questionsAsked.push({selectedLetter:'A',selectedName:'first',type:FIRST_LETTER_QUESTION});				
-			}
-			
-			if ($scope.selectedQuestionType.value == PLAY_DURING_YEARS_QUESTION) {
-				$scope.questionsAsked.push({selectedStart:1917,selectedEnd:thisYear,type:PLAY_DURING_YEARS_QUESTION});				
-			}
-			
+			var question = $scope.addQuestions[$scope.selectedQuestionType.type]();
+			question.type = $scope.selectedQuestionType.type;
+			$scope.questionsAsked.push(question)
 			$scope.canAddQuestion = false;
 		}		
 		
 		$scope.selectedQuestionType = null;
 	};
 	
-	$scope.firstLetterQuestion = function(question) {
-		var names = $scope.athlete.Name.split(' ');		
-		if (question.selectedName == 'first') {
-			var name = names[0];
-			if (name.substring(0,1) == question.selectedLetter) {
-				return 'yes';
-			} 
-		} else if (question.selectedName == 'last') {
-			var name = names[names.length-1];
-			if (name.substring(0,1) == question.selectedLetter) {
-				return 'yes';
-			} 
-		}
-		
-		return 'no';
-	}
-	
 	$scope.askQuestion = function(question) {
-		var yesNo = 'no';		
-		
-		switch(question.type) {
-			case FIRST_LETTER_QUESTION:
-				yesNo = $scope.firstLetterQuestion(question);
-				break;
-		}
-		
-		question.answered = yesNo;		
+		question.answered = $scope.questionResponses[question.type](question);		
 		$scope.canAddQuestion = true;		
-	};
+	};	
 	
+	// $question add functions
+	$scope.addQuestions = [];
+	// first letter of name
+	$scope.addQuestions.push(
+		function() {
+			return { selectedLetter:'A', selectedName:'first' };
+		}
+	);
+	// played between years
+	$scope.addQuestions.push(
+		function() {
+			return { selectedStart:1917, selectedEnd:thisYear };
+		}
+	);
+	
+	// question response functions
+	$scope.questionResponses = [];
+	// first letter of name
+	$scope.questionResponses.push(
+		function(question) {
+			var names = $scope.athlete.Name.split(' ');		
+			if (question.selectedName == 'first') {
+				var name = names[0];
+				if (name.substring(0,1) == question.selectedLetter) {
+					return 'yes';
+				} 
+			} else if (question.selectedName == 'last') {
+				var name = names[names.length-1];
+				if (name.substring(0,1) == question.selectedLetter) {
+					return 'yes';
+				} 
+			}			
+			return 'no';
+		}
+	);
+	// played between years
+	$scope.questionResponses.push(
+		function(question) {
+			alert(question.selectedStart);
+			alert(question.selectedEnd);
+		}
+	);	
+
 	$scope.canAddQuestion = true;	
 	$scope.questionsAsked = [];
+
 	$scope.letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];	
 	$scope.names = ['first', 'last'];	
 	$scope.years = [];
 	for (var year = 1917;year <= thisYear;year++) {
 		$scope.years.push(year);
 	}
-    $scope.getRandomAthlete();
 	
 	$scope.questionTypes = [];
-	$scope.questionTypes.push({ display:'First letter of name', value:FIRST_LETTER_QUESTION });
-	$scope.questionTypes.push({ display:'Play during years', value:PLAY_DURING_YEARS_QUESTION });
+	$scope.questionTypes.push({ display:'First letter of name', type:FIRST_LETTER_QUESTION });
+	$scope.questionTypes.push({ display:'Play during years', type:PLAY_DURING_YEARS_QUESTION });
+	
+	$scope.getRandomAthlete();
 }]);
