@@ -35,7 +35,7 @@
 		<div ng-switch-when="4">
 			Did they play for 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedTeam" ng-options="teamIdentity.FullName for teamIdentity in teamIdentities" ></select>
-			<span ng-if="question.answered">{{$parent.question.selectedTeam.Name}}</span>
+			<span ng-if="question.answered">{{$parent.question.selectedTeam.FullName}}</span>
 		</div>		
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
 		<span ng-if="question.answered">{{question.answered}}</span>

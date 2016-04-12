@@ -79,13 +79,18 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				if (teamIdentity.EndDate) {
 					endYear = new Date(teamIdentity.EndDate).getFullYear();
 				}				
-				teamIdentity.FullName = teamIdentity.City + ' ' + teamIdentity.Name + 
+				teamIdentity.StartYear = startYear;
+				teamIdentity.EndYear = endYear;
+				teamIdentity.FullName = teamIdentity.City + ' ' + teamIdentity.Name +
 					' (' + startYear + '-' + endYear + ')';					
 				$scope.teamIdentities.push(teamIdentity);
 				$scope.teamIdentityMap[teamIdentity.Id] = teamIdentity;
 			}			
 			
 			$scope.teamIdentities.sort(function(a,b) {
+				if (a.City == b.City) {
+					return a.StartYear < b.StartYear ? -1 : 1;
+				}
 				return a.FullName < b.FullName ? -1 : 1;
 			});
 			
