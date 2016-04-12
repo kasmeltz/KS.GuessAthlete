@@ -1,5 +1,6 @@
 <div ng-controller="homeController" >
 	<h1>Guess The Hockey Player</h1>
+	<button ng-if="teamIdentities" ng-click="getRandomAthlete()";>Start Round</button>
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
 		<h3>Question {{$index + 1}}</h3>
 		<div ng-switch-when="0">
@@ -30,6 +31,11 @@
 			and
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
+		</div>		
+		<div ng-switch-when="4">
+			Did they play for 
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedTeam" ng-options="teamIdentity.FullName for teamIdentity in teamIdentities" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedTeam.Name}}</span>
 		</div>		
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
 		<span ng-if="question.answered">{{question.answered}}</span>
