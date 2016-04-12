@@ -104,6 +104,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             skaterStatLineRepository.Delete(listedSkaterStatLines.ElementAt(0).Id).Wait();
             listedSkaterStatLines = skaterStatLineRepository.List().Result;
             Assert.AreEqual(3, listedSkaterStatLines.Count());
+
+            listedSkaterStatLines = skaterStatLineRepository.ForAthlete(athletes.ElementAt(0).Id).Result;
+            Assert.AreEqual(1, listedSkaterStatLines.Count());
         }
     }
 }

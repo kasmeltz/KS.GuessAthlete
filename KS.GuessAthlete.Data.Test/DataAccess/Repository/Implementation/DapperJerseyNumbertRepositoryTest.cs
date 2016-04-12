@@ -89,6 +89,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             jerseyNumberRepository.Delete(listedJerseyNumbers.ElementAt(0).Id).Wait();
             listedJerseyNumbers = jerseyNumberRepository.List().Result;
             Assert.AreEqual(3, listedJerseyNumbers.Count());
+
+            listedJerseyNumbers = jerseyNumberRepository.ForAthlete(athletes.ElementAt(0).Id).Result;
+            Assert.AreEqual(1, listedJerseyNumbers.Count());
         }
     }
 }

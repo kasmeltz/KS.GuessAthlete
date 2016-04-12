@@ -87,6 +87,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             draftRepository.Delete(listedDrafts.ElementAt(0).Id).Wait();
             listedDrafts = draftRepository.List().Result;
             Assert.AreEqual(3, listedDrafts.Count());
+
+            listedDrafts = draftRepository.ForAthlete(athletes.ElementAt(0).Id).Result;
+            Assert.AreEqual(1, listedDrafts.Count());
         }
     }
 }

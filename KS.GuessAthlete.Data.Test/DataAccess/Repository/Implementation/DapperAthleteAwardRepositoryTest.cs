@@ -83,6 +83,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             athleteAwardRepository.Delete(listedAthleteAwards.ElementAt(0).Id).Wait();
             listedAthleteAwards = athleteAwardRepository.List().Result;
             Assert.AreEqual(3, listedAthleteAwards.Count());
+
+            listedAthleteAwards = athleteAwardRepository.ForAthlete(athletes.ElementAt(0).Id).Result;
+            Assert.AreEqual(1, listedAthleteAwards.Count());
         }
     }
 }

@@ -109,6 +109,9 @@ namespace KS.SportsOps.Data.Test.DataAccess.Repository.Implementation
             goalieStatLineRepository.Delete(listedGoalieStatLines.ElementAt(0).Id).Wait();
             listedGoalieStatLines = goalieStatLineRepository.List().Result;
             Assert.AreEqual(3, listedGoalieStatLines.Count());
+
+            listedGoalieStatLines = goalieStatLineRepository.ForAthlete(athletes.ElementAt(0).Id).Result;
+            Assert.AreEqual(2, listedGoalieStatLines.Count());
         }
     }
 }
