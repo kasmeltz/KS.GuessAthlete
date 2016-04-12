@@ -47,7 +47,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             ON
 	            skt.SeasonId = sea.Id
             GROUP BY
-	            ath.Name, ath.Id
+	            ath.Id
             HAVING
 	            SUM(skt.GamesPlayed) >= @GamesPlayed
             AND
@@ -69,6 +69,41 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                     StartYear = startYear
                 }, 
                 string.Format("SkaterForCriteriagp{0}p{1}ppg{2}sy{3]", gamesPlayed, points, ppg, startYear));
+        }
+
+        private const string _goaliesForCriteriaSql = @"
+            SET NOCOUNT ON;
+            SELECT
+	            ath.Id
+            FROM
+	            [app].[Athlete] ath
+            INNER JOIN
+	            [app].[GoalieStatLine] gs
+            ON
+	            gst.AthleteId = ath.Id
+            INNER JOIN
+	            [app].[Season] sea
+            ON
+	            gst.SeasonId = sea.Id
+            GROUP BY
+	            ath.Id 
+            HAVING
+	            SUM(gst.GamesPlayed) >= @GamesPlayed
+            AND
+                SUM(gst.Wins) >= @Wins
+            AND
+	            MIN(sea.StartDate) >= @StartYear";
+
+        public Task<IEnumerable<int>> GoaliesForCriteria(int gamesPlayed, int wins, int startYear)
+        {
+            return List<int>(_goaliesForCriteriaSql,
+                new
+                {
+                    GamesPlayed = gamesPlayed,
+                    Wins = wins,
+                    StartYear = startYear
+                },
+                string.Format("GoalieForCriteriagp{0}w{1}sy{2]", gamesPlayed, wins, startYear));
         }
 
         private const string _getSql = @"
@@ -169,35 +204,6 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             ELSE
             BEGIN
                 SELECT -1
-            END";
-
-        /*
-SELECT
-	ath.Id,
-	ath.Name,
-	SUM(skt.GamesPlayed) as GamesPlayed,
-	(SUM(skt.Goals) + SUM(skt.Assists)) as Points,
-	CAST(SUM(skt.Goals) + SUM(skt.Assists) as decimal) /
-	CAST(SUM(skt.GamesPlayed) as decimal) as PPG,
-	MIN(sea.StartDate) as FirstSeason
-FROM
-	[app].[Athlete] ath
-INNER JOIN
-	[app].[SkaterStatLine] skt
-ON
-	skt.AthleteId = ath.Id
-INNER JOIN
-	[app].[Season] sea
-ON
-	skt.SeasonId = sea.Id
-GROUP BY
-	ath.Name, ath.Id
-HAVING
-	SUM(skt.GamesPlayed) > 200
-AND
-	SUM(skt.Goals) + SUM(skt.Assists) > 1000
-ORDER BY
-	PPG desc
-    */
+            END";        
     }
 }

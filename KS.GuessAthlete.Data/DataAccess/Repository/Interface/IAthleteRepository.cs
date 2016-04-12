@@ -11,5 +11,11 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Interface
         /// </summary>
         /// <returns>All of the Skater Athletes in the data store that exceed the specified criteria.</returns>
         Task<IEnumerable<int>> SkatersForCriteria(int gamesPlayed, int points, decimal ppg, int startYear);
+
+        /// <summary>
+        /// Returns all of the Goalie Athletes in the data store that exceed the specified criteria.
+        /// </summary>
+        /// <returns>All of the Goalie Athletes in the data store that exceed the specified criteria.</returns>
+        Task<IEnumerable<int>> GoaliesForCriteria(int gamesPlayed, int wins, int startYear);
     }
 }
