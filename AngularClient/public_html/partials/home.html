@@ -49,7 +49,47 @@
 			<span ng-if="question.answered">{{$parent.question.selectedDivision.FullName}}</span>
 			division
 		</div>			
-		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
+		<div ng-switch-when="gamesplayed">
+			Did they play more than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="hundred for hundred in hundreds" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
+			games
+		</div>	
+		<div ng-switch-when="points">
+			Did they score more than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="hundred for hundred in hundreds" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
+			points
+		</div>			
+		<div ng-switch-when="goals">
+			Did they score more than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="hundred for hundred in hundreds" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
+			goals
+		</div>	
+		<div ng-switch-when="assists">
+			Did they score more than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="hundred for hundred in hundreds" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
+			assists
+		</div>	
+		<div ng-switch-when="wins">
+			Do they have more than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="hundred for hundred in hundreds" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
+			wins
+		</div>	
+		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>		
 		<span style="font-size: x-large; color: #00ff00;" ng-if="question.answered == 'yes'"><img width="50" src="img/check.png" /></span>
 		<span style="font-size: x-large; color: #ff0000" ng-if="question.answered == 'no'"><img width="50" src="img/error.png" /></span>
 	</div>

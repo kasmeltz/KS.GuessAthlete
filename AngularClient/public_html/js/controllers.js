@@ -6,6 +6,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
     $scope.$route = $route;
 	
 	// misc data
+	$scope.seasonTypes = ['regular season', 'playoff', 'total'];
 	$scope.letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];	
 	$scope.names = ['first', 'last'];	
 	$scope.years = [];
@@ -13,6 +14,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		$scope.years.push(year);
 	}
 	$scope.positions = ['C', 'LW', 'RW', 'D', 'G']
+	$scope.hundreds = [];
+	for(var h = 50; h <= 3500;h += 50) {
+		$scope.hundreds.push(h)
+	}
 	
 	$scope.getSeasons = function() {
 		$seasonDataService.load(function (data) {
@@ -174,8 +179,6 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			$scope.questionsAsked.push(question)
 			$scope.canAddQuestion = false;
 		}		
-		
-		$scope.selectedQuestionType = null;
 	};
 	
 	$scope.askQuestion = function(question) {
@@ -336,6 +339,78 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					}
 				}
 				return 'no';
+			});					
+			
+		$scope.sumStat = function(seasonType, statName) {
+			var total = 0;				
+			for (var idx in $scope.athlete.Stats) {
+				var stat = $scope.athlete.Stats[idx];	
+				if (stat.IsPlayoffs == 1 && seasonType == 'regular season') {
+					continue;
+				}
+				if (stat.IsPlayoffs == 0 && seasonType == 'playoff') {
+					continue;
+				}					
+				var value = stat[statName];
+				if (value) {
+					total += value;
+				}
+			}
+			
+			return total;
+		}
+		
+		$scope.checkStat = function(seasonType, statName, threshold) {
+			var total = $scope.sumStat(seasonType, statName);	
+			if (total > threshold) {
+				return 'yes';
+			}
+			return 'no';
+		}
+		
+		// games played
+		$scope.addQuestionType('Games Played', 'gamesplayed',
+			function() {
+				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
+			},
+			function(question) {
+				return $scope.checkStat(question.selectedSeasonType, 'GamesPlayed', question.selectedValue);
+			});		
+
+		// points
+		$scope.addQuestionType('Points', 'points',
+			function() {
+				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
+			},
+			function(question) {
+				return $scope.checkStat(question.selectedSeasonType, 'Points', question.selectedValue);
+			});		
+			
+		// goals
+		$scope.addQuestionType('Goals', 'goals',
+			function() {
+				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
+			},
+			function(question) {
+				return $scope.checkStat(question.selectedSeasonType, 'Goals', question.selectedValue);
+			});		
+
+		// assists
+		$scope.addQuestionType('Assists', 'assists',
+			function() {
+				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
+			},
+			function(question) {
+				return $scope.checkStat(question.selectedSeasonType, 'Assists', question.selectedValue);
+			});
+			
+		// wins
+		$scope.addQuestionType('Wins', 'wins',
+			function() {
+				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
+			},
+			function(question) {
+				return $scope.checkStat(question.selectedSeasonType, 'Wins', question.selectedValue);
 			});					
 	};
 
