@@ -1,4 +1,5 @@
 ﻿var app = angular.module('app');
+var FIRST_LETTER_QUESTION = 0;
 
 app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService', function ($scope, $route, $pickAthleteDataService) {
     $scope.$route = $route;
@@ -18,6 +19,17 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
         });
     };
 	
+	$scope.addQuestion = function() {		
+		if ($scope.selectedQuestionType) {
+			if ($scope.selectedQuestionType.value == 0) {
+				$scope.questionsAsked.push({selectedLetter:'A',selectedName:'first'});
+				$scope.canAddQuestion = false;
+			}
+		}		
+		
+		$scope.selectedQuestionType = null;
+	};
+	
 	$scope.askQuestion = function(question) {
 		var yesNo = 'no';
 		
@@ -35,11 +47,14 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		}
 		
 		question.answered = yesNo;		
-		$scope.questionsAsked.push({selectedLetter:'A',selectedName:'first'});
-	}
+		$scope.canAddQuestion = true;
+	};
 	
+	$scope.canAddQuestion = true;	
+	$scope.questionsAsked = [];
 	$scope.letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];	
 	$scope.names = ['first', 'last'];	
-	$scope.questionsAsked = [{selectedLetter:'A',selectedName:'first'}];
     $scope.getRandomAthlete();
+	
+	$scope.questionTypes = [ { display:'First letter of name', value:FIRST_LETTER_QUESTION } ];		
 }]);

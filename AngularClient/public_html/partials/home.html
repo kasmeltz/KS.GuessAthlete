@@ -1,12 +1,16 @@
 <div ng-controller="homeController" >
 	<h1>Guess The Hockey Player</h1>
 	<div ng-repeat="question in questionsAsked">
-		Does their 
+		Does their
 		<select ng-model="question.selectedName" ng-options="name for name in names" ></select>
 		name start with
 		<select ng-model="question.selectedLetter" ng-options="letter for letter in letters" ></select>
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
 		<span ng-if="question.answered">{{question.answered}}</span>
 	</div>		
+	<div>
+		<select ng-model="selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>
+		<button ng-disabled="!canAddQuestion" ng-click="addQuestion();" >Add Question</button>
+	</div>
 	<!--<h2>{{athlete.Name}}</h2>-->
 </div>
