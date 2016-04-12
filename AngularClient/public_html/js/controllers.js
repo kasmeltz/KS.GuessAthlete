@@ -1,11 +1,10 @@
 ﻿var app = angular.module('app');
 var thisYear = new Date().getFullYear();
 
-app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService', '$seasonDataService', '$teamIdentitiesDataService',
-	function ($scope, $route, $pickAthleteDataService, $seasonDataService, $teamIdentitiesDataService) {
+app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService',
+	function ($scope, $route, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService) {
     $scope.$route = $route;
 	
-
 	// misc data
 	$scope.letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];	
 	$scope.names = ['first', 'last'];	
@@ -23,14 +22,56 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				$scope.seasons[season.Id] = season;
 			}			
 			
-			$scope.getTeamIdentities();
+			$scope.getAwards();
         });			
 	};
+	
+	$scope.getAwards = function() {
+		$awardsDataService.load(function (data) {
+			$scope.awards = [];
+			$scope.awardsMap = {};
+			for (var idx in data) {
+				var award = data[idx];
+				$scope.awards.push(award);
+				$scope.awardsMap[award.Id] = award;
+			}			
+			
+			$scope.getConferences();
+        });	
+	}
+		
+	$scope.getConferences = function() {
+		$conferencesDataService.load(function (data) {
+			$scope.conferences = [];
+			$scope.conferencesMap = {};
+			for (var idx in data) {
+				var conference = data[idx];
+				$scope.conferences.push(conference);
+				$scope.conferencesMap[conference.Id] = conference;
+			}			
+			
+			$scope.getDivisions();
+        });	
+	}	
+	
+	$scope.getDivisions = function() {
+		$divisionsDataService.load(function (data) {
+			$scope.divisions = [];
+			$scope.divisionsMap = {};
+			for (var idx in data) {
+				var division = data[idx];
+				$scope.divisions.push(division);
+				$scope.divisionsMap[division.Id] = division;
+			}			
+			
+			$scope.getTeamIdentities();
+        });	
+	}
 	
 	$scope.getTeamIdentities = function() {
 		$teamIdentitiesDataService.load(function (data) {
 			$scope.teamIdentities = [];
-			$scope.teamIdentityMap = [];
+			$scope.teamIdentityMap = {};
 			for (var idx in data) {
 				var teamIdentity = data[idx];		
 				var startYear = new Date(teamIdentity.StartDate).getFullYear();
