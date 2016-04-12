@@ -4,20 +4,33 @@
 		<h3>Question {{$index + 1}}</h3>
 		<div ng-switch-when="0">
 			Were they primarily considered to be a 
-			<select ng-model="$parent.question.selectedPosition" ng-options="position for position in positions" ></select>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedPosition" ng-options="position for position in positions" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedPosition}}</span>
 		</div>
 		<div ng-switch-when="1">
 			Does their
-			<select ng-model="$parent.question.selectedName" ng-options="name for name in names" ></select>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedName" ng-options="name for name in names" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedName}}</span>
 			name start with
-			<select ng-model="$parent.question.selectedLetter" ng-options="letter for letter in letters" ></select>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedLetter" ng-options="letter for letter in letters" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedLetter}}</span>
 		</div>
 		<div ng-switch-when="2">
 			Did they play at least one year between
-			<select ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedStart}}</span>
 			and
-			<select ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
 		</div>
+		<div ng-switch-when="3">
+			Did they play every year between
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedStart" ng-options="year for year in years" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedStart}}</span>
+			and
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
+		</div>		
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
 		<span ng-if="question.answered">{{question.answered}}</span>
 	</div>

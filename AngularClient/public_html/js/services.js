@@ -7,6 +7,20 @@ app.service('$con', function ($http) {
     };
 });
 
+app.service('$seasonDataService', function ($con, $http) {
+    return {
+        load: function (callback) {	
+			var url = 'api/seasons';
+			
+            $http.get($con.getBaseUrl() + url,
+                { cache: true })
+                .then(function (response) {
+                    callback(response.data);
+                });
+        }
+    };
+});
+
 app.service('$pickAthleteDataService', function ($con, $http) {
     return {
         pickAthlete: function (options, callback) {	

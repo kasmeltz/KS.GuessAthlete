@@ -162,8 +162,17 @@ namespace KS.GuessAthlete.Logic.Importers
                         statLine.TeamIdentityId = teamIdentity.Id;
 
                         Season season = seasons
-                            .Where(sea => sea.StartDate.Year == statLine.Year)
+                            .Where(sea => sea.StartDate.Year == statLine.Year && 
+                                sea.IsPlayoffs == 0)
                             .FirstOrDefault();
+
+                        if (season == null)
+                        {
+                            season = seasons
+                            .Where(sea => sea.StartDate.Year == statLine.Year + 1 &&
+                                sea.IsPlayoffs == 1)
+                            .FirstOrDefault();
+                        }
 
                         if (season != null)
                         {
