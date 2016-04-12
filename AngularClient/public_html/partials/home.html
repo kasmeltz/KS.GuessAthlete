@@ -36,9 +36,16 @@
 			Did they play for 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedTeam" ng-options="teamIdentity.FullName for teamIdentity in teamIdentities" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedTeam.FullName}}</span>
-		</div>		
+		</div>	
+		<div ng-switch-when="5">
+			Did they play in the 
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedConference" ng-options="conference.FullName for conference in conferences" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedConference.FullName}}</span>
+			conference
+		</div>			
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>
-		<span ng-if="question.answered">{{question.answered}}</span>
+		<span style="font-size: x-large; color: #00ff00;" ng-if="question.answered == 'yes'"><img width="50" src="img/check.png" /></span>
+		<span style="font-size: x-large; color: #ff0000" ng-if="question.answered == 'no'"><img width="50" src="img/error.png" /></span>
 	</div>
 	<div ng-if="canAddQuestion">
 		<select ng-model="$parent.selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>

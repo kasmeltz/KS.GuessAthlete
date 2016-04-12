@@ -59,6 +59,15 @@ app.service('$teamIdentitiesDataService', function ($con, $http) {
     };
 });
 
+app.service('$teamIdentityDivisionsDataService', function ($con, $http) {
+    return {
+        load: function (callback) {	
+			var url = 'api/teamidentitydivisions';
+			$con.get(url, callback, true);
+        }
+    };
+});
+
 app.service('$pickAthleteDataService', function ($con, $http) {
     return {
         pickAthlete: function (options, callback) {	

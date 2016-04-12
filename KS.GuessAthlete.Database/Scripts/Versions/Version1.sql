@@ -1313,7 +1313,7 @@ BEGIN
 	FROM
 		[app].[TeamIdentity] 
 	WHERE
-		Abbreviation IN ('TOR', 'MIN', 'DET', 'STL', 'CHI')
+		Abbreviation IN ('TOR', 'MNS', 'DET', 'STL', 'CHI')
 
 	INSERT INTO
 		[app].[TeamIdentityDivision]

@@ -1,8 +1,8 @@
 ﻿var app = angular.module('app');
 var thisYear = new Date().getFullYear();
 
-app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService',
-	function ($scope, $route, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService) {
+app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService', '$teamIdentityDivisionsDataService',
+	function ($scope, $route, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService, $teamIdentityDivisionsDataService) {
     $scope.$route = $route;
 	
 	// misc data
@@ -19,6 +19,8 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			$scope.seasons = {};
 			for (var idx in data) {
 				var season = data[idx];
+				season.StartYear = new Date(season.StartDate).getFullYear();
+				season.EndYear = new Date(season.EndDate).getFullYear();
 				$scope.seasons[season.Id] = season;
 			}			
 			
@@ -46,9 +48,20 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			$scope.conferencesMap = {};
 			for (var idx in data) {
 				var conference = data[idx];
+				var startYear = conference.StartYear;
+				var endYear = 'now'
+				if (conference.EndYear) {
+					endYear = conference.EndYear;
+				}				
+				conference.FullName = conference.Name +
+					' (' + startYear + '-' + endYear + ')';	
 				$scope.conferences.push(conference);
 				$scope.conferencesMap[conference.Id] = conference;
 			}			
+			
+			$scope.conferences.sort(function(a,b) {
+				return a.StartYear < b.StartYear ? -1 : 1;
+			});
 			
 			$scope.getDivisions();
         });	
@@ -94,9 +107,25 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				return a.FullName < b.FullName ? -1 : 1;
 			});
 			
-			$scope.loadQuestions();
+			$scope.getTeamIdentityDivisions();
         });			
 	};	
+	
+	$scope.getTeamIdentityDivisions = function() {
+		$teamIdentityDivisionsDataService.load(function (data) {
+			$scope.teamIdentityDivisionsMap = {};
+			for (var idx in data) {
+				var teamIdentityDivision = data[idx];
+				if (!$scope.teamIdentityDivisionsMap[teamIdentityDivision.TeamIdentityId]) {
+					$scope.teamIdentityDivisionsMap[teamIdentityDivision.TeamIdentityId] = [];
+				}
+				$scope.teamIdentityDivisionsMap[teamIdentityDivision.TeamIdentityId].push(teamIdentityDivision);
+			}			
+			
+			$scope.loadQuestions();
+        });	
+	}
+	
 	
     $scope.getRandomAthlete = function () {
 		var options = {
@@ -252,7 +281,35 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					}
 				}
 				return 'no';
-			});			
+			});	
+
+		$scope.getDivisionForTeamAndSeason = function(teamIdentityId, seasonId) {
+			var season = $scope.seasons[seasonId];
+			var teamIdentityDivisionList = $scope.teamIdentityDivisionsMap[teamIdentityId];
+			for(var idx in teamIdentityDivisionList) {
+				var teamIdentityDivision = teamIdentityDivisionList[idx];
+				if (season.StartYear >= teamIdentityDivision.StartYear &&
+					season.EndYear <= teamIdentityDivision.EndYear) {
+						return $scope.divisionsMap[teamIdentityDivision.DivisionId];
+				}
+			}	
+		};
+		
+		// played in conference
+		$scope.addQuestionType('Played in conference', 
+			function() {
+				return { selectedConference:$scope.conferences[0] };
+			},
+			function(question) {	
+				for (var idx in $scope.athlete.Stats) {
+					var stat = $scope.athlete.Stats[idx];					
+					var division = $scope.getDivisionForTeamAndSeason(stat.TeamIdentityId, stat.SeasonId);
+					if (division && division.ConferenceId == question.selectedConference.Id) {
+						return 'yes';
+					}
+				}
+				return 'no';
+			});		
 	};
 
 	$scope.getSeasons();
