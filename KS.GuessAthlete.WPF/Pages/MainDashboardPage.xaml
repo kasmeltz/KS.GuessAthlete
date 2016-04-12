@@ -12,5 +12,6 @@
         <TextBlock FontSize="20">Currently importing athlete: </TextBlock>
         <TextBlock Name="txtAthleteName" FontSize="24" ></TextBlock>
         <Button Content="Load Athletes" Click="Button_Click"></Button>
+        <Button Content="Pick An Athlete" Click="PickAthlete_Click"></Button>
     </StackPanel>
 </Page>

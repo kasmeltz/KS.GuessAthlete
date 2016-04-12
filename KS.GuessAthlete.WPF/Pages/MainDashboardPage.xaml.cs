@@ -41,5 +41,18 @@ namespace KS.GuessAthlete.WPF.Pages
 
             await importer.ImportAthletes(cb);
         }
+
+        private async void PickAthlete_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "api/pickAthlete";
+            url += "?skaterGamesPlayed=1500";
+            url += "&skaterPoints=2500";
+            url += "&skaterPPG=1.5";
+            url += "&goalieGamesPlayed=10000";
+            url += "&goalieWins=10000";
+            url += "&startYear=1960";
+
+            Athlete athlete = await MainWindow.Client.Get<Athlete>(url);
+        }
     }
 }

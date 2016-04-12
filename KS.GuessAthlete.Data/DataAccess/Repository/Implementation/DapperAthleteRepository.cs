@@ -68,7 +68,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                     PPG = ppg,
                     StartYear = startYear
                 }, 
-                string.Format("SkaterForCriteriagp{0}p{1}ppg{2}sy{3]", gamesPlayed, points, ppg, startYear));
+                string.Format("SkaterForCriteriagp{0}p{1}ppg{2}sy{3}", gamesPlayed, points, ppg, startYear));
         }
 
         private const string _goaliesForCriteriaSql = @"
@@ -78,7 +78,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
             FROM
 	            [app].[Athlete] ath
             INNER JOIN
-	            [app].[GoalieStatLine] gs
+	            [app].[GoalieStatLine] gst
             ON
 	            gst.AthleteId = ath.Id
             INNER JOIN
@@ -103,7 +103,7 @@ namespace KS.GuessAthlete.Data.DataAccess.Repository.Implementation
                     Wins = wins,
                     StartYear = startYear
                 },
-                string.Format("GoalieForCriteriagp{0}w{1}sy{2]", gamesPlayed, wins, startYear));
+                string.Format("GoalieForCriteriagp{0}w{1}sy{2}", gamesPlayed, wins, startYear));
         }
 
         private const string _getSql = @"

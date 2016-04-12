@@ -1,9 +1,9 @@
 ﻿using KS.GuessAthlete.Data.DataAccess.Repository.Interface;
 using KS.GuessAthlete.Data.POCO;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KS.GuessAthlete.Logic.AthletePicker.Hockey
 {
@@ -29,14 +29,15 @@ namespace KS.GuessAthlete.Logic.AthletePicker.Hockey
             ISkaterStatLineRepository skaterStatLineRepository = Repository.SkaterStatLines();
             IGoalieStatLineRepository goalieStatLineRepository = Repository.GoalieStatLines();
 
-            List<int> athleteIds = (await athleteRepository
+            List<int> skaterIds = (await athleteRepository
                 .SkatersForCriteria(skaterGamesPlayed, skaterPoints, skaterPPG, startYear))
                 .ToList();
-            athleteIds.AddRange(await athleteRepository
-                .GoaliesForCriteria(goalieGamesPlayed, goalieWins, startYear));
+            IEnumerable<int> goalieIds = await athleteRepository
+                .GoaliesForCriteria(goalieGamesPlayed, goalieWins, startYear);
+            skaterIds.AddRange(goalieIds);
 
             Random rnd = new Random();
-            int chosenId = athleteIds[rnd.Next(0, athleteIds.Count)];
+            int chosenId = skaterIds[rnd.Next(0, skaterIds.Count)];
 
             Athlete athlete = await athleteRepository.Get(chosenId);
             athlete.Drafts = await draftRepository.ForAthlete(chosenId);
