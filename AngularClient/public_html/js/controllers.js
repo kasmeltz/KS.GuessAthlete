@@ -183,7 +183,7 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 	$scope.newGame = function() {		
 		$scope.roundStarted = false;
 		$scope.correctGuess = false;
-		$scope.gameOver = false;
+		$scope.gameEnded = false;
 		$scope.lives = 3;
 		$scope.gameRound = 1;
 		$scope.gamePoints = 0;
@@ -196,7 +196,7 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 				startYear: 1965
 			};	
 		//$scope.roundSeconds = 60 * 20;
-		$scope.roundSeconds = 10;
+		$scope.roundSeconds = 4;
 	}
 
 	$scope.timerExpired = function() {
@@ -205,6 +205,15 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 		$interval.cancel($scope.timerUpdate);
 		$scope.lives--;
 		$scope.roundStarted = false;
+		if ($scope.lives <= 0) {
+			$scope.lives = 0;
+			$scope.gameOver();
+		}
+	}
+	
+	$scope.gameOver = function() {
+		$scope.roundStarted = false;
+		$scope.gameEnded = true;
 	}
 	
     $scope.startRound = function () {
@@ -225,6 +234,7 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 		}
 		
         $pickAthleteDataService.pickAthlete($scope.athleteOptions, function (data) {
+			$scope.incorrectGuesses = 0;
 			$scope.athlete = data;			
 			$scope.canAddQuestion = true;	
 			$scope.questionsAsked = [];
@@ -628,6 +638,13 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 				$scope.correctGuess = true;
 				$scope.gamePoints += $scope.availblePoints;
 				$scope.canAddQuestion = false;											
+			} else {
+				$scope.incorrectGuesses++;
+				$scope.lives--;
+				if ($scope.lives <= 0) {
+					$scope.lives = 0;
+					$scope.gameOver();
+				}
 			}
 		}
 	}

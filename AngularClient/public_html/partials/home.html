@@ -2,10 +2,14 @@
 	<h1>Guess The Hockey Player</h1>
 	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Round {{gameRound}}</div>
 	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Points {{gamePoints}}</div>
-	<h2>Lives {{lives}}</h3>
-	<h2>Time Left {{timeLeft}}</h3>
-	<h2>Available Points {{availblePoints}}</h3>
-	<button ng-if="roundStarted == false" ng-click="startRound()";>Start Round</button>	
+	<h1 ng-if="gameEnded">GAME OVER</h1>
+	<button ng-if="gameEnded" ng-click="newGame();">Start New Game</button>
+	<div ng-if="!gameEnded">
+		<h2>Lives {{lives}}</h3>
+		<h2>Time Left {{timeLeft}}</h2>
+		<h2>Available Points {{availblePoints}}</h2>	
+	</div>
+	<button ng-if="roundStarted == false && gameEnded == false" ng-click="startRound()";>Start Round</button>	
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
 		<h3>Question {{$index + 1}}</h3>
 		<div ng-switch-when="pos">
