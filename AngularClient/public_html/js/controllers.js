@@ -44,7 +44,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 	$scope.hundreds = [];
 	for(var h = 50; h <= 3500;h += 50) {
 		$scope.hundreds.push(h)
-	}
+	}	
 	
 	// load data from web service	
 	$scope.getSeasons = function() {
@@ -167,33 +167,36 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				$scope.teamIdentityDivisionsMap[teamIdentityDivision.TeamIdentityId].push(teamIdentityDivision);
 			}			
 			
-			$scope.loadQuestions();
+			$scope.loadQuestions();			
+			$scope.gameRound = 0;
+			$scope.gamePoints = 0;
         });	
 	}
 	
-	
-    $scope.getRandomAthlete = function () {
-		var options = {
-			skaterGamesPlayed: 1600,
-			skaterPoints: 1300,
-			skaterPPG: 0,
-			goalieGamesPlayed: 900,
-			goalieWins: 500,
-			startYear: 1965
-		};
+    $scope.startRound = function () {
+		if ($scope.gameRound == 0) {
+			$scope.athleteOptions = {
+				skaterGamesPlayed: 1600,
+				skaterPoints: 1300,
+				skaterPPG: 0,
+				goalieGamesPlayed: 900,
+				goalieWins: 500,
+				startYear: 1965
+			};	
+		} else {
+			$scope.athleteOptions.skaterGamesPlayed -= 100;			
+			$scope.athleteOptions.skaterGamesPlayed = Math.max(200, $scope.athleteOptions.skaterGamesPlayed);
+			$scope.athleteOptions.skaterPoints -= 50;
+			$scope.athleteOptions.skaterPoints = Math.max(100, $scope.athleteOptions.skaterPoints);
+			$scope.athleteOptions.goalieGamesPlayed -= 100;
+			$scope.athleteOptions.goalieGamesPlayed = Math.max(200, $scope.athleteOptions.goalieGamesPlayed);
+			$scope.athleteOptions.goalieWins -= 50;
+			$scope.athleteOptions.goalieWins = Math.max(100, $scope.athleteOptions.goalieWins);
+			$scope.athleteOptions.startYear -= 5;
+			$scope.athleteOptions.startYear = Math.max(1915, $scope.athleteOptions.startYear);
+		}
 		
-		/*		
-		var options = {
-			skaterGamesPlayed: 100000,
-			skaterPoints: 1300,
-			skaterPPG: 0,
-			goalieGamesPlayed: 1000,
-			goalieWins: 600,
-			startYear: 1965
-		};
-		*/				
-		
-        $pickAthleteDataService.pickAthlete(options, function (data) {
+        $pickAthleteDataService.pickAthlete($scope.athleteOptions, function (data) {
 			$scope.guessedAthlete = '';
 			$scope.correctGuess = false;
 			$scope.gameRound++;
@@ -571,8 +574,5 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			}
 		}
 	}
-
-	$scope.gameRound = 0;
-	$scope.gamePoints = 0;
 	$scope.getSeasons();
 }]);

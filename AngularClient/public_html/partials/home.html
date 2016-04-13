@@ -2,7 +2,7 @@
 	<h1>Guess The Hockey Player</h1>
 	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Round {{gameRound}}</div>
 	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Points {{gamePoints}}</div>
-	<button ng-if="teamIdentities" ng-click="getRandomAthlete()";>Start Round</button>
+	<button ng-if="correctGuess == true || gameRound == 0" ng-click="startRound()";>Start Round</button>
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
 		<h3>Question {{$index + 1}}</h3>
 		<div ng-switch-when="pos">
