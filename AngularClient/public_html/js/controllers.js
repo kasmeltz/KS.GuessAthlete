@@ -180,6 +180,9 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		*/				
 		
         $pickAthleteDataService.pickAthlete(options, function (data) {
+			$scope.guessedAthlete = '';
+			$scope.correctGuess = false;
+			$scope.gameRound++;
 			$scope.athlete = data;			
 			$scope.canAddQuestion = true;	
 			$scope.questionsAsked = [];
@@ -521,6 +524,18 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				return 'no';
 			});			
 	};
+	
+	$scope.makeGuess = function(){
+		if ($scope.guessedAthlete) {
+			if ($scope.guessedAthlete.toLowerCase() == $scope.athlete.Name.toLowerCase()) {
+				$scope.correctGuess = true;
+				$scope.gamePoints += 100;
+				$scope.canAddQuestion = false;
+			}
+		}
+	}
 
+	$scope.gameRound = 0;
+	$scope.gamePoints = 0;
 	$scope.getSeasons();
 }]);

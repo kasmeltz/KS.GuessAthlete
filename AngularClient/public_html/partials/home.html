@@ -1,5 +1,7 @@
 <div ng-controller="homeController" >
 	<h1>Guess The Hockey Player</h1>
+	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Round {{gameRound}}</div>
+	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Points {{gamePoints}}</div>
 	<button ng-if="teamIdentities" ng-click="getRandomAthlete()";>Start Round</button>
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
 		<h3>Question {{$index + 1}}</h3>
@@ -137,7 +139,13 @@
 	<div ng-if="canAddQuestion">
 		<select ng-model="$parent.selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>
 		<button ng-click="addQuestion();">Add Question</button>
+	</div>	
+	<div ng-if="athlete && !correctGuess">
+		My guess is: <input type="text" ng-model="$parent.guessedAthlete" />
+		<button ng-click="makeGuess();">Make Guess</button>
+		<h2>{{athlete.Name}}</h2>
+	</div>	
+	<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
+		CORRECT!
 	</div>
-	<h2>{{athlete.Name}}</h2>
-	<question-partial />
 </div>
