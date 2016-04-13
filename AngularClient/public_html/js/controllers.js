@@ -43,8 +43,8 @@ var getEditDistance = function(a, b) {
 	return matrix[b.length][a.length];
 };
 
-app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService', '$teamIdentityDivisionsDataService',
-	function ($scope, $route, $interval, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService, $teamIdentityDivisionsDataService) {
+app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService', '$teamIdentityDivisionsDataService',
+	function ($rootScope, $scope, $route, $interval, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService, $teamIdentityDivisionsDataService) {
     $scope.$route = $route;
 	
 	// misc data
@@ -239,7 +239,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 			};	
 		$scope.roundSeconds = 20 * 60;
 		
-		//roundHistoryController.clearRounds();
+		$rootScope.$broadcast('clearRoundHistory');
 	}
 
 	$scope.timerExpired = function() {
@@ -306,13 +306,11 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
         });		
     };
 	
-	/* TO DO FIGURE OUT HOW TO CANCEL INTERVAL WHEN CONTROLLER IS DESTROYED
-	$scope.on('$destroy', function() {
+	$scope.$on('$destroy', function() {
 		if ($scope.timerUpdate) {
 			$interval.cancel($scope.timerUpdate);
 		}
 	});	
-	*/
 		
 	$scope.addQuestion = function() {		
 		var question = $scope.addQuestions[$scope.selectedQuestionType.type]();
@@ -753,7 +751,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 		var elapsed = Math.floor((roundHistory.roundEndTime.getTime() - roundHistory.roundStartTime.getTime()) / 1000);				
 		roundHistory.timeElapsed = secondsToMinutesDisplay(elapsed);
 		
-		//roundHistoryController.addRound(roundHistory);
+		$rootScope.$broadcast('addRoundHistory', roundHistory);
 	}
 	
 	$scope.madeIncorrectGuess = function() {
@@ -780,13 +778,13 @@ app.controller('roundHistoryController', ['$scope', '$route',
     $scope.$route = $route;
 	
 	$scope.rounds = [];
-	
-	$scope.clearRounds = function(round) {
+		
+	$scope.$on('clearRoundHistory', function (event, data) {
 		$scope.rounds = [];
-	}
+	});
 	
-	$scope.addRound = function(round) {
-		rounds.push(round);
-	}
+	$scope.$on('addRoundHistory', function (event, data) {
+		$scope.rounds.push(data);
+	});
 }]);
 
