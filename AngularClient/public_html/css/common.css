@@ -1,2 +1,9 @@
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important; }
+  
+.questionNumber {
+	border: #0000ff 5px solid;
+	border-radius: 25px;
+	background: #6666ff;
+	color: #ffffff;
+}
