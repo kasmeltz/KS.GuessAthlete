@@ -2,7 +2,10 @@
 	<h1>Guess The Hockey Player</h1>
 	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Round {{gameRound}}</div>
 	<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Points {{gamePoints}}</div>
-	<button ng-if="correctGuess == true || gameRound == 0" ng-click="startRound()";>Start Round</button>
+	<h2>Lives {{lives}}</h3>
+	<h2>Time Left {{timeLeft}}</h3>
+	<h2>Available Points {{availblePoints}}</h3>
+	<button ng-if="roundStarted == false" ng-click="startRound()";>Start Round</button>	
 	<div ng-repeat="question in questionsAsked" ng-switch="question.type">
 		<h3>Question {{$index + 1}}</h3>
 		<div ng-switch-when="pos">
@@ -138,15 +141,15 @@
 			<span ng-if="question.answered == true">{{$parent.question.selectedCountry}}</span>
 			?
 		</div>					
-		<button ng-if="question.answered == false" ng-click="askQuestion(question);" >Ask</button>		
+		<button ng-if="question.answered == false && roundStarted == true" ng-click="askQuestion(question);" >Ask</button>		
 		<span style="font-size: x-large; color: #00ff00;" ng-if="question.answer == true"><img width="50" src="img/check.png" /></span>
 		<span style="font-size: x-large; color: #ff0000" ng-if="question.answer == false"><img width="50" src="img/error.png" /></span>
 	</div>
-	<div ng-if="canAddQuestion">
+	<div ng-if="canAddQuestion && roundStarted == true">
 		<select ng-model="$parent.selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>
 		<button ng-click="addQuestion();">Add Question</button>
 	</div>	
-	<div ng-if="athlete && !correctGuess">
+	<div ng-if="roundStarted == true">
 		My guess is: <input type="text" ng-model="$parent.guessedAthlete" />
 		<button ng-click="makeGuess();">Make Guess</button>
 		<h2>{{athlete.Name}}</h2>
