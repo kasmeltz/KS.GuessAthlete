@@ -61,10 +61,10 @@
 			{{round.timeElapsed}}
 			{{round.timeLeft}}
 			{{round.availablePoints}}
-			<div ng-repeat="incorrectGuess in incorrectGuesses">
+			<div ng-repeat="incorrectGuess in round.incorrectGuesses">
 				{{incorrectGuess}}
 			</div>
-			<div ng-repeat="question in questionsAsked" ng-switch="question.type">
+			<div ng-repeat="question in round.questionsAsked" ng-switch="question.type">
 				<span class="questionNumber">{{$index + 1}}</span>
 				<span ng-switch-when="pos"><position-question /></span>
 				<span ng-switch-when="let"><letter-question /></span>

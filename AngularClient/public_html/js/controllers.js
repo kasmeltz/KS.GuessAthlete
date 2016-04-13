@@ -743,8 +743,17 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 		roundHistory.athlete = $scope.athlete;
 		roundHistory.roundStartTime = $scope.roundStartTime;
 		roundHistory.roundEndTime = $scope.roundEndTime;
-		roundHistory.incorrectGuesses = $scope.incorrectGuesses;
-		roundHistory.questionsAsked = $scope.questionsAsked;
+		
+		roundHistory.incorrectGuesses = [];
+		for(var idx in $scope.incorrectGuesses) {
+			roundHistory.incorrectGuesses.push($scope.incorrectGuesses[idx]);
+		}
+		
+		roundHistory.questionsAsked = [];
+		for(var idx in $scope.questionsAsked) {
+			roundHistory.questionsAsked.push($scope.questionsAsked[idx]);
+		}
+		
 		roundHistory.availablePoints = $scope.availablePoints;		
 		roundHistory.timeLeft = $scope.timeLeft;
 		roundHistory.gameRound = $scope.gameRound;
