@@ -9,7 +9,7 @@ var secondsToMinutesDisplay = function(sec_num) {
 	return minutes + ':' + seconds;
 }
 
-app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService', '$teamIdentityDivisionsDataService',
+app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService', '$teamIdentityDivisionsDataService',
 	function ($scope, $route, $interval, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService, $teamIdentityDivisionsDataService) {
     $scope.$route = $route;
 	
@@ -193,10 +193,9 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 				skaterPPG: 0,
 				goalieGamesPlayed: 900,
 				goalieWins: 500,
-				startYear: 1965
+				startYear: 1975
 			};	
-		//$scope.roundSeconds = 60 * 20;
-		$scope.roundSeconds = 4;
+		$scope.roundSeconds = 5;
 	}
 
 	$scope.timerExpired = function() {
@@ -226,7 +225,7 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 			$scope.athleteOptions.goalieGamesPlayed = Math.max(200, $scope.athleteOptions.goalieGamesPlayed);
 			$scope.athleteOptions.goalieWins -= 50;
 			$scope.athleteOptions.goalieWins = Math.max(100, $scope.athleteOptions.goalieWins);
-			$scope.athleteOptions.startYear -= 5;
+			$scope.athleteOptions.startYear -= 2;
 			$scope.athleteOptions.startYear = Math.max(1915, $scope.athleteOptions.startYear);
 			$scope.roundSeconds -= 60;
 			$scope.roundSeconds = Math.max(300, $scope.roundSeconds);			
@@ -650,3 +649,9 @@ app.controller('homeController', ['$scope', '$route', '$interval', '$pickAthlete
 	}
 	$scope.getSeasons();
 }]);
+
+app.controller('roundHistoryController', ['$scope', '$route', 
+	function ($scope, $route) {
+    $scope.$route = $route;
+}]);
+
