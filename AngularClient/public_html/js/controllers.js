@@ -110,6 +110,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 			for (var idx in data) {
 				var award = data[idx];
 				if (award.Name == 'Presidents Trophy') { continue; }
+				if (award.Name == 'Jack Adams Award') { continue; }
 				if (award.Name == 'Stanley Cup') { continue; }
 				$scope.awards.push(award);
 				$scope.awardsMap[award.Id] = award;
@@ -217,6 +218,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 	}
 	
 	$scope.newGame = function() {	
+		$scope.selectedQuestionType = $scope.questionTypes[0];
 		$scope.questionsAsked = [];
 		$scope.incorrectGuesses = [];	
 		$scope.guessedAthlete = '';
@@ -233,7 +235,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 				skaterPPG: 0,
 				goalieGamesPlayed: 900,
 				goalieWins: 500,
-				startYear: 1975
+				startYear: 1970
 			};	
 		$scope.roundSeconds = 20 * 60;
 		
@@ -261,16 +263,15 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 		$scope.incorrectGuesses = [];
 		$scope.questionsAsked = [];
 		$scope.guessedAthlete = '';
-		$scope.correctGuess = false;
 
 		if ($scope.correctGuess == true) {
-			$scope.athleteOptions.skaterGamesPlayed -= 100;			
+			$scope.athleteOptions.skaterGamesPlayed -= 50;			
 			$scope.athleteOptions.skaterGamesPlayed = Math.max(200, $scope.athleteOptions.skaterGamesPlayed);
-			$scope.athleteOptions.skaterPoints -= 50;
-			$scope.athleteOptions.skaterPoints = Math.max(100, $scope.athleteOptions.skaterPoints);
-			$scope.athleteOptions.goalieGamesPlayed -= 100;
+			$scope.athleteOptions.skaterPoints -= 25;
+			$scope.athleteOptions.skaterPoints = Math.max(200, $scope.athleteOptions.skaterPoints);
+			$scope.athleteOptions.goalieGamesPlayed -= 50;
 			$scope.athleteOptions.goalieGamesPlayed = Math.max(200, $scope.athleteOptions.goalieGamesPlayed);
-			$scope.athleteOptions.goalieWins -= 50;
+			$scope.athleteOptions.goalieWins -= 25;
 			$scope.athleteOptions.goalieWins = Math.max(100, $scope.athleteOptions.goalieWins);
 			$scope.athleteOptions.startYear -= 2;
 			$scope.athleteOptions.startYear = Math.max(1915, $scope.athleteOptions.startYear);
@@ -279,7 +280,8 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 			$scope.gameRound++;
 		}
 		
-        $pickAthleteDataService.pickAthlete($scope.athleteOptions, function (data) {			
+        $pickAthleteDataService.pickAthlete($scope.athleteOptions, function (data) {
+			$scope.correctGuess = false;			
 			$scope.athlete = data;			
 			$scope.canAddQuestion = true;	
 			$scope.roundStartTime = new Date();
@@ -313,13 +315,11 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 	*/
 		
 	$scope.addQuestion = function() {		
-		if ($scope.selectedQuestionType) {
-			var question = $scope.addQuestions[$scope.selectedQuestionType.type]();
-			question.type = $scope.selectedQuestionType.type;
-			question.answered = false;
-			$scope.questionsAsked.push(question)
-			$scope.canAddQuestion = false;
-		}		
+		var question = $scope.addQuestions[$scope.selectedQuestionType.type]();
+		question.type = $scope.selectedQuestionType.type;
+		question.answered = false;
+		$scope.questionsAsked.push(question)
+		$scope.canAddQuestion = false;
 	};
 	
 	$scope.askQuestion = function(question) {
@@ -747,9 +747,11 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 		roundHistory.roundEndTime = $scope.roundEndTime;
 		roundHistory.incorrectGuesses = $scope.incorrectGuesses;
 		roundHistory.questionsAsked = $scope.questionsAsked;
-		roundHistory.availablePoints = $scope.availablePoints;
-		roundHistory.timeLeft = $scope.availablePoints;
+		roundHistory.availablePoints = $scope.availablePoints;		
+		roundHistory.timeLeft = $scope.timeLeft;
 		roundHistory.gameRound = $scope.gameRound;
+		var elapsed = Math.floor((roundHistory.roundEndTime.getTime() - roundHistory.roundStartTime.getTime()) / 1000);				
+		roundHistory.timeElapsed = secondsToMinutesDisplay(elapsed);
 		
 		//roundHistoryController.addRound(roundHistory);
 	}

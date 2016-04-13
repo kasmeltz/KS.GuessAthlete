@@ -5,6 +5,9 @@
 		<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Points {{gamePoints}}</div>
 		<h1 ng-if="gameEnded">GAME OVER</h1>
 		<button ng-if="gameEnded" ng-click="newGame();">Start New Game</button>
+		<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
+			{{athlete.Name}} is CORRECT!
+		</div>
 		<div ng-if="!gameEnded">
 			<h2>Guesses {{lives}}</h3>
 			<h2>Time Left {{timeLeft}}</h2>
@@ -49,15 +52,13 @@
 			My guess is: <input type="text" ng-model="$parent.guessedAthlete" />
 			<button ng-click="makeGuess();">Make Guess</button>
 			<h2>{{athlete.Name}}</h2>
-		</div>	
-		<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
-			CORRECT!
-		</div>
+		</div>			
 	</div>
 	<div class="col-md-5" ng-controller="roundHistoryController">
 		<div ng-repeat="round in rounds">
 			{{round.gameRound}}
 			{{round.athlete.Name}}
+			{{round.timeElapsed}}
 			{{round.timeLeft}}
 			{{round.availablePoints}}
 			<div ng-repeat="incorrectGuess in incorrectGuesses">
