@@ -6,6 +6,19 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
     $scope.$route = $route;
 	
 	// misc data
+	$scope.awardNumbers = [];
+	for(var n = 0; n <= 10;n++) {
+		$scope.awardNumbers.push(n);
+	}
+	$scope.jerseys = [];
+	for(var n = 1; n <= 99;n++) {
+		$scope.jerseys.push(n);
+	}
+	$scope.rounds = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+	$scope.numbers = [];
+	for(var n = 1; n <= 300;n++) {
+		$scope.numbers.push(n);
+	}
 	$scope.seasonTypes = ['regular season', 'playoff', 'total'];
 	$scope.letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];	
 	$scope.names = ['first', 'last'];	
@@ -19,6 +32,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		$scope.hundreds.push(h)
 	}
 	
+	// load data from web service	
 	$scope.getSeasons = function() {
 		$seasonDataService.load(function (data) {
 			$scope.seasons = {};
@@ -368,6 +382,21 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			return 'no';
 		}
 		
+		// jersey number
+		$scope.addQuestionType('Jersey number', 'jersey',
+			function() {
+				return { selectedValue:$scope.jerseys[0] };
+			},
+			function(question) {
+				for (var idx in $scope.athlete.JerseyNumbers) {
+					var jerseyNumber = $scope.athlete.JerseyNumbers[idx];	
+					if (jerseyNumber.Number == question.selectedValue) { 
+						return 'yes'; 
+					}
+				}
+				return 'no';
+			});			
+		
 		// games played
 		$scope.addQuestionType('Games Played', 'gamesplayed',
 			function() {
@@ -411,7 +440,86 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 			},
 			function(question) {
 				return $scope.checkStat(question.selectedSeasonType, 'Wins', question.selectedValue);
-			});					
+			});	
+
+		// drafted by
+		$scope.addQuestionType('Drafted by', 'draftedby',
+			function() {
+				return { selectedTeam:$scope.teamIdentities[0] };
+			},
+			function(question) {
+				for (var idx in $scope.athlete.Drafts) {
+					var draft = $scope.athlete.Drafts[idx];	
+					if (draft.TeamIdentityId == question.selectedTeam.Id) { 
+						return 'yes'; 
+					}
+				}
+				return 'no';
+			});	
+			
+		// draft round
+		$scope.addQuestionType('Draft round', 'draftround',
+			function() {
+				return { selectedValue:$scope.numbers[0] };
+			},
+			function(question) {
+				for (var idx in $scope.athlete.Drafts) {
+					var draft = $scope.athlete.Drafts[idx];	
+					if (draft.Round == question.selectedValue) { 
+						return 'yes'; 
+					}
+				}
+				return 'no';
+			});			
+			
+		// draft position
+		$scope.addQuestionType('Draft position', 'draftposition',
+			function() {
+				return { selectedValue:$scope.numbers[0] };
+			},
+			function(question) {
+				for (var idx in $scope.athlete.Drafts) {
+					var draft = $scope.athlete.Drafts[idx];	
+					if (draft.Position <= question.selectedValue) { 
+						return 'yes'; 
+					}
+				}
+				return 'no';
+			});	
+
+		// any awards
+		$scope.addQuestionType('Any awards', 'anyawards',
+			function() {
+				return { };
+			},
+			function(question) {
+				for (var idx in $scope.athlete.Awards) {
+					var award = $scope.athlete.Awards[idx];	
+					if (award.Position == 1) { 
+						return 'yes'; 
+					}
+				}
+				return 'no';
+			});		
+
+		// awards
+		$scope.addQuestionType('Awards', 'awards',
+			function() {
+				return { selectedAward:$scope.awards[0], selectedValue:$scope.awardNumbers[0] };
+			},
+			function(question) {
+				var total = 0;
+				for (var idx in $scope.athlete.Awards) {
+					var award = $scope.athlete.Awards[idx];	
+					if (award.Position == 1 && award.AwardId == question.selectedAward.Id ) { 
+						total++;
+					}
+				}				
+				if (total > question.selectedValue) {
+					return 'yes';
+				}
+				return 'no';
+			});			
 	};
 
 	$scope.getSeasons();

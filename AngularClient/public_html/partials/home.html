@@ -7,6 +7,7 @@
 			Were they primarily considered to be a 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedPosition" ng-options="position for position in positions" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedPosition}}</span>
+			?
 		</div>
 		<div ng-switch-when="let">
 			Does their
@@ -15,6 +16,7 @@
 			name start with
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedLetter" ng-options="letter for letter in letters" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedLetter}}</span>
+			?
 		</div>
 		<div ng-switch-when="oneyear">
 			Did they play at least one year between
@@ -23,6 +25,7 @@
 			and
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
+			?
 		</div>
 		<div ng-switch-when="allyears">
 			Did they play every year between
@@ -31,31 +34,39 @@
 			and
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedEnd" ng-options="year for year in years" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedEnd}}</span>
+			?
 		</div>		
 		<div ng-switch-when="forteam">
 			Did they play for 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedTeam" ng-options="teamIdentity.FullName for teamIdentity in teamIdentities" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedTeam.FullName}}</span>
+			?
 		</div>	
 		<div ng-switch-when="forconference">
 			Did they play in the 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedConference" ng-options="conference.FullName for conference in conferences" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedConference.FullName}}</span>
-			conference
+			conference?
 		</div>		
 		<div ng-switch-when="fordivision">
 			Did they play in the 
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedDivision" ng-options="division.FullName for division in divisions" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedDivision.FullName}}</span>
-			division
-		</div>			
+			division?
+		</div>		
+		<div ng-switch-when="jersey">
+			Did they wear Jersey Number
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="jersey for jersey in jerseys" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>		
+			?
+		</div>		
 		<div ng-switch-when="gamesplayed">
 			Did they play more than
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="hundred for hundred in hundreds" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
-			games
+			games?
 		</div>	
 		<div ng-switch-when="points">
 			Did they score more than
@@ -63,7 +74,7 @@
 			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
-			points
+			points?
 		</div>			
 		<div ng-switch-when="goals">
 			Did they score more than
@@ -71,7 +82,7 @@
 			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
-			goals
+			goals?
 		</div>	
 		<div ng-switch-when="assists">
 			Did they score more than
@@ -79,7 +90,7 @@
 			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
-			assists
+			assists?
 		</div>	
 		<div ng-switch-when="wins">
 			Do they have more than
@@ -87,8 +98,38 @@
 			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
 			<select ng-if="!question.answered" ng-model="$parent.question.selectedSeasonType" ng-options="seasonType for seasonType in seasonTypes" ></select>
 			<span ng-if="question.answered">{{$parent.question.selectedSeasonType}}</span>			
-			wins
+			wins?
 		</div>	
+		<div ng-switch-when="draftedby">
+			Were they drafted by
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedTeam" ng-options="teamIdentity.FullName for teamIdentity in teamIdentities" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedTeam.FullName}}</span>
+			?
+		</div>	
+		<div ng-switch-when="draftround">
+			Were they drafted in the
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="round for round in rounds" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>		
+			round?
+		</div>	
+		<div ng-switch-when="draftposition">
+			Were they drafted at or higher than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="number for number in numbers" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>		
+			overall?
+		</div>	
+		<div ng-switch-when="anyawards">
+			Did they win any major awards?
+		</div>	
+		<div ng-switch-when="awards">
+			Did they win the 
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedAward" ng-options="award.Name for award in awards" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedAward.Name}}</span>
+			more than
+			<select ng-if="!question.answered" ng-model="$parent.question.selectedValue" ng-options="awardNumber for awardNumber in awardNumbers" ></select>
+			<span ng-if="question.answered">{{$parent.question.selectedValue}}</span>
+			times?
+		</div>					
 		<button ng-if="!question.answered" ng-click="askQuestion(question);" >Ask</button>		
 		<span style="font-size: x-large; color: #00ff00;" ng-if="question.answered == 'yes'"><img width="50" src="img/check.png" /></span>
 		<span style="font-size: x-large; color: #ff0000" ng-if="question.answered == 'no'"><img width="50" src="img/error.png" /></span>
