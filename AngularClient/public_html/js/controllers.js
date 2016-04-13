@@ -7,7 +7,41 @@ var secondsToMinutesDisplay = function(sec_num) {
 	if (minutes < 10) { minutes = '0' + minutes; }
 	if (seconds < 10) { seconds = '0' + seconds; }
 	return minutes + ':' + seconds;
-}
+};
+
+var getEditDistance = function(a, b) {
+	if(a.length == 0) return b.length;
+	if(b.length == 0) return a.length;
+	
+	a = a.toLowerCase();
+	b = b.toLowerCase();
+	
+	var matrix = [];
+	
+	var i;
+	for(i = 0; i <= b.length; i++) {
+		matrix[i] = [i];
+	}
+	
+	var j;
+	for(j = 0;j <= a.length; j++) {
+		matrix[0][j] = j;
+	}
+	
+	for(i = 1; i <= b.length;i++) {
+		for(j = 1;j <= a.length;j++) {
+			if(b.charAt(i-1) == a.charAt(j-1)) {
+				matrix[i][j] = matrix[i-1][j-1];
+			} else {
+				matrix[i][j] = Math.min(matrix[i-1][j-1] + 1,
+					Math.min(matrix[i][j-1] + 1,
+						matrix[i-1][j] + 1));
+			}
+		}
+	}
+	
+	return matrix[b.length][a.length];
+};
 
 app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthleteDataService', '$seasonDataService', '$awardsDataService', '$conferencesDataService', '$divisionsDataService', '$teamIdentitiesDataService', '$teamIdentityDivisionsDataService',
 	function ($scope, $route, $interval, $pickAthleteDataService, $seasonDataService, $awardsDataService, $conferencesDataService, $divisionsDataService, $teamIdentitiesDataService, $teamIdentityDivisionsDataService) {
@@ -195,7 +229,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 				goalieWins: 500,
 				startYear: 1975
 			};	
-		$scope.roundSeconds = 5;
+		$scope.roundSeconds = 20 * 60;
 	}
 
 	$scope.timerExpired = function() {
@@ -228,12 +262,12 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 			$scope.athleteOptions.startYear -= 2;
 			$scope.athleteOptions.startYear = Math.max(1915, $scope.athleteOptions.startYear);
 			$scope.roundSeconds -= 60;
-			$scope.roundSeconds = Math.max(300, $scope.roundSeconds);			
+			$scope.roundSeconds = Math.max(180, $scope.roundSeconds);			
 			$scope.gameRound++;
 		}
 		
-        $pickAthleteDataService.pickAthlete($scope.athleteOptions, function (data) {
-			$scope.incorrectGuesses = 0;
+        $pickAthleteDataService.pickAthlete($scope.athleteOptions, function (data) {			
+			$scope.incorrectGuesses = [];
 			$scope.athlete = data;			
 			$scope.canAddQuestion = true;	
 			$scope.questionsAsked = [];
@@ -628,9 +662,41 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 			});			
 	};
 	
+	$scope.isEntryCorrect = function(expected, actual) {
+		expected = expected.toLowerCase();
+		actual = actual.toLowerCase();
+		
+		var expectedParts = expected.split(' ');
+		var actualParts = actual.split(' ');
+		
+		// check only last name if the first name used is a short form
+		if (expectedParts.length == 2 && actualParts.length == 2) {
+			if (actualParts[0].indexOf(expectedParts[0]) >= 0 ||
+				expectedParts[0].indexOf(actualParts[0]) >= 0) {									
+					var distance = getEditDistance(actualParts[1], expectedParts[1]);	
+					var ratio = distance / expectedParts[1].length;
+					
+					if (ratio < 0.25) {		
+						return true;
+					} else {
+						return false;
+					}
+			}
+		}
+						
+		var distance = getEditDistance(expected, actual);	
+		var ratio = distance / expected.length;
+		
+		if (ratio < 0.25) {		
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	$scope.makeGuess = function(){
 		if ($scope.guessedAthlete) {
-			if ($scope.guessedAthlete.toLowerCase() == $scope.athlete.Name.toLowerCase()) {
+			if ($scope.isEntryCorrect($scope.athlete.Name, $scope.guessedAthlete)) {
 				$scope.roundStarted = false;
 				$scope.roundEndTime = new Date();
 				$interval.cancel($scope.timerUpdate);
@@ -638,7 +704,7 @@ app.controller('gameController', ['$scope', '$route', '$interval', '$pickAthlete
 				$scope.gamePoints += $scope.availblePoints;
 				$scope.canAddQuestion = false;											
 			} else {
-				$scope.incorrectGuesses++;
+				$scope.incorrectGuesses.push($scope.guessedAthlete);
 				$scope.lives--;
 				if ($scope.lives <= 0) {
 					$scope.lives = 0;

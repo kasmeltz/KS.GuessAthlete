@@ -9,6 +9,10 @@
 			<h2>Lives {{lives}}</h3>
 			<h2>Time Left {{timeLeft}}</h2>
 			<h2>Available Points {{availblePoints}}</h2>	
+			<h2>Incorrect Guesses</h2>
+			<div ng-repeat="incorrectGuess in incorrectGuesses">
+				{{incorrectGuess}}
+			</div>
 		</div>
 		<button ng-if="roundStarted == false && gameEnded == false" ng-click="startRound()";>Start Round</button>	
 		<div ng-repeat="question in questionsAsked" ng-switch="question.type">
