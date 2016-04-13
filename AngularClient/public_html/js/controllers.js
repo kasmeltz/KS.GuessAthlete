@@ -6,6 +6,20 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
     $scope.$route = $route;
 	
 	// misc data
+	$scope.countries = [ 'Canada', 'USA', 'Sweden', 'Czechoslovakia', 'Union of Soviet Socialist Republics', 
+		'Finland', 'United Kingdom', 'Germany', 'Switzerland', 'Russian Federation', 'Denmark', 'Austria',
+		'France', 'Norway', 'Poland', 'Ireland', 'Czech Republic', 'Yugoslavia', 'Italy', 'Georgia', 'Latvia',
+		'Venezuela', 'East Germany', 'Japan', 'Brazil', 'Netherlands', 'Republic of Korea', 'Lithuania', 
+		'Nigeria', 'Lebanon', 'Indonesia', 'Jamaica', 'Belarus', 'Belgium', 'Slovenia', 'Haiti',
+		'Brunei Darussalam', 'United Republic of Tanzania', 'Taiwan', 'Paraguay', 'South Africa' ];		
+	$scope.Canada = ['Ontario', 'Quebec', 'Alberta', 'Saskatchewan', 'Manitoba', 'British Columbia', 
+		'Nova Scotia', 'New Brunswick', 'Prince Edward Island', 'Newfoundland and Labrador', 'Northwest Territories', 'Yukon' ];
+	$scope.USA = ['Minnesota', 'Massachusetts', 'Michigan', 'New York', 'Illinois', 'California', 'Pennsylvania', 'Wisconsin', 'Connecticut',
+					'Ohio', 'Rhode Island', 'Missouri', 'New Jersey', 'North Dakota', 'Alaska', 'Washington', 'Colorado', 'New Hampshire',
+					'Indiana', 'Florida', 'Texas', 'Maine', 'Oklahoma', 'Oregon', 'Utah', 'Virginia', 'Maryland', 'Georgia', 
+					'District of Columbia', 'Alabama', 'Nebraska', 'North Carolina', 'Vermont', 'Idaho', 'Arizona', 'Iowa', 
+					'Delaware', 'South Carolina', 'Montana' ];
+	
 	$scope.awardNumbers = [];
 	for(var n = 0; n <= 10;n++) {
 		$scope.awardNumbers.push(n);
@@ -193,13 +207,15 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		if ($scope.selectedQuestionType) {
 			var question = $scope.addQuestions[$scope.selectedQuestionType.type]();
 			question.type = $scope.selectedQuestionType.type;
+			question.answered = false;
 			$scope.questionsAsked.push(question)
 			$scope.canAddQuestion = false;
 		}		
 	};
 	
 	$scope.askQuestion = function(question) {
-		question.answered = $scope.questionResponses[question.type](question);		
+		question.answer = $scope.questionResponses[question.type](question);		
+		question.answered = true;
 		$scope.canAddQuestion = true;		
 	};	
 	
@@ -220,7 +236,7 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				return { selectedPosition:'C' };
 			},
 			function(question) {
-				return $scope.athlete.Position.indexOf(question.selectedPosition) >= 0 ? 'yes' : 'no';
+				return $scope.athlete.Position.indexOf(question.selectedPosition) >= 0 ? true :  false;
 			});		
 		
 		// first letter of name	
@@ -233,15 +249,15 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				if (question.selectedName == 'first') {
 					var name = names[0];
 					if (name.substring(0,1) == question.selectedLetter) {
-						return 'yes';
+						return true;
 					} 
 				} else if (question.selectedName == 'last') {
 					var name = names[names.length-1];
 					if (name.substring(0,1) == question.selectedLetter) {
-						return 'yes';
+						return true;
 					} 
 				}			
-				return 'no';
+				return false;
 			});		
 		
 		// played at least one year between years
@@ -257,11 +273,11 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					var endYear = new Date(season.EndDate).getFullYear();
 					
 					if (startYear >= question.selectedStart && endYear <= question.selectedEnd) {
-						return 'yes';
+						return true;
 					}
 				}	
 
-				return 'no';
+				return false;
 			});
 			
 		// played every year year between years
@@ -293,10 +309,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				}	
 					
 				if (yearTotal >= (question.selectedEnd - question.selectedStart) + 1) {
-					return 'yes';
+					return true;
 				}
 
-				return 'no';
+				return false;
 			});
 			
 		// played for team
@@ -308,10 +324,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				for (var idx in $scope.athlete.Stats) {
 					var stat = $scope.athlete.Stats[idx];
 					if (stat.TeamIdentityId == question.selectedTeam.Id) {
-						return 'yes';
+						return true;
 					}
 				}
-				return 'no';
+				return false;
 			});	
 
 		$scope.getDivisionForTeamAndSeason = function(teamIdentityId, seasonId) {
@@ -336,10 +352,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					var stat = $scope.athlete.Stats[idx];					
 					var division = $scope.getDivisionForTeamAndSeason(stat.TeamIdentityId, stat.SeasonId);
 					if (division && division.ConferenceId == question.selectedConference.Id) {
-						return 'yes';
+						return true;
 					}
 				}
-				return 'no';
+				return false;
 			});		
 			
 		// played in division
@@ -352,10 +368,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					var stat = $scope.athlete.Stats[idx];					
 					var division = $scope.getDivisionForTeamAndSeason(stat.TeamIdentityId, stat.SeasonId);
 					if (division && division.Id == question.selectedDivision.Id) {
-						return 'yes';
+						return true;
 					}
 				}
-				return 'no';
+				return false;
 			});					
 			
 		$scope.sumStat = function(seasonType, statName) {
@@ -380,9 +396,9 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 		$scope.checkStat = function(seasonType, statName, threshold) {
 			var total = $scope.sumStat(seasonType, statName);	
 			if (total > threshold) {
-				return 'yes';
+				return true;
 			}
-			return 'no';
+			return false;
 		}
 		
 		// jersey number
@@ -394,10 +410,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				for (var idx in $scope.athlete.JerseyNumbers) {
 					var jerseyNumber = $scope.athlete.JerseyNumbers[idx];	
 					if (jerseyNumber.Number == question.selectedValue) { 
-						return 'yes'; 
+						return true; 
 					}
 				}
-				return 'no';
+				return false;
 			});			
 		
 		// games played
@@ -454,10 +470,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				for (var idx in $scope.athlete.Drafts) {
 					var draft = $scope.athlete.Drafts[idx];	
 					if (draft.TeamIdentityId == question.selectedTeam.Id) { 
-						return 'yes'; 
+						return true; 
 					}
 				}
-				return 'no';
+				return false;
 			});	
 			
 		// draft round
@@ -469,10 +485,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				for (var idx in $scope.athlete.Drafts) {
 					var draft = $scope.athlete.Drafts[idx];	
 					if (draft.Round == question.selectedValue) { 
-						return 'yes'; 
+						return true; 
 					}
 				}
-				return 'no';
+				return false;
 			});			
 			
 		// draft position
@@ -484,10 +500,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				for (var idx in $scope.athlete.Drafts) {
 					var draft = $scope.athlete.Drafts[idx];	
 					if (draft.Position <= question.selectedValue) { 
-						return 'yes'; 
+						return true; 
 					}
 				}
-				return 'no';
+				return false;
 			});	
 
 		// any awards
@@ -499,10 +515,10 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 				for (var idx in $scope.athlete.Awards) {
 					var award = $scope.athlete.Awards[idx];	
 					if (award.Position == 1) { 
-						return 'yes'; 
+						return true; 
 					}
 				}
-				return 'no';
+				return false;
 			});		
 
 		// awards
@@ -519,9 +535,30 @@ app.controller('homeController', ['$scope', '$route', '$pickAthleteDataService',
 					}
 				}				
 				if (total > question.selectedValue) {
-					return 'yes';
+					return true;
 				}
-				return 'no';
+				return false;
+			});		
+
+		// birth country
+		$scope.addQuestionType('Birth country', 'birthcountry',
+			function() {
+				return { selectedCountry:$scope.countries[0] };
+			},
+			function(question) {
+				if (question.selectedCountry == $scope.athlete.BirthCountry) {
+					return true;
+				}
+				if ($scope[question.selectedCountry]) {
+					var country = $scope[question.selectedCountry];
+					for(var idx in country) {
+						var province = country[idx];
+						if (province == $scope.athlete.BirthCountry) {
+							return true;
+						}
+					}
+				}
+				return false;
 			});			
 	};
 	
