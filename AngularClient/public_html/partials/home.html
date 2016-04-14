@@ -27,16 +27,15 @@
 						<div class="startButtonContainer">
 							<div ng-click="startRound();" class="startButton"></div>
 						</div>
-					</div>
-					<h1 ng-if="gameEnded">GAME OVER</h1>					
-					<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
-						{{athlete.Name}} is CORRECT!
-					</div>
+					</div>					
 					<div class="makeGuessContainer">
+						<h1 ng-if="gameEnded">GAME OVER</h1>					
+						<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
+							{{athlete.Name}} is CORRECT!
+						</div>
 						<div ng-if="roundStarted == true">
 							My guess is: <input type="text" ng-model="$parent.guessedAthlete" />
 							<button ng-click="makeGuess();">Make Guess</button>
-							{{athlete.Name}}
 						</div>		
 					</div>
 					<div class="questionAskedContainer" >

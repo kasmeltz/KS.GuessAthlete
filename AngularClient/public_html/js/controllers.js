@@ -237,7 +237,8 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 				startYear: 1970
 			};	
 		$scope.roundSeconds = 20 * 60;
-		
+		$scope.timeLeft = secondsToMinutesDisplay($scope.roundSeconds);
+		$scope.availablePoints = $scope.roundSeconds * $scope.gameRound;
 		$rootScope.$broadcast('clearRoundHistory');
 	}
 
@@ -256,6 +257,9 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 	$scope.gameOver = function() {
 		$scope.roundStarted = false;
 		$scope.gameEnded = true;
+		if ($scope.timerUpdate) {
+			$interval.cancel($scope.timerUpdate);
+		}
 	}
 	
     $scope.startRound = function () {
@@ -263,8 +267,8 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			return;
 		}
 		
-		if ($scope.gameEnded) {
-			$scope.newGame();
+		if ($scope.gameEnded == true) {
+			$scope.newGame();			
 			return;
 		}
 		
@@ -283,8 +287,6 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			$scope.athleteOptions.goalieWins = Math.max(100, $scope.athleteOptions.goalieWins);
 			$scope.athleteOptions.startYear -= 2;
 			$scope.athleteOptions.startYear = Math.max(1915, $scope.athleteOptions.startYear);
-			$scope.roundSeconds -= 60;
-			$scope.roundSeconds = Math.max(180, $scope.roundSeconds);			
 			$scope.gameRound++;
 		}
 		
