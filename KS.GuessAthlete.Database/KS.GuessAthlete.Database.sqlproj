@@ -83,5 +83,6 @@
   <ItemGroup>
     <None Include="KS.GuessAthlete.Database_TEST.publish.xml" />
     <None Include="KS.GuessAthlete.Database_DEV.publish.xml" />
+    <None Include="KS.GuessAthlete.Database_PROD.publish.xml" />
   </ItemGroup>
 </Project>

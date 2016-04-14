@@ -21,7 +21,7 @@ namespace KS.GuessAthlete.WebAPI.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("GuessAthleteDB", throwIfV1Schema: false)
         {
         }
         
