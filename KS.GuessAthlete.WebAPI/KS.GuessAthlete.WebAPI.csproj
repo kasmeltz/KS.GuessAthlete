@@ -2699,9 +2699,6 @@
     <Content Include="client\libs\js\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="client\libs\js\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="client\libs\js\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <None Include="Project_Readme.html" />
-    <None Include="Properties\PublishProfiles\KSGuessAthlete %282%29.pubxml" />
-    <None Include="Properties\PublishProfiles\KSGuessAthlete.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KS.GuessAthlete.Component\KS.GuessAthlete.Component.csproj">
@@ -2716,6 +2713,9 @@
       <Project>{0c47a5af-f3a0-400b-8e00-bd630e467dcd}</Project>
       <Name>KS.GuessAthlete.Logic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\KSGuessAthleteWebAPI - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
