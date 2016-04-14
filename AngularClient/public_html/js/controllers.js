@@ -218,7 +218,6 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 	}
 	
 	$scope.newGame = function() {	
-		$scope.selectedQuestionType = $scope.questionTypes[0];
 		$scope.questionsAsked = [];
 		$scope.incorrectGuesses = [];	
 		$scope.guessedAthlete = '';
@@ -260,6 +259,15 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 	}
 	
     $scope.startRound = function () {
+		if ($scope.roundStarted) {
+			return;
+		}
+		
+		if ($scope.gameEnded) {
+			$scope.newGame();
+			return;
+		}
+		
 		$scope.incorrectGuesses = [];
 		$scope.questionsAsked = [];
 		$scope.guessedAthlete = '';
@@ -312,9 +320,13 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 		}
 	});	
 		
-	$scope.addQuestion = function() {		
-		var question = $scope.addQuestions[$scope.selectedQuestionType.type]();
-		question.type = $scope.selectedQuestionType.type;
+	$scope.addQuestion = function(questionType) {		
+		if (!$scope.canAddQuestion) {
+			return;
+		}
+		
+		var question = $scope.addQuestions[questionType.type]();
+		question.type = questionType.type;
 		question.answered = false;
 		$scope.questionsAsked.push(question)
 		$scope.canAddQuestion = false;
@@ -330,15 +342,15 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 	$scope.addQuestions = {};
 	$scope.questionResponses = {};
 	
-	$scope.addQuestionType = function(displayText, type, questionProto, responder) {
-		$scope.questionTypes.push({ display:displayText, type:type });
+	$scope.addQuestionType = function(displayText, type, abbreviation, questionProto, responder) {
+		$scope.questionTypes.push({ display:displayText, type:type, abbreviation: abbreviation });
 		$scope.addQuestions[type] = questionProto;
 		$scope.questionResponses[type] = responder;
 	}
 	
 	$scope.loadQuestions = function() {
 		// positions
-		$scope.addQuestionType('Primary position', 'pos',
+		$scope.addQuestionType('Primary position', 'pos', 'POS',
 			function() {
 				return { selectedPosition:'C' };
 			},
@@ -347,7 +359,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 		
 		// first letter of name	
-		$scope.addQuestionType('First letter of name', 'let',
+		$scope.addQuestionType('First letter of name', 'let', 'LET',
 			function() {
 				return { selectedLetter:'A', selectedName:'first' };
 			},
@@ -368,7 +380,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 		
 		// played at least one year between years
-		$scope.addQuestionType('Played at least one year between', 'oneyear',
+		$scope.addQuestionType('Played at least one year between', 'oneyear', 'YEA',
 			function() {
 				return { selectedStart:1917, selectedEnd:thisYear };
 			},
@@ -388,7 +400,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});
 			
 		// played every year year between years
-		$scope.addQuestionType('Played every year between', 'allyears',
+		$scope.addQuestionType('Played every year between', 'allyears', 'AYE',
 			function() {
 				return { selectedStart:1917, selectedEnd:thisYear };
 			},
@@ -423,7 +435,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});
 			
 		// played for team
-		$scope.addQuestionType('Played for team', 'forteam',
+		$scope.addQuestionType('Played for team', 'forteam', 'TEA',
 			function() {
 				return { selectedTeam:$scope.teamIdentities[0] };
 			},
@@ -450,7 +462,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 		};
 		
 		// played in conference
-		$scope.addQuestionType('Played in conference', 'forconference',
+		$scope.addQuestionType('Played in conference', 'forconference', 'CON',
 			function() {
 				return { selectedConference:$scope.conferences[0] };
 			},
@@ -466,7 +478,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 			
 		// played in division
-		$scope.addQuestionType('Played in division', 'fordivision',
+		$scope.addQuestionType('Played in division', 'fordivision', 'DIV',
 			function() {
 				return { selectedDivision:$scope.divisions[0] };
 			},
@@ -509,7 +521,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 		}
 		
 		// jersey number
-		$scope.addQuestionType('Jersey number', 'jersey',
+		$scope.addQuestionType('Jersey number', 'jersey', 'NUM',
 			function() {
 				return { selectedValue:$scope.jerseys[0] };
 			},
@@ -524,7 +536,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});			
 		
 		// games played
-		$scope.addQuestionType('Games Played', 'gamesplayed',
+		$scope.addQuestionType('Games Played', 'gamesplayed', 'GP',
 			function() {
 				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
 			},
@@ -533,7 +545,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 
 		// points
-		$scope.addQuestionType('Points', 'points',
+		$scope.addQuestionType('Points', 'points', 'P',
 			function() {
 				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
 			},
@@ -542,7 +554,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 			
 		// goals
-		$scope.addQuestionType('Goals', 'goals',
+		$scope.addQuestionType('Goals', 'goals', 'G',
 			function() {
 				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
 			},
@@ -551,7 +563,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 
 		// assists
-		$scope.addQuestionType('Assists', 'assists',
+		$scope.addQuestionType('Assists', 'assists', 'A',
 			function() {
 				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
 			},
@@ -560,7 +572,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});
 			
 		// wins
-		$scope.addQuestionType('Wins', 'wins',
+		$scope.addQuestionType('Wins', 'wins', 'W',
 			function() {
 				return { selectedValue:$scope.hundreds[0], selectedSeasonType:$scope.seasonTypes[0] };
 			},
@@ -569,7 +581,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});	
 
 		// drafted by
-		$scope.addQuestionType('Drafted by', 'draftedby',
+		$scope.addQuestionType('Drafted by', 'draftedby', 'DRB',
 			function() {
 				return { selectedTeam:$scope.teamIdentities[0] };
 			},
@@ -584,7 +596,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});	
 			
 		// draft round
-		$scope.addQuestionType('Draft round', 'draftround',
+		$scope.addQuestionType('Draft round', 'draftround', 'DRR',
 			function() {
 				return { selectedValue:$scope.numbers[0] };
 			},
@@ -599,7 +611,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});			
 			
 		// draft position
-		$scope.addQuestionType('Draft position', 'draftposition',
+		$scope.addQuestionType('Draft position', 'draftposition', 'DRP',
 			function() {
 				return { selectedValue:$scope.numbers[0] };
 			},
@@ -614,7 +626,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});	
 
 		// any awards
-		$scope.addQuestionType('Any awards', 'anyawards',
+		$scope.addQuestionType('Any awards', 'anyawards', 'AAW',
 			function() {
 				return { };
 			},
@@ -629,7 +641,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 
 		// awards
-		$scope.addQuestionType('Awards', 'awards',
+		$scope.addQuestionType('Awards', 'awards', 'AWS',
 			function() {
 				return { selectedAward:$scope.awards[0], selectedValue:$scope.awardNumbers[0] };
 			},
@@ -648,7 +660,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			});		
 	
 		// stanley cup
-		$scope.addQuestionType('Stanley Cup', 'stanleycup',
+		$scope.addQuestionType('Stanley Cup', 'stanleycup', 'CUP',
 			function() {
 				return { selectedValue:$scope.awardNumbers[0] };
 			},
@@ -668,7 +680,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			
 
 		// birth country
-		$scope.addQuestionType('Birth country', 'birthcountry',
+		$scope.addQuestionType('Birth country', 'birthcountry', 'COU',
 			function() {
 				return { selectedCountry:$scope.countries[0] };
 			},

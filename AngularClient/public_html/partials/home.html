@@ -1,94 +1,114 @@
-<h1>Guess The Hockey Player</h1>
-<div class="row no-pad">
-	<div class="col-md-7" ng-controller="gameController">
-		<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Round {{gameRound}}</div>
-		<div style="background: #eeff88; color: #7777ff; font-size: xx-large;">Points {{gamePoints}}</div>
-		<h1 ng-if="gameEnded">GAME OVER</h1>
-		<button ng-if="gameEnded" ng-click="newGame();">Start New Game</button>
-		<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
-			{{athlete.Name}} is CORRECT!
-		</div>
-		<div ng-if="!gameEnded">
-			<h2>Guesses {{lives}}</h3>
-			<h2>Time Left {{timeLeft}}</h2>
-			<h2>Available Points {{availablePoints}}</h2>	
-			<h2>Incorrect Guesses</h2>
-			<div ng-repeat="incorrectGuess in incorrectGuesses">
-				{{incorrectGuess}}
+<div class="gameContainer">
+	<div class="row no-pad">
+		<div class="col-md-7" ng-controller="gameController">
+			<div class="row no-pad">
+				<div class="col-md-3">
+					<div class="questionTypeContainer">
+						<div tooltip="{{questionType.display}}" ng-class="{questionTypePuck: canAddQuestion, questionTypeNoPuck: !canAddQuestion}" ng-click="addQuestion(questionType);"  ng-repeat="questionType in questionTypes">{{questionType.abbreviation}}</div>
+						<div style="clear: both;"></div>
+					</div>
+					<div class="incorrectGuessesContainer">
+						Incorrect Guesses
+						<div ng-repeat="incorrectGuess in incorrectGuesses">
+							{{incorrectGuess}}
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="bigPuckContainer"> 
+						<div class="roundNumberContainer">Round {{gameRound}}</div>
+						<div class="roundPointsContainer">Points {{gamePoints}}</div>
+						<div class="roundPointsContainer">Points {{gamePoints}}</div>
+						<div class="timeLeftContainer">{{timeLeft}}</div>
+						<div class="availablePointsContainer">{{availablePoints}}</div>
+						<div class="guessNumberContainer" ng-if="!gameEnded">
+							Guesses {{lives}}
+						</div>					
+						<div class="startButtonContainer">
+							<div ng-click="startRound();" class="startButton"></div>
+						</div>
+					</div>
+					<h1 ng-if="gameEnded">GAME OVER</h1>					
+					<div ng-if="correctGuess" style="font-size: xx-large; color: #aaaaff;">
+						{{athlete.Name}} is CORRECT!
+					</div>
+					<div class="makeGuessContainer">
+						<div ng-if="roundStarted == true">
+							My guess is: <input type="text" ng-model="$parent.guessedAthlete" />
+							<button ng-click="makeGuess();">Make Guess</button>
+							{{athlete.Name}}
+						</div>		
+					</div>
+					<div class="questionAskedContainer" >
+						<div ng-repeat="question in questionsAsked" ng-switch="question.type">
+							<div class="questionNumber">{{$index + 1}}</div>
+							<span ng-switch-when="pos"><position-question /></span>
+							<span ng-switch-when="let"><letter-question /></span>
+							<span ng-switch-when="oneyear"><one-year-question /></span>
+							<span ng-switch-when="allyears"><all-years-question /></span>
+							<span ng-switch-when="forteam"><for-team-question /></span>
+							<span ng-switch-when="forconference"><for-conference-question /></span>
+							<span ng-switch-when="fordivision"><for-division-question /></span>
+							<span ng-switch-when="jersey"><jersey-question /></span>
+							<span ng-switch-when="gamesplayed"><games-played-question /></span>
+							<span ng-switch-when="points"><points-question /></span>
+							<span ng-switch-when="goals"><goals-question /></span>
+							<span ng-switch-when="assists"><assists-question /></span>
+							<span ng-switch-when="wins"><wins-question /></span>
+							<span ng-switch-when="draftedby"><drafted-by-question /></span>
+							<span ng-switch-when="draftround"><draft-round-question /></span>
+							<span ng-switch-when="draftposition"><draft-position-question /></span>
+							<span ng-switch-when="anyawards"><any-awards-question /></span>
+							<span ng-switch-when="awards"><awards-question /></span>
+							<span ng-switch-when="stanleycup"><stanley-cup-question /></span>
+							<span ng-switch-when="birthcountry"><birth-country-question /></span>
+							<button ng-if="question.answered == false && roundStarted == true" ng-click="askQuestion(question);" >Ask</button>		
+							<span style="font-size: x-large; color: #00ff00;" ng-if="question.answer == true"><img width="50" src="img/check.png" /></span>
+							<span style="font-size: x-large; color: #ff0000" ng-if="question.answer == false"><img width="50" src="img/error.png" /></span>
+							<div style="clear: both;"></div>
+						</div>
+					</div>								
+				</div>
 			</div>
 		</div>
-		<button ng-if="roundStarted == false && gameEnded == false" ng-click="startRound()";>Start Round</button>	
-		<div ng-repeat="question in questionsAsked" ng-switch="question.type">
-			<span class="questionNumber">{{$index + 1}}</span>
-			<span ng-switch-when="pos"><position-question /></span>
-			<span ng-switch-when="let"><letter-question /></span>
-			<span ng-switch-when="oneyear"><one-year-question /></span>
-			<span ng-switch-when="allyears"><all-years-question /></span>
-			<span ng-switch-when="forteam"><for-team-question /></span>
-			<span ng-switch-when="forconference"><for-conference-question /></span>
-			<span ng-switch-when="fordivision"><for-division-question /></span>
-			<span ng-switch-when="jersey"><jersey-question /></span>
-			<span ng-switch-when="gamesplayed"><games-played-question /></span>
-			<span ng-switch-when="points"><points-question /></span>
-			<span ng-switch-when="goals"><goals-question /></span>
-			<span ng-switch-when="assists"><assists-question /></span>
-			<span ng-switch-when="wins"><wins-question /></span>
-			<span ng-switch-when="draftedby"><drafted-by-question /></span>
-			<span ng-switch-when="draftround"><draft-round-question /></span>
-			<span ng-switch-when="draftposition"><draft-position-question /></span>
-			<span ng-switch-when="anyawards"><any-awards-question /></span>
-			<span ng-switch-when="awards"><awards-question /></span>
-			<span ng-switch-when="stanleycup"><stanley-cup-question /></span>
-			<span ng-switch-when="birthcountry"><birth-country-question /></span>
-			<button ng-if="question.answered == false && roundStarted == true" ng-click="askQuestion(question);" >Ask</button>		
-			<span style="font-size: x-large; color: #00ff00;" ng-if="question.answer == true"><img width="50" src="img/check.png" /></span>
-			<span style="font-size: x-large; color: #ff0000" ng-if="question.answer == false"><img width="50" src="img/error.png" /></span>
-		</div>
-		<div ng-if="canAddQuestion && roundStarted == true">
-			<select ng-model="$parent.selectedQuestionType" ng-options="questionType.display for questionType in questionTypes" ></select>
-			<button ng-click="addQuestion();">Add Question</button>
-		</div>	
-		<div ng-if="roundStarted == true">
-			My guess is: <input type="text" ng-model="$parent.guessedAthlete" />
-			<button ng-click="makeGuess();">Make Guess</button>
-			<h2>{{athlete.Name}}</h2>
-		</div>			
-	</div>
-	<div class="col-md-5" ng-controller="roundHistoryController">
-		<div ng-repeat="round in rounds">
-			{{round.gameRound}}
-			{{round.athlete.Name}}
-			{{round.timeElapsed}}
-			{{round.timeLeft}}
-			{{round.availablePoints}}
-			<div ng-repeat="incorrectGuess in round.incorrectGuesses">
-				{{incorrectGuess}}
-			</div>
-			<div ng-repeat="question in round.questionsAsked" ng-switch="question.type">
-				<span class="questionNumber">{{$index + 1}}</span>
-				<span ng-switch-when="pos"><position-question /></span>
-				<span ng-switch-when="let"><letter-question /></span>
-				<span ng-switch-when="oneyear"><one-year-question /></span>
-				<span ng-switch-when="allyears"><all-years-question /></span>
-				<span ng-switch-when="forteam"><for-team-question /></span>
-				<span ng-switch-when="forconference"><for-conference-question /></span>
-				<span ng-switch-when="fordivision"><for-division-question /></span>
-				<span ng-switch-when="jersey"><jersey-question /></span>
-				<span ng-switch-when="gamesplayed"><games-played-question /></span>
-				<span ng-switch-when="points"><points-question /></span>
-				<span ng-switch-when="goals"><goals-question /></span>
-				<span ng-switch-when="assists"><assists-question /></span>
-				<span ng-switch-when="wins"><wins-question /></span>
-				<span ng-switch-when="draftedby"><drafted-by-question /></span>
-				<span ng-switch-when="draftround"><draft-round-question /></span>
-				<span ng-switch-when="draftposition"><draft-position-question /></span>
-				<span ng-switch-when="anyawards"><any-awards-question /></span>
-				<span ng-switch-when="awards"><awards-question /></span>
-				<span ng-switch-when="stanleycup"><stanley-cup-question /></span>
-				<span ng-switch-when="birthcountry"><birth-country-question /></span>
-				<button ng-if="question.answered == false && roundStarted == true" ng-click="askQuestion(question);" >Ask</button>		
-				<span style="font-size: x-large; color: #00ff00;" ng-if="question.answer == true"><img width="50" src="img/check.png" /></span>
-				<span style="font-size: x-large; color: #ff0000" ng-if="question.answer == false"><img width="50" src="img/error.png" /></span>
+		<div class="col-md-5" ng-controller="roundHistoryController">
+			<div class="roundHistoryContainer">
+				<div ng-repeat="round in rounds">
+					<div class="roundHistoryRoundNumber">Round {{round.gameRound}}</div>
+					<div class="roundHistoryAthleteName">{{round.athlete.Name}}</div>
+					<div class="roundHistoryTimeElapsed">Took {{round.timeElapsed}}</div>
+					<div class="roundHistoryPoints">Won {{round.availablePoints}} points</div>
+					<div class="roundHistoryIncorrectHeader">Incorrect Guesses</div>
+					<div class="roundHistoryIncorrectGuess" ng-repeat="incorrectGuess in round.incorrectGuesses">
+						{{incorrectGuess}}
+					</div>
+					<div ng-repeat="question in round.questionsAsked" ng-switch="question.type">
+						<span class="questionNumber">{{$index + 1}}</span>
+						<span ng-switch-when="pos"><position-question /></span>
+						<span ng-switch-when="let"><letter-question /></span>
+						<span ng-switch-when="oneyear"><one-year-question /></span>
+						<span ng-switch-when="allyears"><all-years-question /></span>
+						<span ng-switch-when="forteam"><for-team-question /></span>
+						<span ng-switch-when="forconference"><for-conference-question /></span>
+						<span ng-switch-when="fordivision"><for-division-question /></span>
+						<span ng-switch-when="jersey"><jersey-question /></span>
+						<span ng-switch-when="gamesplayed"><games-played-question /></span>
+						<span ng-switch-when="points"><points-question /></span>
+						<span ng-switch-when="goals"><goals-question /></span>
+						<span ng-switch-when="assists"><assists-question /></span>
+						<span ng-switch-when="wins"><wins-question /></span>
+						<span ng-switch-when="draftedby"><drafted-by-question /></span>
+						<span ng-switch-when="draftround"><draft-round-question /></span>
+						<span ng-switch-when="draftposition"><draft-position-question /></span>
+						<span ng-switch-when="anyawards"><any-awards-question /></span>
+						<span ng-switch-when="awards"><awards-question /></span>
+						<span ng-switch-when="stanleycup"><stanley-cup-question /></span>
+						<span ng-switch-when="birthcountry"><birth-country-question /></span>
+						<button ng-if="question.answered == false && roundStarted == true" ng-click="askQuestion(question);" >Ask</button>		
+						<span style="font-size: x-large; color: #00ff00;" ng-if="question.answer == true"><img width="50" src="img/check.png" /></span>
+						<span style="font-size: x-large; color: #ff0000" ng-if="question.answer == false"><img width="50" src="img/error.png" /></span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

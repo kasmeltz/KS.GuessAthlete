@@ -1,9 +1,197 @@
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important; }
-  
-.questionNumber {
-	border: #0000ff 5px solid;
-	border-radius: 25px;
-	background: #6666ff;
-	color: #ffffff;
+ 
+.roundNumberContainer {
+	color: #ffff00;
+	position: absolute;
+	top: 20px;
+	left: 110px;	
+ }
+ 
+.roundPointsContainer {
+	color: #ffff00;
+	position: absolute;
+	top: 50px;
+	left: 110px;		
+ }
+ 
+.timeLeftContainer {	
+	color: #ffff00;
+	position: absolute;
+	top: 110px;
+	left: 110px;		
 }
+ 
+.availablePointsContainer {	
+	color: #ffff00;
+	position: absolute;
+	top: 140px;
+	left: 110px;		
+}
+
+.guessNumberContainer {
+	color: #ffff00;
+	position: absolute;
+	top: 80px;
+	left: 110px;
+}
+ 
+.startButtonContainer {
+	position: absolute;
+	top: 200px;
+	left: 120px;
+	text-align: center;
+}
+ 
+.startButton {
+	background-image: url(../img/glowing_button_up.png);
+	background-repeat: no-repeat;
+	background-position:0 0;
+	width: 100px;
+	height: 102px;	
+}
+ 
+.startButton:active {
+	  background-image: url(../img/glowing_button_down.png);
+}
+  
+.startRoundText {
+	  font-size: 2em;
+	  color: #ff0000;
+}
+  
+.bigPuckContainer {
+	font-size: 2em;
+	background-image: url(../img/big_puck.png);
+	background-repeat: no-repeat;
+	background-position:0 0;
+	width: 300px;
+	height: 313px;
+	position: relative;
+}
+
+.bigPuckSpacer {
+	height: 400px;
+}
+
+.questionNumber {
+	background-image: url(../img/puck_counter.png);
+	background-repeat: no-repeat;
+	background-position:0px 0;
+	width: 50px;
+	height: 44px;
+	text-align: center;
+	color: #ff8888;
+	font-weight: 900;
+	font-family: 'Arial Black';
+	font-size: 20px;
+	float: left;
+}
+
+.questionTypeContainer {
+	border: #84bbff 10px solid;
+	border-radius: 10px;
+	padding: 5px;
+	width: 132px;
+}
+
+.gameContainer {
+	background: #ddd;	
+	padding: 5px;
+}
+
+.questionTypePuck {
+	background-image: url(../img/puck_counter.png);
+	background-repeat: no-repeat;
+	background-position:0px 0;
+	width: 50px;
+	height: 44px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 5px;
+	color: #ddddff;
+	font-weight: 900;
+	font-family: 'Arial Black';
+	font-size: 16px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+}
+
+.questionTypeNoPuck {
+	width: 50px;
+	height: 44px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 5px;
+	cursor: pointer;
+	background: #84bbff;
+	color: #84bbff;
+	float: left;
+}
+
+.questionAskedContainer {
+	height: 300px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.roundHistoryContainer {
+	height: 700px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	border: 2px solid black;
+	margin-bottom: 10px;
+}
+
+.makeGuessContainer {
+	margin-top: 10px;
+	font-size: medium;
+}
+
+.incorrectGuessesContainer {
+	font-size: medium;
+}
+
+.roundHistoryRoundNumber  {
+	text-align: center;
+	background: #ffff00;
+	color: #000000;
+	font-size: large;	
+}
+
+.roundHistoryAthleteName  {
+	text-align: center;
+	background: #0000ff;
+	color: #ffffff;
+	font-size: large;	
+}
+
+.roundHistoryTimeElapsed  {
+	text-align: center;
+	background: #ffff00;
+	color: #000000;
+	font-size: large;	
+}
+
+.roundHistoryPoints  {
+	text-align: center;
+	background: #0000ff;
+	color: #ffffff;
+	font-size: large;		
+}
+
+.roundHistoryIncorrectHeader  {
+	text-align: center;
+	background: #ffff00;
+	color: #000000;
+	font-size: large;		
+}
+
+.roundHistoryIncorrectGuess  {
+	text-align: center;
+	background: #ffff00;
+	color: #000000;
+	font-size: large;		
+}
+
