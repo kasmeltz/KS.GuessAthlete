@@ -1,5 +1,6 @@
 ﻿using KS.GuessAthlete.Component.Caching.Implementation;
 using KS.GuessAthlete.Component.Caching.Interface;
+using KS.GuessAthlete.Component.Logging.Implementation;
 using KS.GuessAthlete.Component.Logging.Implemetation;
 using KS.GuessAthlete.Component.Logging.Interface;
 using KS.GuessAthlete.Data.DataAccess.Repository.Implementation;
@@ -25,7 +26,7 @@ namespace KS.GuessAthlete.WebAPI.Controllers.api
         public BaseApiController()
         {
             CacheProvider = MemoryCacheProvider.Instance;
-            Logger = EnterpriseLogger.Instance;
+            Logger = new NoOpLogger();
             RepositoryCollection = new DapperRepositoryCollection(CacheProvider);
         }
 

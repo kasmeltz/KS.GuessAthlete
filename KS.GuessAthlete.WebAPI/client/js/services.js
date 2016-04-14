@@ -1,7 +1,7 @@
 var app = angular.module('app');
 
 app.service('$con', function ($http) {
-    var base_url = 'http://localhost:51986/';
+    var base_url = 'http://ksguessathlete.azurewebsites.net/';
     return {
         getBaseUrl: function () { return base_url; },
 		get: function(url, callback, cache) {
