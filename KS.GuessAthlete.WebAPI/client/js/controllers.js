@@ -457,7 +457,7 @@ app.controller('gameController', ['$rootScope', '$scope', '$route', '$interval',
 			for(var idx in teamIdentityDivisionList) {
 				var teamIdentityDivision = teamIdentityDivisionList[idx];
 				if (season.StartYear >= teamIdentityDivision.StartYear &&
-					season.EndYear <= teamIdentityDivision.EndYear) {
+                    (!teamIdentityDivision.EndYear || season.EndYear <= teamIdentityDivision.EndYear)) {
 						return $scope.divisionsMap[teamIdentityDivision.DivisionId];
 				}
 			}	
